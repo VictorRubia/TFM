@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @gps_measure %>
+
+<div>
+  <%= link_to "Edit this gps measure", edit_gps_measure_path(@gps_measure) %> |
+  <%= link_to "Back to gps measures", gps_measures_path %>
+
+  <%= button_to "Destroy this gps measure", @gps_measure, method: :delete %>
+</div>

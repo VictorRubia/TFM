@@ -1,0 +1,13 @@
+{
+  "user_details": {
+    "id": 28,
+    "name": "PruebaNombre",
+    "surname": "PruebaApellido",
+    "email": "victorjoserubia@gmail.com",
+    "password_digest": "4321",
+    "created_at": "2022-03-28T13:51:15.366+02:00",
+    "updated_at": "2022-03-28T13:52:56.751+02:00",
+    "private_api_key_bidx": "ViVv4X/uCp9J+OP5oLixs2bvfj3iNpfrnJt9Hz5MTOA="
+  },
+  "api_key": "a849134f7fedc8031baeb4fee18b33d2"
+}

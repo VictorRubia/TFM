@@ -1,0 +1,1 @@
+json.array! @accelerometer_measures, partial: "api/v1/accelerometer_measures/accelerometer_measure", as: :accelerometer_measure

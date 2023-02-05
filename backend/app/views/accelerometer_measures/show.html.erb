@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @accelerometer_measure %>
+
+<div>
+  <%= link_to "Edit this accelerometer measure", edit_accelerometer_measure_path(@accelerometer_measure) %> |
+  <%= link_to "Back to accelerometer measures", accelerometer_measures_path %>
+
+  <%= button_to "Destroy this accelerometer measure", @accelerometer_measure, method: :delete %>
+</div>

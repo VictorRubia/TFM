@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tag: "{\"status\":\"En viaje\",\"context\":[\"Sentado\"],\"emotions\":\"Asco\",\"feelings\":\"Tranquilo\"}"
+  datetime: 2022-05-05 07:34:01
+  activity: one
+
+two:
+  tag: MyString
+  datetime: 2022-05-05 07:34:01
+  activity: two

@@ -1,0 +1,17 @@
+<% require 'json' %>
+<%- headers = ['timer', 'ppg','acc_x','acc_y','acc_z','lat','long','steps_counter','significant_mov'] -%>
+<% object = @final %>
+<%= CSV.generate_line headers %>
+<%- object.each do |medidas| %>
+<%= CSV.generate_line([
+medidas[:date],
+ medidas[:measure],
+  medidas[:ejeX],
+   medidas[:ejeY],
+    medidas[:ejeZ],
+     medidas[:latitude],
+      medidas[:longitude],
+        medidas[:count],
+          medidas[:significant_mov]
+      ]) -%>
+<%- end %>

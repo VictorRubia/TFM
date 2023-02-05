@@ -1,0 +1,1 @@
+json.array! @ppg_measures, partial: "api/v1/ppg_measures/ppg_measure", as: :ppg_measure

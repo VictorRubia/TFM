@@ -1,0 +1,182 @@
+<%= render "layouts/dashboard" %>
+<%= stylesheet_link_tag 'create_user' %>
+<% @activities = get_activities %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <%= link_to dashboard_activity_user_path, :class => 'btn btn-sm btn-outline-secondary' do %>
+          <i data-feather="arrow-left-circle" class="icon icon-show"></i>
+        <% end %>
+      </div>
+    </div>
+    <h2>Actividades de <%= @user.name %> </h2>
+  </div>
+
+  <%- if @activities.size > 0 %>
+    <div class="row align-items-start">
+      <div class="col-md">
+        <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h2>Viajar en bus</h2>
+        </div>
+        <div class="row row-cols-xxl-2 row-cols-1 g-2">
+          <% @activities.select{|a| a.name == "Viajar en bus"}.each do |activity| %>
+            <div class="col">
+              <div class="card h-100">
+                <% unless activity.viewed %>
+              <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              </span>
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= activity.name %></h5>
+                  <p class="card-text"></p>
+                  <div class="container">
+                    <div class="row row-cols-auto g-2">
+                      <div class="col">
+                        <%= link_to dashboard_activity_details_url(id_activity: activity.id), :class => 'btn btn-primary g-2' do%>
+                          Ver detalles
+                        <% end %>
+                      </div>
+                      <%unless activity.end_d.nil? %>
+                        <div class="col">
+                            <%= button_to "Eliminar", activity, method: :delete, :class => 'btn btn-danger', form: {data: { turbo_confirm: "¿Estás seguro?" }} %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <% unless activity.end_d.nil? %>
+                    <small class="text-muted">Finalizó el
+                      <b><%=  l activity.end_d, format: "%e de %B de %Y a las %k:%M:%S", locale: :'es-ES'  %></b>
+                    </small>
+                  <% else %>
+                    <small class="text-muted">
+                      <div class="live-indicator">
+                        <figure class="live-indicator__circle"></figure>
+                        <span class="live-indicator__text">DIRECTO</span>
+                      </div>
+                    </small>
+                  <%  end %>
+                </div>
+
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h2>Viajar en metro </h2>
+        </div>
+        <div class="row row-cols-1 row-cols-xxl-2 g-2">
+          <% @activities.select{|a| a.name == "Viajar en metro"}.each do |activity| %>
+            <div class="col">
+              <div class="card h-100">
+                <% unless activity.viewed %>
+              <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              </span>
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= activity.name %></h5>
+                  <p class="card-text"></p>
+                  <div class="container">
+                    <div class="row row-cols-auto g-2">
+                      <div class="col">
+                        <%= link_to dashboard_activity_details_url(id_activity: activity.id), :class => 'btn btn-primary g-2' do%>
+                          Ver detalles
+                        <% end %>
+                      </div>
+                      <%unless activity.end_d.nil? %>
+                        <div class="col">
+                          <%= button_to "Eliminar", activity, method: :delete, :class => 'btn btn-danger', form: {data: { turbo_confirm: "¿Estás seguro?" }} %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <% unless activity.end_d.nil? %>
+                    <small class="text-muted">Finalizó el
+                      <b><%=  l activity.end_d, format: "%e de %B de %Y a las %k:%M:%S", locale: :'es-ES'  %></b>
+                    </small>
+                  <% else %>
+                    <small class="text-muted">
+                      <div class="live-indicator">
+                        <figure class="live-indicator__circle"></figure>
+                        <span class="live-indicator__text">DIRECTO</span>
+                      </div>
+                    </small>
+                  <%  end %>
+                </div>
+
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h2>Viajar en tren </h2>
+        </div>
+        <div class="row row-cols-1 row-cols-xxl-2 g-2">
+          <% @activities.select{|a| a.name == "Viajar en tren"}.each do |activity| %>
+            <div class="col">
+              <div class="card h-100">
+                <% unless activity.viewed %>
+              <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              </span>
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= activity.name %></h5>
+                  <p class="card-text"></p>
+                  <div class="container">
+                    <div class="row row-cols-auto g-2">
+                      <div class="col">
+                        <%= link_to dashboard_activity_details_url(id_activity: activity.id), :class => 'btn btn-primary g-2' do%>
+                          Ver detalles
+                        <% end %>
+                      </div>
+                      <%unless activity.end_d.nil? %>
+                        <div class="col">
+                          <%= button_to "Eliminar", activity, method: :delete, :class => 'btn btn-danger', form: {data: { turbo_confirm: "¿Estás seguro?" }} %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <% unless activity.end_d.nil? %>
+                    <small class="text-muted">Finalizó el
+                      <b><%=  l activity.end_d, format: "%e de %B de %Y a las %k:%M:%S", locale: :'es-ES'  %></b>
+                    </small>
+                  <% else %>
+                    <small class="text-muted">
+                      <div class="live-indicator">
+                        <figure class="live-indicator__circle"></figure>
+                        <span class="live-indicator__text">DIRECTO</span>
+                      </div>
+                    </small>
+                  <%  end %>
+                </div>
+
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <%- else %>
+    <div class="card">
+      <h5 class="card-header text-danger">Aviso</h5>
+      <div class="card-body">
+        <h5 class="card-title">El usuario aún no tiene ninguna medida</h5>
+        <p class="card-text">Puede comenzar a medir en cualquier momento. Tan solo debe abrir la aplicación del reloj y comenzar la medición</p>
+      </div>
+    </div>
+  <%- end %>
+
+</main>
+

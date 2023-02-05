@@ -1,0 +1,58 @@
+<%= render "layouts/navbar" %>
+<%= stylesheet_link_tag 'dashboard.css' %>
+
+<script>$(document).ready(function() {
+    feather.replace()
+});</script>
+
+<div class="container-fluid d-md-none">
+  <nav class="tabbable">
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <% if current_page?(dashboard_create_user_path)%>
+        <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="<%= dashboard_create_user_url %>" role="tab" aria-controls="nav-profile" aria-selected="true"><span data-feather="users"></span> Usuarios</a>
+      <% else %>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="<%= dashboard_create_user_url %>" role="tab" aria-controls="nav-profile" aria-selected="false"><span data-feather="users"></span> Usuarios</a>
+      <% end %>
+      <% if current_page?(dashboard_activity_user_path)%>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_activity_user_url %>" role="tab" aria-controls="nav-contact" aria-selected="true"><span data-feather="bar-chart-2"></span> Actividades</a>
+      <% else %>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_activity_user_url %>" role="tab" aria-controls="nav-contact" aria-selected="false"><span data-feather="bar-chart-2"></span> Actividades</a>
+      <% end %>
+    </div>
+  </nav>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-none d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-5">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <% if current_page?(dashboard_create_user_path) %>
+              <%= link_to dashboard_create_user_path, class: "nav-link active" do %>
+                <span data-feather="users"></span>
+                Usuarios
+              <% end %>
+            <% else %>
+              <%= link_to dashboard_create_user_path, class: "nav-link" do %>
+                <span data-feather="users"></span>
+                Usuarios
+              <% end %>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <% if request.url.include? 'activity_user' %>
+              <%= link_to dashboard_activity_user_path, class: "nav-link active" do %>
+                <span data-feather="bar-chart-2"></span>
+                Actividades
+              <% end %>
+            <% else %>
+              <%= link_to dashboard_activity_user_path, class: "nav-link" do %>
+                <span data-feather="bar-chart-2"></span>
+                Actividades
+              <% end %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </nav>

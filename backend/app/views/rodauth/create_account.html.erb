@@ -1,0 +1,61 @@
+<% content_for :title, rodauth.create_account_page_title %>
+
+<%= form_with url: rodauth.create_account_path, method: :post, data: { turbo: false } do |form| %>
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrarse</p>
+
+                <form class="mx-1 mx-md-4">
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <%= form.email_field rodauth.login_param, value: params[rodauth.login_param], id: "login", autocomplete: "email", required: true, class: "form-control #{"is-invalid" if rodauth.field_error(rodauth.login_param)}", aria: ({ invalid: true, describedby: "login_error_message" } if rodauth.field_error(rodauth.login_param)) %>
+                      <%= content_tag(:span, rodauth.field_error(rodauth.login_param), class: "invalid-feedback", id: "login_error_message") if rodauth.field_error(rodauth.login_param) %>
+                      <label class="form-label" for="form3Example1c">Correo Electrónico</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <%= form.password_field rodauth.password_param, id: "password", autocomplete: rodauth.password_field_autocomplete_value, required: true, class: "form-control #{"is-invalid" if rodauth.field_error(rodauth.password_param)}", aria: ({ invalid: true, describedby: "password_error_message" } if rodauth.field_error(rodauth.password_param)) %>
+                      <%= content_tag(:span, rodauth.field_error(rodauth.password_param), class: "invalid-feedback", id: "password_error_message") if rodauth.field_error(rodauth.password_param) %>
+                      <label class="form-label" for="form3Example4c">Contraseña</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <%= form.password_field rodauth.password_confirm_param, id: "password-confirm", autocomplete: "new-password", required: true, class: "form-control #{"is-invalid" if rodauth.field_error(rodauth.password_confirm_param)}", aria: ({ invalid: true, describedby: "password-confirm_error_message" } if rodauth.field_error(rodauth.password_confirm_param)) %>
+                      <%= content_tag(:span, rodauth.field_error(rodauth.password_confirm_param), class: "invalid-feedback", id: "password-confirm_error_message") if rodauth.field_error(rodauth.password_confirm_param) %>
+                      <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <%= form.submit 'Registrarse', class: "btn btn-primary btn-lg", id: "buttonRegister" %>
+                  </div>
+
+                </form>
+
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                <%= image_tag ("logos/dibujo.svg"), class: "img-fluid"%>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% end %>

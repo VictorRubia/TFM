@@ -1,0 +1,2 @@
+module AccelerometerMeasuresHelper
+end

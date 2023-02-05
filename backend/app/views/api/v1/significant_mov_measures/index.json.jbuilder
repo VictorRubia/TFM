@@ -1,0 +1,1 @@
+json.array! @significant_mov_measures, partial: "api/v1/significant_mov_measures/significant_mov_measure", as: :significant_mov_measure

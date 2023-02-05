@@ -1,0 +1,46 @@
+<% @usuario = usuario %>
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Editar Usuario</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<%= form_with(model: @usuario, url: user_path(@usuario), method: "patch") do |form| %>
+<div class="modal-body">
+  <div class="mb-3">
+    <%= form.label 'Nombre', style: "col-form-label" %>
+    <%= form.text_field :name, :class => 'form-control', id: 'user'+@usuario.id.to_s+'name' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label 'Correo electrónico', style: "col-form-label" %>
+    <%= form.email_field :email, :class => 'form-control', id: 'user'+@usuario.id.to_s+'username' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label 'Contraseña', style: "col-form-label" %>
+    <div class="input-group mb-3">
+      <%= form.text_field :password_digest, :class => 'form-control', :type =>'password', id: 'user'+@usuario.id.to_s+'password' %>
+      <div class="input-group-append">
+        <button class="btn btn-outline-danger" type="button" onclick="togglePassword('user<%= @usuario.id.to_s %>password')"><i data-feather="eye"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    <%= form.submit 'Editar', :class => 'btn btn-success' %>
+  </div>
+<% end %>
+
+  <div class="modal-body" style="border-top: 1px solid #dee2e6">
+    <%= form_with model: @usuario, url: user_private_api_keys_path do |f| %>
+    <div class="mb-3">
+      <h class="col-form-label">API Key</h>
+      <%= f.text_field :private_api_key, disabled: true, :class => 'form-control' , id: 'user'+@usuario.id.to_s+'apiKEY'%>
+      <%= f.hidden_field :id unless @usuario.id.nil?%>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" onclick="copy(<%= 'user'+@usuario.id.to_s+'apiKEY' %>)">Copiar</button>
+    <%= f.submit "Cambiar Clave API", :class => 'btn btn-warning' %>
+  </div>
+<% end %>

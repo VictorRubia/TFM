@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TFG</string>
+    <string name="home_text_input_login_email">Correo electrónico</string>
+    <string name="home_text_input_login_password">Contraseña</string>
+    <string name="home_button_recover_password">Recuperar contraseña</string>
+    <string name="home_button_login">Entrar</string>
+    <string name="user_text_name">Nombre1 Nombre2</string>
+    <string name="user_text_wear_status">Estado de la conexión con el reloj: : </string>
+    <string name="logged_menu_item_title">Salir</string>
+    <string name="logged_menu_item_description">Salir de la sesión</string>
+    <string name="recover_password_title">Recuperar contraseña</string>
+    <string name="recover_password_description">Si no recuerda cuál era su contraseña, introduzca su correo electrónico en el siguiente campo para que se la enviemos</string>
+    <string name="recover_password_email_hint">Correo electrónico</string>
+    <string name="recover_password_send_button">Enviar solicitud</string>
+</resources>

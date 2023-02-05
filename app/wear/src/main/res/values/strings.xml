@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TFG</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="start_menu_activity_title">Comenzar actividad</string>
+    <string name="activity_type_activity_title">Tipos de actividad</string>
+    <string name="activity_confirmation_activity_title">Confirmación de inicio de actividad</string>
+    <string name="measuring_menu_activity_title">Menú de medición</string>
+    <string name="status_menu_activity_title">Menú de estados</string>
+    <string name="user_context_menu_activity_title">Menú de contextos</string>
+    <string name="emotions_menu_activity_title">Menú de emociones</string>
+    <string name="feelings_menu_activity_title">Menú de sentimientos</string>
+</resources>

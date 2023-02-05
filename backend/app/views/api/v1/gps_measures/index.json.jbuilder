@@ -1,0 +1,1 @@
+json.array! @gps_measures, partial: "api/v1/gps_measures/gps_measure", as: :gps_measure

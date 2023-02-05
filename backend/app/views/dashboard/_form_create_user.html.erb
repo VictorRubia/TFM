@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Añadir usuario</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<%= form_with(model: user, url: users_path, method: :post, local: true, scope: :user) do |form| %>
+<div class="modal-body">
+  <div class="mb-3">
+    <%= form.label 'Nombre', style: "col-form-label" %>
+    <%= form.text_field :name, :class => 'form-control', :required => true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label 'Correo electrónico', style: "col-form-label" %>
+    <%= form.email_field :email, :class => 'form-control', :required => true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label 'Contraseña', style: "col-form-label" %>
+    <%= form.password_field :password_digest, :class => 'form-control', :required => true %>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+  <%= form.submit 'Añadir', :class => 'btn btn-success', :id => 'addUserModalButton' %>
+</div>
+<% end %>

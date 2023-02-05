@@ -1,0 +1,10 @@
+{
+  "id": 164,
+  "user_id": 8,
+  "name": "Prueba",
+  "start_d": "2022-05-06T13:59:50.000+02:00",
+  "end_d": null,
+  "created_at": "2022-05-20T11:43:59.107+02:00",
+  "updated_at": "2022-05-20T11:43:59.107+02:00",
+  "url": "http://victorrubia.com:3000/api/v1/activities/164"
+}

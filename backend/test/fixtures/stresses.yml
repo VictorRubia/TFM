@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  datetime: 2022-05-06 07:42:29
+  level: 1
+  activity: one
+
+two:
+  datetime: 2022-05-06 07:42:29
+  level: 0
+  activity: two

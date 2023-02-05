@@ -1,0 +1,102 @@
+version: "3.9"
+services:
+  db:
+    image: mysql
+    command: --max_connections=10000
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - ./data/db:/var/lib/mysql
+    ports:
+      - "6033:3306"
+    networks:
+      - elknetwork
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: pma_tfg
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      - elknetwork
+
+  web:
+#    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    command: bash -c "rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    container_name: tfg_webapp
+    environment:
+      - GMAIL_PASS=${GMAIL_PASS}
+      - PROD_DATABASE_USR=${PROD_DATABASE_USR}
+      - PROD_DATABASE_PWD=${PROD_DATABASE_PWD}
+      - PROD_DATABASE_URL=${PROD_DATABASE_URL}
+      - PROD_DATABASE_PORT=${PROD_DATABASE_PORT}
+      - LOGSTASH_HOST=logstash
+    volumes:
+      - .:/tfg
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - elknetwork
+
+  elasticsearch:
+    image: elasticsearch:7.17.8
+    container_name: elasticsearch
+    hostname: elasticsearch
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - elknetwork
+
+  logstash:
+    image: logstash:7.17.8
+    container_name: logstash
+    hostname: logstash
+    ports:
+      - 9600:9600
+      - 8089:8089
+      - 3001:3001
+    volumes:
+      - ./logstash:/usr/share/logstash/pipeline/
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknetwork
+
+  kibana:
+    image: kibana:7.17.8
+    container_name: kibana
+    hostname: kibana
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknetwork
+    volumes:
+      - ./kibana:/usr/share/elasticsearch/data
+
+networks:
+  elknetwork:
+    driver: bridge

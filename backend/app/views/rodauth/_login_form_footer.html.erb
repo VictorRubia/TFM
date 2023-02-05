@@ -1,0 +1,9 @@
+<% unless rodauth.login_form_footer_links.empty? %>
+  <div class="d-flex justify-content-center">
+    <div class="list-group">
+      <%= link_to "Crear una cuenta", rodauth.create_account_path , class: "list-group-item list-group-item-action"%>
+      <%= link_to "Olvidé mi contraseña", rodauth.reset_password_request_path , class: "list-group-item list-group-item-action"%>
+      <%= link_to "Reenviar correo de verificación", rodauth.verify_account_resend_path, class: "list-group-item list-group-item-action"%>
+    </div>
+  </div>
+<% end %>
