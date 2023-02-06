@@ -63,7 +63,7 @@ Rails.application.configure do
   config.assets.quiet = true
 
   #Suprimir los logs
-  config.log_level = :fatal # In any environment debug, or fatal
+  config.log_level = :debug # In any environment debug, or fatal
 
   config.assets.debug = false
 
@@ -79,7 +79,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.action_mailer.delivery_method = :smtp
-  host = 'victorrubia.com' #replace with your own url
+  host = 'gmail.com' #replace with your own url
   config.action_mailer.default_url_options = { host: host }
 
   config.lograge.enabled = true
@@ -95,11 +95,11 @@ Rails.application.configure do
 
     # SMTP settings for gmail
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.gmail.com",
-    :port                 => 587,
-    :user_name            => "admin@victorrubia.com",
-    :password             => ENV['GMAIL_PASS'],
-    :authentication       => "plain",
-    :enable_starttls_auto => true
+    :address => "smtp.gmail.com",
+    :port => 587,
+    :domain => 'gmail.com',
+    :user_name => "#{ENV[MAIL_USR]}@gmail.com",
+    :password => ENV[MAIL_PWD],
+    :authentication => 'plain',
   }
 end
