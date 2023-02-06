@@ -79,7 +79,7 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.action_mailer.delivery_method = :smtp
-  host = 'gmail.com' #replace with your own url
+  host = 'localhost' #replace with your own url
   config.action_mailer.default_url_options = { host: host }
 
   config.lograge.enabled = true
@@ -98,8 +98,8 @@ Rails.application.configure do
     :address => "smtp.gmail.com",
     :port => 587,
     :domain => 'gmail.com',
-    :user_name => "#{ENV[MAIL_USR]}@gmail.com",
-    :password => ENV[MAIL_PWD],
+    :user_name => "#{ENV["MAIL_USR"]}@gmail.com",
+    :password => ENV["MAIL_PWD"],
     :authentication => 'plain',
   }
 end

@@ -22,5 +22,7 @@ module Tfg
     #
     config.time_zone = "Europe/Madrid"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.action_mailer.asset_host = 'http://tfm.victorrubia.com'
+    config.action_mailer.asset_host = config.action_controller.asset_host
   end
 end
