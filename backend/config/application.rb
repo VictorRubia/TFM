@@ -24,6 +24,5 @@ module Tfg
     # config.eager_load_paths << Rails.root.join("extras")
     config.action_mailer.asset_host = 'http://tfm.victorrubia.com'
     config.action_mailer.asset_host = config.action_controller.asset_host
-    config.web_console.permissions = '172.23.0.1'
   end
 end

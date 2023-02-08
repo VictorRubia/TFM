@@ -46,6 +46,11 @@ class DashboardController < ApplicationController
     @activity = Activity.find(params[:id_activity])
   end
 
+  def tags
+    @tags = TagsRepository.where(account_id: current_account.id)
+    render  'dashboard/dynamic_tags'
+  end
+
   helper_method :get_activities, :get_activities_sorted, :activity_details, :search_user
 
 end

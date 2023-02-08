@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tags_repositories
   root "welcome#index"
   get 'activities/:id/export', to: 'activities#export'
   get 'activities/:id/ppg_measures', to: 'activities#ppg_measures'
@@ -17,6 +18,7 @@ Rails.application.routes.draw do
     get '/dashboard/activity_user/:id' => 'dashboard#view_activities', as: :dashboard_view_activity
     get '/dashboard/activity_user/:id/:id_activity' => 'dashboard#activity_details', as: :dashboard_activity_details
     get '/dashboard/activity_user/:id/:id_activity/reprocess' => 'activities#reprocess', as: :activity_reprocess
+    get 'dashboard/tags' => 'dashboard#tags', as: :dashboard_tags
     resources :ppg_measures
     resources :accelerometer_measures
     resources :gps_measures

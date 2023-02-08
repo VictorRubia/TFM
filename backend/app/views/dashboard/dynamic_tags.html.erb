@@ -1,0 +1,36 @@
+<%= render "layouts/dashboard" %>
+<%= stylesheet_link_tag 'create_user' %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2>Etiquetas</h2>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button id="addTagButton" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addTagModal">Añadir</button>
+      </div>
+    </div>
+  </div>
+
+<!--  <nav aria-label="Page navigation example">-->
+<!--    <ul class="pagination justify-content-center">-->
+<!--      <li class="page-item disabled">-->
+<!--        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>-->
+<!--      </li>-->
+<!--      <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--      <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--      <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--      <li class="page-item">-->
+<!--        <a class="page-link" href="#">Siguiente</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </nav>-->
+
+  <div id="addTagModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <%= render "form_create_tag", tags: @tags %>
+      </div>
+    </div>
+  </div>
+</main>
+

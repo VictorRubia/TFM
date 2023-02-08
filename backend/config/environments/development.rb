@@ -68,6 +68,7 @@ Rails.application.configure do
   config.assets.debug = false
 
   config.hosts << "victorrubia.com"
+  config.web_console.permissions = '172.23.0.1'
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
