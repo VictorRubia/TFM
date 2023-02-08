@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include ActiveModel::SecurePassword
+  has_secure_password
   lockbox_encrypts :private_api_key
   blind_index :private_api_key
 
@@ -6,12 +8,13 @@ class User < ApplicationRecord
 
   validates :private_api_key, uniqueness: true, allow_blank: true
 
-  # belongs_to :account
+  belongs_to :account
   has_many :activities, dependent: :destroy
   has_many :requests, dependent: :destroy
 
-  validates :name, :email, :password_digest , presence: true
+  validates :name, :email, presence: true
   validates :email, uniqueness: true
+
 
   def self.search(search)
     if search

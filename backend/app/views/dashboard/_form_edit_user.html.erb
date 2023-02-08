@@ -16,9 +16,9 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label 'Contraseña', style: "col-form-label" %>
+    <%= form.label 'Cambiar contraseña', style: "col-form-label" %>
     <div class="input-group mb-3">
-      <%= form.text_field :password_digest, :class => 'form-control', :type =>'password', id: 'user'+@usuario.id.to_s+'password' %>
+      <%= form.text_field :password, :class => 'form-control', :type =>'password', id: 'user'+@usuario.id.to_s+'password' %>
       <div class="input-group-append">
         <button class="btn btn-outline-danger" type="button" onclick="togglePassword('user<%= @usuario.id.to_s %>password')"><i data-feather="eye"></i></button>
       </div>
