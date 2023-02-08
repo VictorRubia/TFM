@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   validates :private_api_key, uniqueness: true, allow_blank: true
 
+  # belongs_to :account
   has_many :activities, dependent: :destroy
   has_many :requests, dependent: :destroy
 

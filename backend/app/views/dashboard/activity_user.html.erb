@@ -1,47 +1,66 @@
 <%= render "layouts/dashboard" %>
 <%= stylesheet_link_tag 'create_user' %>
-<% if @users.nil? %>
-  <% @users = User.all %>
-<% end %>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Actividades</h1>
   </div>
 
-  <h3>Seleccione un usuario</h3>
-  <%= form_tag(dashboard_search_user_activity_path, method: :get) do %>
+  <% if @users.empty? %>
+    <div class="row no-gutters bg-light position-relative">
+      <div class="col-md-6 mb-md-0 p-md-4">
+        <%= image_tag("misc/add_user.png", class: "w-100", alt: "Tutorial adición usuario") %>
+      </div>
+      <div class="col-md-6 position-static p-4 pl-md-0">
+        <h4 class="mt-0">Comencemos...</h4>
+        <h5 class="mt-0">Aún no hay ningún usuario registrado por usted</h5>
+        <br>
+        <p>Puede comenzar registrando un usuario en la sección de <%= link_to "Usuarios", dashboard_create_user_path %>.</p>
+        <%= link_to "Ir a la sección de Usuarios", dashboard_create_user_path, class: "stretched-link" %>
+      </div>
+    </div>
+<!--    <div class="card">-->
+<!--      <h5 class="card-header text-danger">Primeros pasos...</h5>-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title">Aún no hay ningún usuario registrado por usted</h5>-->
+<!--        <p class="card-text">Puede comenzar registrando un usuario en la sección de <%#= link_to "Usuarios", dashboard_create_user_path %>.</p>-->
+<!--      </div>-->
+<!--    </div>-->
+  <% else %>
+    <h3>Seleccione un usuario</h3>
+    <%= form_tag(dashboard_search_user_activity_path, method: :get) do %>
 
-    <div class="input-group">
-      <%= text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar usuario') %>
-      <%= submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+      <div class="input-group">
+        <%= text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar usuario') %>
+        <%= submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+      </div>
+    <% end %>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>
+          </th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Actividades</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td>
+            </td>
+            <td><%= user.name %></td>
+            <td>
+              <%= link_to dashboard_view_activity_url(user), :class => 'btn btn-outline-primary' do%>
+                <i data-feather="eye" class="icon icon-show"></i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
     </div>
   <% end %>
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>
-        </th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Actividades</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @users.each do |user| %>
-        <tr>
-          <td>
-          </td>
-          <td><%= user.name %></td>
-          <td>
-            <%= link_to dashboard_view_activity_url(user), :class => 'btn btn-outline-primary' do%>
-              <i data-feather="eye" class="icon icon-show"></i>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
 </main>
 

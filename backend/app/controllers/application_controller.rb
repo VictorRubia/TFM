@@ -27,6 +27,12 @@ class ApplicationController < ActionController::Base
     rodauth.require_authentication # redirect to login page if not authenticated
   end
 
+  def current_account
+    rodauth.rails_account
+  end
+
+  helper_method :current_account
+
   def append_info_to_payload(payload)
     super
     payload["params"] = request.params

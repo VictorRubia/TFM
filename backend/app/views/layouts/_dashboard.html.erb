@@ -18,6 +18,11 @@
       <% else %>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_activity_user_url %>" role="tab" aria-controls="nav-contact" aria-selected="false"><span data-feather="bar-chart-2"></span> Actividades</a>
       <% end %>
+      <% if current_page?(dashboard_activity_user_path)%>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_activity_user_url %>" role="tab" aria-controls="nav-contact" aria-selected="true"><span data-feather="bar-chart-2"></span> Etiquetas</a>
+      <% else %>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_activity_user_url %>" role="tab" aria-controls="nav-contact" aria-selected="false"><span data-feather="bar-chart-2"></span> Etiquetas</a>
+      <% end %>
     </div>
   </nav>
 </div>
@@ -50,6 +55,19 @@
               <%= link_to dashboard_activity_user_path, class: "nav-link" do %>
                 <span data-feather="bar-chart-2"></span>
                 Actividades
+              <% end %>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <% if request.url.include? 'activity_user' %>
+              <%= link_to dashboard_activity_user_path, class: "nav-link active" do %>
+                <span data-feather="tag"></span>
+                Etiquetas
+              <% end %>
+            <% else %>
+              <%= link_to dashboard_activity_user_path, class: "nav-link" do %>
+                <span data-feather="tag"></span>
+                Etiquetas
               <% end %>
             <% end %>
           </li>

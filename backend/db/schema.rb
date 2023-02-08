@@ -10,20 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_02_093700) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_02_06_151859) do
   create_table "accelerometer_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_accelerometer_measures_on_activity_id"
   end
 
   create_table "account_login_change_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "key", null: false
     t.string "login", null: false
-    t.datetime "deadline", precision: 6, null: false
+    t.datetime "deadline", null: false
   end
 
   create_table "account_password_hashes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -32,13 +31,13 @@ ActiveRecord::Schema.define(version: 2023_02_02_093700) do
 
   create_table "account_password_reset_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "key", null: false
-    t.datetime "deadline", precision: 6, null: false
+    t.datetime "deadline", null: false
     t.timestamp "email_last_sent", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "account_remember_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "key", null: false
-    t.datetime "deadline", precision: 6, null: false
+    t.datetime "deadline", null: false
   end
 
   create_table "account_verification_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -55,11 +54,11 @@ ActiveRecord::Schema.define(version: 2023_02_02_093700) do
 
   create_table "activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.datetime "start_d", precision: 6
-    t.datetime "end_d", precision: 6
+    t.datetime "start_d"
+    t.datetime "end_d"
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "viewed", default: false
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
@@ -67,16 +66,16 @@ ActiveRecord::Schema.define(version: 2023_02_02_093700) do
   create_table "gps_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_gps_measures_on_activity_id"
   end
 
   create_table "ppg_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_ppg_measures_on_activity_id"
   end
 
@@ -84,42 +83,42 @@ ActiveRecord::Schema.define(version: 2023_02_02_093700) do
     t.bigint "user_id", null: false
     t.string "requestable_type", null: false
     t.integer "method", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
   create_table "significant_mov_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_significant_mov_measures_on_activity_id"
   end
 
   create_table "step_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_step_measures_on_activity_id"
   end
 
   create_table "stresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.datetime "datetime", precision: 6
+    t.datetime "datetime"
     t.integer "level"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_stresses_on_activity_id"
   end
 
   create_table "tags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "tag"
-    t.datetime "datetime", precision: 6
+    t.datetime "datetime"
     t.bigint "activity_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_tags_on_activity_id"
   end
 
@@ -127,10 +126,12 @@ ActiveRecord::Schema.define(version: 2023_02_02_093700) do
     t.string "name"
     t.string "email"
     t.text "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "private_api_key_ciphertext"
     t.string "private_api_key_bidx"
+    t.bigint "account_id", null: false
+    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["private_api_key_bidx"], name: "index_users_on_private_api_key_bidx", unique: true
   end
@@ -149,4 +150,5 @@ ActiveRecord::Schema.define(version: 2023_02_02_093700) do
   add_foreign_key "step_measures", "activities"
   add_foreign_key "stresses", "activities"
   add_foreign_key "tags", "activities"
+  add_foreign_key "users", "accounts"
 end

@@ -1,9 +1,5 @@
 <%= render "layouts/dashboard" %>
 <%= stylesheet_link_tag 'create_user.css' %>
-<% if @users.nil? %>
-<% @users = User.all %>
-<% end %>
-
 
 <script>
     function copy(inputname) {
@@ -38,54 +34,65 @@
       </div>
     </div>
   </div>
-  <%= form_tag(dashboard_search_user_path, method: :get) do %>
-
-  <div class="input-group">
-    <%= text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar usuario') %>
-    <%= submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+  <% if @users.empty? %>
+  <div class="card">
+        <h5 class="card-header text-danger">Primeros pasos...</h5>
+    <div class="card-body">
+      <h5 class="card-title">Aún no hay ningún usuario registrado por usted</h5>
+      <p class="card-text">Puede comenzar registrando un usuario clicando sobre el botón azul de 'Añadir'.</p>
+    </div>
   </div>
-  <% end %>
+  <% else %>
 
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th></th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Opciones</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @users.each do |user| %>
-        <tr>
-          <td></td>
-          <td><%= user.name %></td>
-          <td>
-            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-              <div class="btn-group me-2" role="group" aria-label="First group">
-                <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editUserModal<%= user.id %>">
-                  <i data-feather="edit" class="icon icon-show"></i>
-                </button>
-                <div id="editUserModal<%= user.id %>" class="modal fade">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <%= render "form_edit_user", usuario: user %>
+  <%=  form_tag(dashboard_search_user_path, method: :get) do  %>
+
+    <div class="input-group">
+      <%=  text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar usuario') %>
+      <%=  submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+    </div>
+      <%  end  %>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Opciones</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @users.each do |user| %>
+          <tr>
+                  <td></td>
+            <td><%=  user.name  %></td>
+            <td>
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editUserModal<%=  user.id  %>">
+                    <i data-feather="edit" class="icon icon-show"></i>
+                  </button>
+                  <div id="editUserModal<%=  user.id  %>" class="modal fade">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <%=  render "form_edit_user", usuario: user  %>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="btn-group me-2" role="group" aria-label="Second group">
-                <%= button_to user, method: :delete, :class => 'btn btn-outline-danger', form: {data: {turbo_confirm: '¿Estás seguro de querer eliminar al usuario?'}} do%>
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                  <%=  button_to user, method: :delete, :class => 'btn btn-outline-danger', form: { data: { turbo_confirm: '¿Estás seguro de querer eliminar al usuario?' } } do %>
                   <i data-feather="trash-2" class="icon icon-show"></i>
-                <% end %>
+                  <%  end  %>
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
+            </td>
+          </tr>
+          <%  end  %>
+          </tbody>
+        </table>
+      </div>
+  <% end %>
 
   <div id="addUserModal" class="modal fade">
     <div class="modal-dialog">

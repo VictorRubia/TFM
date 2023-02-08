@@ -72,6 +72,8 @@ GEM
       activerecord (>= 4.2)
       activesupport
     argon2-kdf (0.1.7)
+    autoprefixer-rails (10.4.7.0)
+      execjs (~> 2)
     bcrypt (3.1.18)
     bindex (0.8.1)
     blind_index (2.3.1)
@@ -79,6 +81,10 @@ GEM
       argon2-kdf (>= 0.1.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
+    bootstrap (5.2.3)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 2.11.6, < 3)
+      sassc-rails (>= 2.0.0)
     bootstrap-icons (1.0.13)
       nokogiri (~> 1)
     bootstrap-icons-helper (2.0.1)
@@ -103,6 +109,8 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     erubi (1.12.0)
+    execjs (2.8.1)
+    ffi (1.15.5)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -155,6 +163,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.14.1-x86_64-linux)
       racc (~> 1.4)
+    popper_js (2.11.6)
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
@@ -211,6 +220,14 @@ GEM
       sequel-activerecord_connection (~> 1.1)
       tilt
     rubyzip (2.3.2)
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     selenium-webdriver (4.8.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -263,6 +280,7 @@ PLATFORMS
 DEPENDENCIES
   blind_index (~> 2.3)
   bootsnap
+  bootstrap (~> 5.2.3)
   bootstrap-icons-helper
   capybara
   cssbundling-rails

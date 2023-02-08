@@ -6,18 +6,19 @@
 <div class="modal-body">
   <div class="mb-3">
     <%= form.label 'Nombre', style: "col-form-label" %>
-    <%= form.text_field :name, :class => 'form-control', :required => true %>
+    <%= form.text_field :name, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
   </div>
 
   <div class="mb-3">
     <%= form.label 'Correo electrónico', style: "col-form-label" %>
-    <%= form.email_field :email, :class => 'form-control', :required => true %>
+    <%= form.email_field :email, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
   </div>
 
   <div class="mb-3">
     <%= form.label 'Contraseña', style: "col-form-label" %>
-    <%= form.password_field :password_digest, :class => 'form-control', :required => true %>
+    <%= form.password_field :password_digest, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
   </div>
+  <%= hidden_field_tag "user[account_id]", "#{current_account.id}" %>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

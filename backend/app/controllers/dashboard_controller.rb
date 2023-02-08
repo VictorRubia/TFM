@@ -5,15 +5,22 @@ class DashboardController < ApplicationController
   end
 
   def create_user
+    @users = User.where(account_id: current_account.id)
+    render 'dashboard/create_user'
+  end
+
+  def activity_user
+    @users = User.where(account_id: current_account.id)
+    render 'dashboard/activity_user'
   end
 
   def search_user
-    @users = User.search(params[:search])
+    @users = User.where(account_id: current_account.id).search(params[:search])
     render "/dashboard/create_user"
   end
 
   def search_user_activities
-    @users = User.search(params[:search])
+    @users = User.where(account_id: current_account.id).search(params[:search])
     render "/dashboard/activity_user"
   end
 
