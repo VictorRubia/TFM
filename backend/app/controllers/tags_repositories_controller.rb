@@ -65,6 +65,6 @@ class TagsRepositoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tags_repository_params
-      params.require(:tags_repository).permit(:name, :name_wearos, :image)
+      params.require(:tags_repository).permit(:name, :name_wearos, :image_data, :photo)
     end
 end

@@ -37,7 +37,8 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :amazon_dev
+  # config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -79,28 +80,28 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
-  config.action_mailer.delivery_method = :smtp
-  host = 'localhost' #replace with your own url
-  config.action_mailer.default_url_options = { host: host }
+  # config.action_mailer.delivery_method = :smtp
+  # host = 'localhost' #replace with your own url
+  # config.action_mailer.default_url_options = { host: host }
 
-  config.lograge.enabled = true
-  config.lograge.formatter = Lograge::Formatters::Logstash.new
-  config.lograge.logger = LogStashLogger.new(type: :udp, host: ENV['LOGSTASH_HOST'], port: 8089)
-  config.lograge.custom_options = lambda do |event|
-    unwanted_keys = %w[format action controller]
-    params = event.payload[:params].reject { |key,_| unwanted_keys.include? key }
-
-    # capture some specific timing values you are interested in
-    {:params => params }
-    end
+  # config.lograge.enabled = true
+  # config.lograge.formatter = Lograge::Formatters::Logstash.new
+  # config.lograge.logger = LogStashLogger.new(type: :udp, host: ENV['LOGSTASH_HOST'], port: 8089)
+  # config.lograge.custom_options = lambda do |event|
+  #   unwanted_keys = %w[format action controller]
+  #   params = event.payload[:params].reject { |key,_| unwanted_keys.include? key }
+  #
+  #   # capture some specific timing values you are interested in
+  #   {:params => params }
+  # end
 
     # SMTP settings for gmail
-  config.action_mailer.smtp_settings = {
-    :address => "smtp.gmail.com",
-    :port => 587,
-    :domain => 'gmail.com',
-    :user_name => "#{ENV["MAIL_USR"]}@gmail.com",
-    :password => ENV["MAIL_PWD"],
-    :authentication => 'plain',
-  }
+  # config.action_mailer.smtp_settings = {
+  #   :address => "smtp.gmail.com",
+  #   :port => 587,
+  #   :domain => 'gmail.com',
+  #   :user_name => "#{ENV["MAIL_USR"]}@gmail.com",
+  #   :password => ENV["MAIL_PWD"],
+  #   :authentication => 'plain',
+  # }
 end

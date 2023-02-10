@@ -82,3 +82,4 @@ gem "blind_index", "~> 2.3"
 gem "lograge"
 gem "logstash-event"
 gem "logstash-logger"
+gem 'aws-sdk-s3', require: false

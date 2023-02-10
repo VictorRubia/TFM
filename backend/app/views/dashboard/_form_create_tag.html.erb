@@ -16,7 +16,8 @@
 
   <div class="mb-3">
     <%= form.label 'Seleccione imagen o suba una personalizada', style: "col-form-label" %>
-    <%= form.password_field :password_digest, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
+    <%= form.file_field :image, :class => 'form-control' %>
+    <%#= form.password_field :password_digest, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
   </div>
   <%= hidden_field_tag "user[account_id]", "#{current_account.id}" %>
 </div>

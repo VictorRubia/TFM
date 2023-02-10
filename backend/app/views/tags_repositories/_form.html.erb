@@ -22,8 +22,12 @@
   </div>
 
   <div>
-    <%= form.label :image, style: "display: block" %>
-    <%= form.text_field :image %>
+    <%= form.label :image_data, style: "display: block" %>
+    <%= form.text_area :image_data %>
+  </div>
+
+  <div class="field">
+    <%= form.file_field :photo %>
   </div>
 
   <div>
