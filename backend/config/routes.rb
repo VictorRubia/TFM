@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :tags_repositories
   root "welcome#index"
   get 'activities/:id/export', to: 'activities#export'
   get 'activities/:id/ppg_measures', to: 'activities#ppg_measures'
@@ -15,6 +14,7 @@ Rails.application.routes.draw do
     post '/dashboard/create_user', to: 'users#create'
     get '/dashboard/activity_user' => 'dashboard#activity_user', as: :dashboard_activity_user
     get '/dashboard/activity_user/search' => 'dashboard#search_user_activities', as: :dashboard_search_user_activity
+    get '/dashboard/tags/search' => 'dashboard#search_tags', as: :dashboard_search_tags
     get '/dashboard/activity_user/:id' => 'dashboard#view_activities', as: :dashboard_view_activity
     get '/dashboard/activity_user/:id/:id_activity' => 'dashboard#activity_details', as: :dashboard_activity_details
     get '/dashboard/activity_user/:id/:id_activity/reprocess' => 'activities#reprocess', as: :activity_reprocess
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :gps_measures
     resources :users
     resources :tags
+    resources :tags_repositories
   end
 
   get '/welcome/index'
@@ -45,6 +46,7 @@ Rails.application.routes.draw do
         resources :step_measures, only: [:index, :create, :show, :update, :destroy]
         resources :significant_mov_measures, only: [:index, :create, :show, :update, :destroy]
         resources :tags, only: [:index, :create, :show, :update, :destroy]
+        resources :tags_repositories, only: [:index]
       end
     end
   end

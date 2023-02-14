@@ -82,4 +82,7 @@ gem "blind_index", "~> 2.3"
 gem "lograge"
 gem "logstash-event"
 gem "logstash-logger"
+#gestion de imagenes
+gem 'image_processing', '~> 1.12', '>= 1.12.2'
 gem 'aws-sdk-s3', require: false
+gem "rack-cors", "~> 1.1"

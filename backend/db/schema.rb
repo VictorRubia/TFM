@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_10_090038) do
+ActiveRecord::Schema[7.0].define(version: 2023_13_02_143001) do
   create_table "accelerometer_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
@@ -153,9 +153,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_090038) do
   create_table "tags_repositories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "name_wearos"
-    t.text "image_data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id", null: false
+    t.integer "tags_type", default: 0
+    t.index ["account_id"], name: "index_tags_repositories_on_account_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -188,5 +190,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_090038) do
   add_foreign_key "step_measures", "activities"
   add_foreign_key "stresses", "activities"
   add_foreign_key "tags", "activities"
+  add_foreign_key "tags_repositories", "accounts"
   add_foreign_key "users", "accounts"
 end

@@ -14,7 +14,6 @@ class TagsRepositoriesTest < ApplicationSystemTestCase
     visit tags_repositories_url
     click_on "New tags repository"
 
-    fill_in "Image data", with: @tags_repository.image_data
     fill_in "Name", with: @tags_repository.name
     fill_in "Name wearos", with: @tags_repository.name_wearos
     click_on "Create Tags repository"
@@ -27,7 +26,6 @@ class TagsRepositoriesTest < ApplicationSystemTestCase
     visit tags_repository_url(@tags_repository)
     click_on "Edit this tags repository", match: :first
 
-    fill_in "Image data", with: @tags_repository.image_data
     fill_in "Name", with: @tags_repository.name
     fill_in "Name wearos", with: @tags_repository.name_wearos
     click_on "Update Tags repository"

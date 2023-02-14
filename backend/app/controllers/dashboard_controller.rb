@@ -19,6 +19,11 @@ class DashboardController < ApplicationController
     render "/dashboard/create_user"
   end
 
+  def search_tags
+    @tags = TagsRepository.where(account_id: current_account.id).search(params[:search])
+    render "/dashboard/dynamic_tags"
+  end
+
   def search_user_activities
     @users = User.where(account_id: current_account.id).search(params[:search])
     render "/dashboard/activity_user"

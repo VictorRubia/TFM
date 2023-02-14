@@ -10,10 +10,11 @@
   </p>
 
   <p>
-    <strong>Image data:</strong>
-    <%= tags_repository.image_data %>
+    <strong>Icon:</strong>
+    <% if tags_repository.icon.attached? %>
+      <%= image_tag(tags_repository.icon, width: 200) if tags_repository.icon.attached? %>
+      <%#= image_tag tags_repository.icon %>
+    <% end %>
   </p>
-
-  <%= image_tag(tags_repository.photo, width: 200) if tags_repository.photo.attached? %>
 
 </div>

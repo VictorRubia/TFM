@@ -3,6 +3,7 @@ class TagsRepositoriesController < ApplicationController
 
   # GET /tags_repositories or /tags_repositories.json
   def index
+    # @users = TagsRepository.search(params[:search])
     @tags_repositories = TagsRepository.all
   end
 
@@ -25,6 +26,7 @@ class TagsRepositoriesController < ApplicationController
 
     respond_to do |format|
       if @tags_repository.save
+        format.html { redirect_to dashboard_tags_url, notice: "Etiqueta añadida." }
         format.html { redirect_to tags_repository_url(@tags_repository), notice: "Tags repository was successfully created." }
         format.json { render :show, status: :created, location: @tags_repository }
       else
@@ -38,7 +40,7 @@ class TagsRepositoriesController < ApplicationController
   def update
     respond_to do |format|
       if @tags_repository.update(tags_repository_params)
-        format.html { redirect_to tags_repository_url(@tags_repository), notice: "Tags repository was successfully updated." }
+        format.html { redirect_to dashboard_tags_url, notice: "Etiqueta actualizada." }
         format.json { render :show, status: :ok, location: @tags_repository }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +54,7 @@ class TagsRepositoriesController < ApplicationController
     @tags_repository.destroy
 
     respond_to do |format|
-      format.html { redirect_to tags_repositories_url, notice: "Tags repository was successfully destroyed." }
+      format.html { redirect_to tags_repository_url, notice: "Etiqueta eliminada." }
       format.json { head :no_content }
     end
   end
@@ -65,6 +67,6 @@ class TagsRepositoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tags_repository_params
-      params.require(:tags_repository).permit(:name, :name_wearos, :image_data, :photo)
+      params.require(:tags_repository).permit(:name, :name_wearos, :icon, :account_id, :tags_type, :search)
     end
 end

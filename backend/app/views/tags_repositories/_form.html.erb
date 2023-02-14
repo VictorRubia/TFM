@@ -21,14 +21,20 @@
     <%= form.text_field :name_wearos %>
   </div>
 
-  <div>
-    <%= form.label :image_data, style: "display: block" %>
-    <%= form.text_area :image_data %>
+  <div class="form-group" data-uppy="tags_repository[icon]">
+    <%= form.label :icon %>
+    <div>
+      <% if @tags_repository.icon.attached? %>
+        <%= image_tag @tags_repository.icon, width: 280, data: { behavior: 'uppy-preview' } %>
+      <% else %>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSpj0DBTVsaja01_xWh37bcutvpd7rh7zEd528HD0d_l6A73osY" width="280" data-behavior="uppy-preview" />
+      <% end %>
+    </div>
+
+    <%= link_to "Upload", "#", data: { behavior: "uppy-trigger" } %>
   </div>
 
-  <div class="field">
-    <%= form.file_field :photo %>
-  </div>
+  <div id="pick-files"></div>
 
   <div>
     <%= form.submit %>
