@@ -17,7 +17,7 @@ class TagsRepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create tags_repository" do
     assert_difference("TagsRepository.count") do
-      post tags_repositories_url, params: { tags_repository: { image: @tags_repository.image, name: @tags_repository.name, name_wearos: @tags_repository.name_wearos } }
+      post tags_repositories_url, params: { tags_repository: { name: @tags_repository.name, name_wearos: @tags_repository.name_wearos } }
     end
 
     assert_redirected_to tags_repository_url(TagsRepository.last)
@@ -34,7 +34,7 @@ class TagsRepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update tags_repository" do
-    patch tags_repository_url(@tags_repository), params: { tags_repository: { image: @tags_repository.image, name: @tags_repository.name, name_wearos: @tags_repository.name_wearos } }
+    patch tags_repository_url(@tags_repository), params: { tags_repository: { name: @tags_repository.name, name_wearos: @tags_repository.name_wearos } }
     assert_redirected_to tags_repository_url(@tags_repository)
   end
 

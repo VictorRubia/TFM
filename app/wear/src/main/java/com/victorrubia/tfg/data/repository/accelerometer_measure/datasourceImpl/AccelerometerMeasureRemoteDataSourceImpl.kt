@@ -15,7 +15,6 @@ class AccelerometerMeasureRemoteDataSourceImpl(
     private val user : UserCacheDataSource
 ) : AccelerometerMeasureRemoteDataSource {
 
-
     override suspend fun sendAccelerometerMeasures(accelerometerMeasures: String, activityId : Int) =
         tfgService.addAccelerometerMeasure("Bearer ${user.getUserFromCache()!!.apiKey}", accelerometerMeasures, activityId)
 }

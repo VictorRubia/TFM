@@ -2,7 +2,7 @@
 <html lang="es">
 <meta charset="utf-8"/>
 <head>
-  <title>TFG</title>
+  <title>TFM</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= favicon_link_tag asset_path('logos/favicon.png') %>
   <%= csrf_meta_tags %>
@@ -14,6 +14,7 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+  <%= tag.meta name: "direct-upload-url", content: rails_direct_uploads_path %>
 
   <% if notice %>
     <script>

@@ -3,9 +3,7 @@
 one:
   name: MyString
   name_wearos: MyString
-  image: MyString
 
 two:
   name: MyString
   name_wearos: MyString
-  image: MyString

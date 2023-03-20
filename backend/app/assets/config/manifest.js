@@ -3,3 +3,4 @@
 //= link login.css
 //= link dashboard.css
 //= link create_user.css
+//= link draggable.css

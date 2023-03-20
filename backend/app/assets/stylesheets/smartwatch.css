@@ -1,0 +1,251 @@
+/*FIGMA*/
+
+/*.figma-smartwatch{*/
+/*    position: relative;*/
+/*    width: 172px;*/
+/*    height: 182px;*/
+/*    text-align: center;*/
+/*    font-size: 12px;*/
+/*    color: #bdc1c6;*/
+/*    font-family: Roboto, serif;*/
+/*}*/
+
+/*.figma-smartwatch-watchface{*/
+/*    position: absolute;*/
+/*    height: 103.06%;*/
+/*    width: 91%;*/
+/*    top: -3.06%;*/
+/*    right: 4.27%;*/
+/*    bottom: 0%;*/
+/*    left: 4.74%;*/
+/*}*/
+
+/*.figma-smartwatch-watchface-img{*/
+/*    position: absolute;*/
+/*    height: 95.18%;*/
+/*    width: 100%;*/
+/*    top: 4.82%;*/
+/*    right: 0%;*/
+/*    bottom: 0%;*/
+/*    left: 0%;*/
+/*    max-width: 100%;*/
+/*    overflow: hidden;*/
+/*    max-height: 100%;*/
+/*}*/
+
+/*.figma-smartwatch-div1{*/
+/*    position: absolute;*/
+/*    height: 91.58%;*/
+/*    width: 89.58%;*/
+/*    top: 0%;*/
+/*    right: 4.17%;*/
+/*    bottom: 8.42%;*/
+/*    left: 6.25%;*/
+/*}*/
+
+/*.figma-smartwatch-div2{*/
+/*    position: absolute;*/
+/*    top: 0px;*/
+/*    left: 0px;*/
+/*    width: 172px;*/
+/*    height: 48px;*/
+/*}*/
+
+/*.figma-smartwatch-div3{*/
+/*    position: absolute;*/
+/*    top: 58px;*/
+/*    left: 0px;*/
+/*    width: 168px;*/
+/*    height: 114px;*/
+/*    color: #fff;*/
+/*}*/
+
+/*.figma-smartwatch-categoria{*/
+/*    position: absolute;*/
+/*    width: calc(100% - 28px);*/
+/*    top: calc(70% - 7px);*/
+/*    left: 0px;*/
+/*    line-height: 18px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    height: 48px;*/
+/*}*/
+
+/*.figma-smartwatch-card{*/
+/*    position: absolute;*/
+/*    height: 95%;*/
+/*    width: 82%;*/
+/*    top: 5%;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*    border-radius: 24px;*/
+/*    background: linear-gradient(*/
+/*            111.73deg,*/
+/*            rgba(218, 220, 224, 0.2),*/
+/*            rgba(189, 193, 198, 0.13)*/
+/*    );*/
+/*}*/
+
+/*.figma-smartwatch-nombre{*/
+/*    position: absolute;*/
+/*    top: 85px;*/
+/*    left: -5px;*/
+/*    letter-spacing: 0.2px;*/
+/*    line-height: 12px;*/
+/*    font-weight: 500;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    width: 152px;*/
+/*}*/
+
+/*.figma-smartwatch-ico{*/
+/*    position: absolute;*/
+/*    top: 17px;*/
+/*    left: 35px;*/
+/*    width: 70px;*/
+/*    height: 66.65px;*/
+/*    filter: invert(50);*/
+/*    object-fit: cover;*/
+/*}*/
+
+/*.figma-smartwatch-text{*/
+/*    position: absolute;*/
+/*    height: 10.28%;*/
+/*    width: 6.33%;*/
+/*    top: 15.77%;*/
+/*    right: 85.71%;*/
+/*    bottom: 78.95%;*/
+/*    left: 5.95%;*/
+/*    max-width: 100%;*/
+/*    overflow: hidden;*/
+/*    max-height: 100%;*/
+/*}*/
+
+/*MAS PEQUEÑO*/
+
+.figma-smartwatch{
+    position: relative;
+    width: 114px;
+    height: 124px;
+    text-align: center;
+    font-size: 8px;
+    color: #bdc1c6;
+    font-family: Roboto, 'serif';
+}
+
+.figma-smartwatch-watchface{
+    position: absolute;
+    height: 103.06%;
+    width: 91%;
+    top: -3.06%;
+    right: 4.27%;
+    bottom: 0%;
+    left: 4.74%;
+}
+
+.figma-smartwatch-watchface-img{
+    position: absolute;
+    height: 95.18%;
+    width: 100%;
+    top: 4.82%;
+    right: 0%;
+    bottom: 0%;
+    left: 0%;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+}
+
+.figma-smartwatch-div1{
+    position: absolute;
+    height: 91.58%;
+    width: 89.58%;
+    top: 0%;
+    right: 4.17%;
+    bottom: 8.42%;
+    left: 6.25%;
+}
+
+.figma-smartwatch-div2{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 172px;
+    height: 48px;
+}
+
+.figma-smartwatch-div3{
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    width: 168px;
+    height: 114px;
+    color: #fff;
+}
+
+.figma-smartwatch-categoria{
+    position: absolute;
+    width: calc(100% - 28px);
+    top: calc(40% - 7px);
+    left: -24px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+}
+
+.figma-smartwatch-card{
+    position: absolute;
+    height: 60%;
+    width: 55%;
+    top: 5%;
+    right: 0%;
+    bottom: 0%;
+    left: 0%;
+    border-radius: 24px;
+    background: linear-gradient(
+            111.73deg,
+            rgba(218, 220, 224, 0.2),
+            rgba(189, 193, 198, 0.13)
+    );
+}
+
+.figma-smartwatch-nombre{
+    position: absolute;
+    top: 56px;
+    left: -28px;
+    letter-spacing: 0.2px;
+    line-height: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 152px;
+}
+
+.figma-smartwatch-ico{
+    position: absolute;
+    top: 11px;
+    left: 26px;
+    width: 43px;
+    height: 43.650000000000006px;
+    object-fit: cover;
+    filter: invert(50);
+}
+
+.figma-smartwatch-text{
+    position: absolute;
+    height: 7.28%;
+    width: 7.33%;
+    top: 13.77%;
+    right: 85.71%;
+    bottom: 78.95%;
+    left: 5.95%;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+}

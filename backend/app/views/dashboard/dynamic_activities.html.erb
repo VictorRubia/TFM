@@ -1,0 +1,96 @@
+<%= render "layouts/dashboard" %>
+<%= stylesheet_link_tag 'create_user' %>
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2>Tipos de Actividad</h2>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button id="addActivityTypeButton" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addActivityTypeModal">Añadir</button>
+      </div>
+    </div>
+  </div>
+
+  <% if @activities.nil? %>
+    <div class="card">
+      <h5 class="card-header text-danger">Primeros pasos...</h5>
+      <div class="card-body">
+        <h5 class="card-title">Aún no hay ningún tipo de actividad registrada por usted</h5>
+        <p class="card-text">Puede comenzar registrando una etiqueta clicando sobre el botón azul de 'Añadir'.</p>
+      </div>
+    </div>
+  <% else %>
+
+    <%=  form_tag(dashboard_search_activity_repo_path, method: :get) do  %>
+
+      <div class="input-group">
+        <%=  text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar tipo de actividad') %>
+        <%=  submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+      </div>
+    <%  end  %>
+
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+          <th></th>
+          <th class="col">Icono</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Nombre en el reloj</th>
+          <th scope="col">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @activities.each do |activity| %>
+          <tr>
+            <td></td>
+            <td>
+              <%= image_tag(activity.icon, alt: "", width: 48, height: 48) if activity.icon.attached? %>
+            </td>
+            <td><%= activity.name %></td>
+            <td>
+              <%= activity.name_wearos %>
+            </td>
+            <td>
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="Third group">
+                  <%=  link_to dashboard_settings_activity_repo_url(activity.id), :class => 'btn btn-outline-primary' do %>
+                    <i data-feather="sliders" class="icon icon-show"></i>
+                  <%  end  %>
+                </div>
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editActivityTypeModal<%=  activity.id  %>">
+                    <i data-feather="edit" class="icon icon-show"></i>
+                  </button>
+                  <div id="editActivityTypeModal<%=  activity.id  %>" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <%=  render "form_edit_activity_type", edit_activity: activity  %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                  <%=  button_to activity, method: :delete, :class => 'btn btn-outline-danger', form: { data: { turbo_confirm: "¿Estás seguro de querer eliminar la actividad #{activity.name}?" } } do %>
+                    <i data-feather="trash-2" class="icon icon-show"></i>
+                  <%  end  %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  <% end %>
+
+
+    <div id="addActivityTypeModal" class="modal fade" id="staticBackdropModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <%= render "form_create_activity_type", tags: @tags %>
+      </div>
+    </div>
+  </div>
+</main>

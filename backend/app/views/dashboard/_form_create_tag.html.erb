@@ -1,8 +1,8 @@
 <div class="modal-header">
   <h5 class="modal-title" id="exampleModalLabel">Añadir etiqueta</h5>
-  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <button type="button" class="btn-close close-tags-modal" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
-<%= form_with(model: tags, url: tags_repositories_path, method: :post, local: true, scope: :tags_repositories) do |form| %>
+<%= form_with(model: @tag, url: tags_repositories_path, method: :post, local: true, scope: :tags_repository) do |form| %>
 <div class="modal-body">
   <div class="mb-3">
     <%= form.label 'Nombre', style: "col-form-label" %>
@@ -11,17 +11,24 @@
 
   <div class="mb-3">
     <%= form.label 'Nombre que aparecerá en el reloj', style: "col-form-label" %>
-    <%= form.email_field :email, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
+    <%= form.text_field :name_wearos, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
   </div>
 
   <div class="mb-3">
-    <%= form.label 'Seleccione imagen o suba una personalizada', style: "col-form-label" %>
-    <%= form.password_field :password_digest, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
+    <%= form.label 'Tipo de etiqueta', style: "col-form-label" %>
+    <%= form.select(:tags_type, [['Estado', 1], ['Contexto', 2], ['Emoción', '3']], {}, { :class => 'form-select' }) %>
   </div>
-  <%= hidden_field_tag "user[account_id]", "#{current_account.id}" %>
+
+  <div class="form-group" data-uppy="tags_repository[icon]">
+    <%= form.label 'Seleccione imagen o suba una personalizada', style: "col-form-label" %>
+    <div data-behavior="uppy-trigger"></div>
+    <div class="uppy-picker"></div>
+  </div>
+
+  <%= hidden_field_tag "tags_repository[account_id]", "#{current_account.id}" %>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+  <button type="button" class="btn btn-secondary close-tags-modal" data-bs-dismiss="modal" >Cancelar</button>
   <%= form.submit 'Añadir', :class => 'btn btn-success', :id => 'addUserModalButton' %>
 </div>
 <% end %>

@@ -19,13 +19,6 @@
         <%= link_to "Ir a la sección de Usuarios", dashboard_create_user_path, class: "stretched-link" %>
       </div>
     </div>
-<!--    <div class="card">-->
-<!--      <h5 class="card-header text-danger">Primeros pasos...</h5>-->
-<!--      <div class="card-body">-->
-<!--        <h5 class="card-title">Aún no hay ningún usuario registrado por usted</h5>-->
-<!--        <p class="card-text">Puede comenzar registrando un usuario en la sección de <%#= link_to "Usuarios", dashboard_create_user_path %>.</p>-->
-<!--      </div>-->
-<!--    </div>-->
   <% else %>
     <h3>Seleccione un usuario</h3>
     <%= form_tag(dashboard_search_user_activity_path, method: :get) do %>
