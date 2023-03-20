@@ -59,6 +59,7 @@ Rails.application.routes.draw do
         resources :tags, only: [:index, :create, :show, :update, :destroy]
         resources :tags_repositories, only: [:index]
         resources :activities_repositories, only: [:index]
+        get 'activities_from_user/:user_id', to: 'activities_repositories#get_activities_from_user'
       end
     end
   end

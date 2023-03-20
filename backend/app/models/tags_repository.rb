@@ -1,4 +1,6 @@
 class TagsRepository < ApplicationRecord
+  has_many :activity_tags_assignations
+  has_many :activities_repositories, through: :activity_tags_assignations
   has_one_attached :icon
   def self.search(search)
     if search

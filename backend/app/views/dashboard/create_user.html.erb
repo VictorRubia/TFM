@@ -4,7 +4,7 @@
 <script>
     function copy(inputname) {
         /* Get the text field */
-        var copyText = document.getElementById(inputname);
+        let copyText = document.getElementById(inputname);
         copyText.select();
         copyText.setSelectionRange(0, 99999); /* For mobile devices */
         /* Copy the text inside the text field */
@@ -15,7 +15,7 @@
     }
 
     function togglePassword(inputname){
-        var x = document.getElementById(inputname);
+        let x = document.getElementById(inputname);
         if (x.type === "password") {
             x.type = "text";
         } else {
