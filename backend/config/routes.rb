@@ -17,17 +17,17 @@ Rails.application.routes.draw do
     delete '/dashboard/user/:id/activity_assignations' => 'dashboard#activity_unassign'
     get '/dashboard/create_user/search' => 'dashboard#search_user', as: :dashboard_search_user
     post '/dashboard/create_user', to: 'users#create'
-    get '/dashboard/activity_user' => 'dashboard#activity_user', as: :dashboard_activity_user
-    get '/dashboard/activity_user/search' => 'dashboard#search_user_activities', as: :dashboard_search_user_activity
     get '/dashboard/tags/search' => 'dashboard#search_tags', as: :dashboard_search_tags
     get '/dashboard/activity_repo/search' => 'dashboard#search_activity_repo', as: :dashboard_search_activity_repo
-    get '/dashboard/activity_user/:id' => 'dashboard#view_activities', as: :dashboard_view_activity
-    get '/dashboard/activity_user/:id/:id_activity' => 'dashboard#activity_details', as: :dashboard_activity_details
-    get '/dashboard/activity_user/:id/:id_activity/reprocess' => 'activities#reprocess', as: :activity_reprocess
     get 'dashboard/tags' => 'dashboard#tags', as: :dashboard_tags
     get 'dashboard/activity_repo' => 'dashboard#activity_repo', as: :dashboard_activity_repo
     get 'dashboard/activity_repo/config/:id' => 'dashboard#configure_activity_repo', as: :dashboard_settings_activity_repo
     post 'dashboard/activity_repo/config/:id' => 'dashboard#configure_activity_repo_post', as: :dashboard_settings_activity_repo_post
+    get '/activity_user' => 'dashboard#activity_user', as: :dashboard_activity_user
+    get '/activity_user/search' => 'dashboard#search_user_activities', as: :dashboard_search_user_activity
+    get '/activity_user/:id' => 'dashboard#view_activities', as: :dashboard_view_activity
+    get '/activity_user/:id/:id_activity' => 'dashboard#activity_details', as: :dashboard_activity_details
+    get '/activity_user/:id/:id_activity/reprocess' => 'activities#reprocess', as: :activity_reprocess
     resources :ppg_measures
     resources :accelerometer_measures
     resources :gps_measures

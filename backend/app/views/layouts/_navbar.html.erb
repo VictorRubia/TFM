@@ -1,3 +1,8 @@
+
+<script>$(document).ready(function() {
+    feather.replace()
+});</script>
+
 <nav class="navbar navbar-expand-sm sticky-top navbar-dark bg-dark flex-md-nowrap p-0 shadow">
   <div class="container-fluid">
     <a class="navbar-brand" href="<%= root_url %>">
@@ -12,7 +17,10 @@
             <a class="nav-link <%= 'active' if current_page?(welcome_index_path) or current_page?(root_path)%>" aria-current="page" href="<%= root_url %>">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= 'active' if params[:controller] == 'dashboard'%>" aria-current="page" href="<%= dashboard_activity_user_url %>">Panel de control</a>
+          <a class="nav-link <%= 'active' if request.url.include? 'activity_user'%>" aria-current="page" href="<%= dashboard_activity_user_url %>">Actividades</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= 'active' if request.url.include? 'dashboard'%>" aria-current="page" href="<%= dashboard_activity_repo_url %>">Panel de control</a>
         </li>
       </ul>
       <div class="d-flex">
