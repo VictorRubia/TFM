@@ -8,7 +8,7 @@
 <div class="container-fluid d-md-none">
   <nav class="tabbable">
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <% if current_page?(dashboard_create_user_path)%>
+      <% if current_page?(dashboard_create_user_path) or request.url.include? 'activity_assignations'%>
         <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="<%= dashboard_create_user_url %>" role="tab" aria-controls="nav-profile" aria-selected="true"><span data-feather="users"></span> Usuarios</a>
       <% else %>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="<%= dashboard_create_user_url %>" role="tab" aria-controls="nav-profile" aria-selected="false"><span data-feather="users"></span> Usuarios</a>
@@ -18,12 +18,12 @@
       <% else %>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_activity_user_url %>" role="tab" aria-controls="nav-contact" aria-selected="false"><span data-feather="bar-chart-2"></span> Actividades</a>
       <% end %>
-      <% if current_page?(dashboard_activity_user_path)%>
+      <% if current_page?(dashboard_tags_path)%>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_tags_url %>" role="tab" aria-controls="nav-contact" aria-selected="true"><span data-feather="tag"></span> Etiquetas</a>
       <% else %>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_tags_url %>" role="tab" aria-controls="nav-contact" aria-selected="false"><span data-feather="tag"></span> Etiquetas</a>
       <% end %>
-      <% if current_page?(dashboard_activity_user_path)%>
+      <% if current_page?(dashboard_activity_repo_path)%>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_tags_url %>" role="tab" aria-controls="nav-contact" aria-selected="true"><span data-feather="activity"></span> Tipos de Actividad</a>
       <% else %>
         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="<%= dashboard_tags_url %>" role="tab" aria-controls="nav-contact" aria-selected="false"><span data-feather="activity"></span> Tipos de Actividad</a>
@@ -39,7 +39,7 @@
       <div class="position-sticky pt-5">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <% if current_page?(dashboard_create_user_path) %>
+            <% if current_page?(dashboard_create_user_path) or request.url.include? 'activity_assignations'%>
               <%= link_to dashboard_create_user_path, class: "nav-link active" do %>
                 <span data-feather="users"></span>
                 Usuarios
@@ -78,14 +78,14 @@
             <% end %>
           </li>
           <li class="nav-item">
-            <% if request.url.include? 'tags' %>
-              <%= link_to dashboard_tags_path, class: "nav-link active" do %>
-                <span data-feather="tag"></span>
-                Tipos de actividad
+            <% if request.url.include? 'activity_repo' %>
+              <%= link_to dashboard_activity_repo_path, class: "nav-link active" do %>
+                <span data-feather="activity"></span>
+                Tipos de Actividad
               <% end %>
             <% else %>
-              <%= link_to dashboard_tags_path, class: "nav-link" do %>
-                <span data-feather="tag"></span>
+              <%= link_to dashboard_activity_repo_path, class: "nav-link" do %>
+                <span data-feather="activity"></span>
                 Tipos de Actividad
               <% end %>
             <% end %>

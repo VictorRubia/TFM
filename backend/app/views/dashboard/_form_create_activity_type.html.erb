@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Añadir tipo de actividad</h5>
+  <button type="button" class="btn-close close-tags-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<%= form_with(model: @activity, url: activities_repositories_path, method: :post, local: true, scope: :activities_repository) do |form| %>
+  <div class="modal-body">
+    <div class="mb-3">
+      <%= form.label 'Nombre', style: "col-form-label" %>
+      <%= form.text_field :name, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label 'Nombre que aparecerá en el reloj', style: "col-form-label" %>
+      <%= form.text_field :name_wearos, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
+    </div>
+
+    <div class="form-group" data-uppy="activities_repository[icon]">
+      <%= form.label 'Seleccione imagen o suba una personalizada', style: "col-form-label" %>
+      <div data-behavior="uppy-trigger"></div>
+      <div class="uppy-picker"></div>
+    </div>
+
+    <%= hidden_field_tag "activities_repository[account_id]", "#{current_account.id}" %>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary close-tags-modal" data-bs-dismiss="modal" >Cancelar</button>
+    <%= form.submit 'Añadir', :class => 'btn btn-success', :id => 'addUserModalButton' %>
+  </div>
+<% end %>

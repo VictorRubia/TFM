@@ -17,8 +17,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "BASE_URL", "\"http://192.168.0.55:3000/api/v1/\""
+//        buildConfigField "String", "BASE_URL", "\"http://192.168.0.55:3000/api/v1/\""
 //        buildConfigField "String", "BASE_URL", "\"http://172.20.10.2:3000/api/v1/\""
+        buildConfigField "String", "BASE_URL", "\"http://tfm.victorrubia.com/api/v1/\""
         buildConfigField "String", "APP_CAPABILITY_NAME", "\"api_key\""
         buildConfigField "String", "WEAR_CAPABILITY_NAME", "\"api_key_sender\""
     }

@@ -68,6 +68,11 @@
             <td><%=  user.name  %></td>
             <td>
               <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="Third group">
+                  <%=  link_to dashboard_activity_assignation_url(user.id), :class => 'btn btn-outline-primary' do %>
+                    <i data-feather="sliders" class="icon icon-show"></i>
+                  <%  end  %>
+                </div>
                 <div class="btn-group me-2" role="group" aria-label="First group">
                   <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editUserModal<%=  user.id  %>">
                     <i data-feather="edit" class="icon icon-show"></i>

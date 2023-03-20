@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_13_02_143001) do
+ActiveRecord::Schema[7.0].define(version: 2023_15_03_120000) do
   create_table "accelerometer_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
@@ -89,6 +89,37 @@ ActiveRecord::Schema[7.0].define(version: 2023_13_02_143001) do
     t.datetime "updated_at", null: false
     t.boolean "viewed", default: false
     t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
+  create_table "activities_repositories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "name_wearos"
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_activities_repositories_on_account_id"
+  end
+
+  create_table "activity_assignations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "activities_repository_id", null: false
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["account_id"], name: "index_activity_assignations_on_account_id"
+    t.index ["activities_repository_id"], name: "index_activity_assignations_on_activities_repository_id"
+    t.index ["user_id"], name: "user_id"
+  end
+
+  create_table "activity_tags_assignations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "activities_repository_id", null: false
+    t.bigint "tags_repository_id", null: false
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_activity_tags_assignations_on_account_id"
+    t.index ["activities_repository_id"], name: "index_activity_tags_assignations_on_activities_repository_id"
+    t.index ["tags_repository_id"], name: "index_activity_tags_assignations_on_tags_repository_id"
   end
 
   create_table "gps_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -183,6 +214,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_13_02_143001) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "users"
+  add_foreign_key "activities_repositories", "accounts"
+  add_foreign_key "activity_assignations", "accounts"
+  add_foreign_key "activity_assignations", "activities_repositories"
+  add_foreign_key "activity_assignations", "users", name: "activity_assignations_ibfk_1"
+  add_foreign_key "activity_tags_assignations", "accounts"
+  add_foreign_key "activity_tags_assignations", "activities_repositories"
+  add_foreign_key "activity_tags_assignations", "tags_repositories"
   add_foreign_key "gps_measures", "activities"
   add_foreign_key "ppg_measures", "activities"
   add_foreign_key "requests", "users"

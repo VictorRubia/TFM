@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My First Web Page</title>
+</head>
+<body>
+
+<%= stylesheet_link_tag 'draggable' %>
+
+<h1>My First Web Page</h1>
+<p>This is my first web page.</p>
+
+<style>
+    ol.simple_with_animation {
+        border: 1px solid #999999;
+        display: block;
+        min-height: 100px;
+    }
+</style>
+
+<div class='span4'>
+  <ol class='simple_with_animation'>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+    <li>Item 4</li>
+    <li>Item 5</li>
+    <li>Item 6</li>
+  </ol>
+</div>
+<div class='span4'>
+  <ol class='simple_with_animation'>
+<!--    <li class='highlight'>Item 1</li>-->
+<!--    <li class='highlight'>Item 2</li>-->
+<!--    <li class='highlight'>Item 3</li>-->
+<!--    <li class='highlight'>Item 4</li>-->
+<!--    <li class='highlight'>Item 5</li>-->
+<!--    <li class='highlight'>Item 6</li>-->
+  </ol>
+</div>
+
+<script>
+    $(function  () {
+        var adjustment;
+
+        $("ol.simple_with_animation").sortable({
+            group: 'simple_with_animation',
+            pullPlaceholder: false,
+            // animation on drop
+            onDrop: function  ($item, container, _super) {
+                var $clonedItem = $('<li/>').css({height: 0});
+                $item.before($clonedItem);
+                $clonedItem.animate({'height': $item.height()});
+
+                $item.animate($clonedItem.position(), function  () {
+                    $clonedItem.detach();
+                    _super($item, container);
+                });
+            },
+
+            // set $item relative to cursor position
+            onDragStart: function ($item, container, _super) {
+                var offset = $item.offset(),
+                  pointer = container.rootGroup.pointer;
+
+                adjustment = {
+                    left: pointer.left - offset.left,
+                    top: pointer.top - offset.top
+                };
+
+                _super($item, container);
+            },
+            onDrag: function ($item, position) {
+                $item.css({
+                    left: position.left - adjustment.left,
+                    top: position.top - adjustment.top
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>
