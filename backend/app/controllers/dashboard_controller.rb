@@ -125,16 +125,19 @@ class DashboardController < ApplicationController
     activity_id = params[:activity_id]
     user_id = params[:id]
 
-    activity_assignation = ActivityAssignation.find_by(
+    activity_assignation = ActivityAssignation.where(
       activities_repository_id: activity_id,
       user_id: user_id
     )
 
-    if activity_assignation&.destroy
-      render json: { success: true }, status: :ok
-    else
-      render json: { success: false }, status: :unprocessable_entity
+    activity_assignation.each do |activity|
+      if activity&.destroy
+        render json: { success: true }, status: :ok
+      else
+        render json: { success: false }, status: :unprocessable_entity
+      end
     end
+
   end
 
   def view_activities

@@ -33,7 +33,7 @@
     </div>
 </main>
 
-<script>
+<script data-turbo-eval=false>
     function handleCheckboxes() {
         const checkboxes = document.querySelectorAll('.form-check-input');
 
@@ -43,6 +43,7 @@
                 const userId = '<%= @user.id %>';
 
                 if (event.target.checked) {
+                    console.log('checked');
                     // Send AJAX request to create new ActivityAssignation
                     fetch(`/dashboard/user/${userId}/activity_assignations`, {
                         method: 'POST',
