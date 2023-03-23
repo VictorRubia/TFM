@@ -86,12 +86,13 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.BODY_SENSORS, Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSION_REQUEST_BODY_SENSORS)
-//            requestPermissions( Array(1){Manifest.permission.BODY_SENSORS}, 1);
         } else {
             Log.d("PERMISSION", "ALREADY GRANTED");
         }
 
         Wearable.getMessageClient(this).addListener(this)
+
+        homeViewModel.clearActivitiesAssigned()
 
         setContent {
             navController = rememberNavController()
@@ -116,6 +117,7 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
         else if(p0.path.equals("api_key") && !iniciado){
             iniciado = true
             homeViewModel.saveUser(User(String(p0.data)))
+            homeViewModel.getActivitiesAssigned()
             startActivity(Intent(this, StartMenuActivity::class.java))
             finish()
         }

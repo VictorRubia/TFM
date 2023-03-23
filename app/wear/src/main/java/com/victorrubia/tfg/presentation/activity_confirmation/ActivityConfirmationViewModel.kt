@@ -19,8 +19,8 @@ class ActivityConfirmationViewModel(
      * @param startTimestamp Starting timestamp of the activity
      * @return LiveData with the result of the use case
      */
-    fun newActivity(name: String, startTimestamp: String) = liveData {
-        val activity = newActivityUseCase.execute(name, startTimestamp)
+    fun newActivity(activityId: Int, startTimestamp: String) = liveData {
+        val activity = newActivityUseCase.execute(activityId, startTimestamp)
         emit(activity)
     }
 }

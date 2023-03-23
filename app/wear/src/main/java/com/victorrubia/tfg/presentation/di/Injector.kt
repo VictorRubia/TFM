@@ -1,6 +1,7 @@
 package com.victorrubia.tfg.presentation.di
 
 import com.victorrubia.tfg.presentation.di.activity_confirmation.ActivityConfirmationSubComponent
+import com.victorrubia.tfg.presentation.di.activity_type.ActivityTypeSubComponent
 import com.victorrubia.tfg.presentation.di.feelings_menu.FeelingsMenuSubComponent
 import com.victorrubia.tfg.presentation.di.home.HomeSubComponent
 import com.victorrubia.tfg.presentation.di.measuring_menu.MeasuringMenuSubComponent
@@ -37,4 +38,11 @@ interface Injector {
      * @return the [FeelingsMenuSubComponent].
      */
     fun createFeelingsMenuSubComponent() : FeelingsMenuSubComponent
+
+    /**
+     * Creates the [FeelingsMenuSubComponent].
+     *
+     * @return the [FeelingsMenuSubComponent].
+     */
+    fun createActivityTypeSubComponent() : ActivityTypeSubComponent
 }

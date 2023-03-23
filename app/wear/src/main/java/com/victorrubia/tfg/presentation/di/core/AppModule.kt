@@ -2,6 +2,7 @@ package com.victorrubia.tfg.presentation.di.core
 
 import android.content.Context
 import com.victorrubia.tfg.presentation.di.activity_confirmation.ActivityConfirmationSubComponent
+import com.victorrubia.tfg.presentation.di.activity_type.ActivityTypeSubComponent
 import com.victorrubia.tfg.presentation.di.feelings_menu.FeelingsMenuSubComponent
 import com.victorrubia.tfg.presentation.di.home.HomeSubComponent
 import com.victorrubia.tfg.presentation.di.measuring_menu.MeasuringMenuSubComponent
@@ -17,6 +18,7 @@ import javax.inject.Singleton
     ActivityConfirmationSubComponent::class,
     MeasuringMenuSubComponent::class,
     FeelingsMenuSubComponent::class,
+    ActivityTypeSubComponent::class,
 ])
 class AppModule(private val context : Context) {
 

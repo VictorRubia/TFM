@@ -15,7 +15,7 @@ interface ActivityRemoteDataSource {
      * @param startTimestamp Start timestamp of the activity
      * @return The new Activity object
      */
-    suspend fun newActivity(name : String, startTimestamp : String) : Response<Activity>
+    suspend fun newActivity(activityId : Int, startTimestamp : String) : Response<Activity>
 
     /**
      * Stops the current activity for the current user

@@ -1,5 +1,6 @@
 class ActivitiesRepository < ApplicationRecord
   belongs_to :account
+  has_many :activities
   has_many :activity_assignations
   has_many :activity_tags_assignations
   has_many :tags_repositories, through: :activity_tags_assignations

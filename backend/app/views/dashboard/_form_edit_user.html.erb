@@ -36,7 +36,7 @@
     <div class="mb-3">
       <h class="col-form-label">API Key</h>
       <%= f.text_field :private_api_key, disabled: true, :class => 'form-control' , id: 'user'+@usuario.id.to_s+'apiKEY'%>
-      <%= f.hidden_field :id unless @usuario.id.nil?%>
+      <%= f.hidden_field :id, id: "hidden_user_id_#{ @usuario.id }" unless @usuario.id.nil? %>
     </div>
   </div>
   <div class="modal-footer">

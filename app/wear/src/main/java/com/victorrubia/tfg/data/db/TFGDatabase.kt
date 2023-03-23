@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.victorrubia.tfg.data.converters.Converters
 import com.victorrubia.tfg.data.model.accelerometer_measure.AccelerometerMeasure
 import com.victorrubia.tfg.data.model.activity.Activity
+import com.victorrubia.tfg.data.model.activity_repository.ActivityAssignation
 import com.victorrubia.tfg.data.model.gps_measure.GPSMeasure
 import com.victorrubia.tfg.data.model.step_measure.StepMeasure
 import com.victorrubia.tfg.data.model.ppg_measure.PPGMeasure
@@ -16,8 +17,8 @@ import com.victorrubia.tfg.data.model.user.User
 /**
  * Room database for TFG application.
  */
-@Database(entities = [Activity::class, PPGMeasure::class, AccelerometerMeasure::class, GPSMeasure::class, StepMeasure::class, SignificantMovMeasure::class , User::class, Tag::class],
-version = 8,
+@Database(entities = [Activity::class, PPGMeasure::class, AccelerometerMeasure::class, GPSMeasure::class, StepMeasure::class, SignificantMovMeasure::class , User::class, Tag::class, ActivityAssignation::class],
+version = 10,
 exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -57,4 +58,6 @@ abstract class TFGDatabase : RoomDatabase(){
      * @return [TagDao]
      */
     abstract fun tagDao() : TagDao
+
+    abstract fun activityAssignationDao() : ActivityAssignationDao
 }

@@ -42,15 +42,15 @@ class ActivityConfirmationActivity:  ComponentActivity() {
     // with the activityId
     companion object{
         private const val ActivityName = "activity_name"
-        fun intent(context: Context, activityID: String)=
+        fun intent(context: Context, activityID: Int)=
             Intent(context,ActivityConfirmationActivity::class.java).apply {
                 putExtra(ActivityName,activityID)
             }
     }
 
     // activityName is the name of the activity that is created
-    private val activityName : String by lazy {
-        intent?.getSerializableExtra(ActivityName) as String
+    private val activityName : Int by lazy {
+        intent?.getIntExtra(ActivityName, 0) as Int
     }
 
     /**

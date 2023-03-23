@@ -8,6 +8,10 @@ import com.victorrubia.tfg.data.repository.activity.ActivityRepositoryImpl
 import com.victorrubia.tfg.data.repository.activity.datasource.ActivityCacheDataSource
 import com.victorrubia.tfg.data.repository.activity.datasource.ActivityLocalDataSource
 import com.victorrubia.tfg.data.repository.activity.datasource.ActivityRemoteDataSource
+import com.victorrubia.tfg.data.repository.activity_assignation.ActivityAssignationRepositoryImpl
+import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationCacheDataSource
+import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationLocalDataSource
+import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationRemoteDataSource
 import com.victorrubia.tfg.data.repository.gps_measure.GPSMeasureRepositoryImpl
 import com.victorrubia.tfg.data.repository.gps_measure.datasource.GPSMeasureCacheDataSource
 import com.victorrubia.tfg.data.repository.gps_measure.datasource.GPSMeasureLocalDataSource
@@ -62,6 +66,20 @@ class RepositoryModule {
             activityRemoteDataSource,
             activityLocalDataSource,
             activityCacheDataSource
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideActivityAssignationRepository(
+        activityAssignationRemoteDataSource: ActivityAssignationRemoteDataSource,
+        activityAssignationLocalDataSource: ActivityAssignationLocalDataSource,
+        activityAssignationCacheDataSource: ActivityAssignationCacheDataSource,
+    ): ActivityAssignationRepository{
+        return ActivityAssignationRepositoryImpl(
+            activityAssignationRemoteDataSource,
+            activityAssignationLocalDataSource,
+            activityAssignationCacheDataSource
         )
     }
 

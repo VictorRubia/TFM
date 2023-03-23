@@ -1,6 +1,7 @@
 package com.victorrubia.tfg.data.api
 
 import com.victorrubia.tfg.data.model.activity.Activity
+import com.victorrubia.tfg.data.model.activity_repository.ActivityAssignation
 import com.victorrubia.tfg.data.model.tag.Tag
 import retrofit2.Response
 import retrofit2.http.*
@@ -10,6 +11,16 @@ import java.util.*
  * Interface for the Retrofit service to connect to the backend.
  */
 interface TFGService {
+
+    /**
+     * Retreives assigned activities.
+     *
+     * @return The list of activities.
+     */
+    @GET("activities_from_user")
+    suspend fun getAssignedActivities(@Header("Authorization") apiKey : String) : Response<List<ActivityAssignation>>
+
+
     /**
      * Creates an activity.
      *
@@ -17,7 +28,7 @@ interface TFGService {
      */
     @POST("activities/")
     suspend fun newActivity(@Header("Authorization") apiKey : String,
-                            @Query("activity[name]") name : String,
+                            @Query("activity[activities_repository_id]") activityId : Int,
                             @Query("activity[start_d]") startTimestamp : String ) : Response<Activity>
 
     /**

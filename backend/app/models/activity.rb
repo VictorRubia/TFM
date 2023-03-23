@@ -1,4 +1,5 @@
 class Activity < ApplicationRecord
+  belongs_to :activities_repository
   belongs_to :user
   has_many :ppg_measures, dependent: :destroy
   has_many :gps_measures, dependent: :destroy

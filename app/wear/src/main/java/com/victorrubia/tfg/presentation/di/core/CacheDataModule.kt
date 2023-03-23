@@ -4,6 +4,8 @@ import com.victorrubia.tfg.data.repository.accelerometer_measure.datasource.Acce
 import com.victorrubia.tfg.data.repository.accelerometer_measure.datasourceImpl.AccelerometerMeasureCacheDataSourceImpl
 import com.victorrubia.tfg.data.repository.activity.datasource.ActivityCacheDataSource
 import com.victorrubia.tfg.data.repository.activity.datasourceImpl.ActivityCacheDataSourceImpl
+import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationCacheDataSource
+import com.victorrubia.tfg.data.repository.activity_assignation.datasourceImpl.ActivityAssignationCacheDataSourceImpl
 import com.victorrubia.tfg.data.repository.gps_measure.datasource.GPSMeasureCacheDataSource
 import com.victorrubia.tfg.data.repository.gps_measure.datasourceImpl.GPSMeasureCacheDataSourceImpl
 import com.victorrubia.tfg.data.repository.ppg_measure.datasource.PPGMeasureCacheDataSource
@@ -37,6 +39,12 @@ class CacheDataModule {
     @Provides
     fun provideActivityCacheDataSource() : ActivityCacheDataSource{
         return ActivityCacheDataSourceImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideActivityAssignationCacheDataSource() : ActivityAssignationCacheDataSource {
+        return ActivityAssignationCacheDataSourceImpl()
     }
 
     /**
@@ -101,4 +109,5 @@ class CacheDataModule {
     fun provideTagCacheDataSource() : TagCacheDataSource {
         return TagCacheDataSourceImpl()
     }
+
 }

@@ -5,6 +5,8 @@ import com.victorrubia.tfg.data.repository.accelerometer_measure.datasource.Acce
 import com.victorrubia.tfg.data.repository.accelerometer_measure.datasourceImpl.AccelerometerMeasureLocalDataSourceImpl
 import com.victorrubia.tfg.data.repository.activity.datasource.ActivityLocalDataSource
 import com.victorrubia.tfg.data.repository.activity.datasourceImpl.ActivityLocalDataSourceImpl
+import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationLocalDataSource
+import com.victorrubia.tfg.data.repository.activity_assignation.datasourceImpl.ActivityAssignationLocalDataSourceImpl
 import com.victorrubia.tfg.data.repository.gps_measure.datasource.GPSMeasureLocalDataSource
 import com.victorrubia.tfg.data.repository.gps_measure.datasourceImpl.GPSMeasureLocalDataSourceImpl
 import com.victorrubia.tfg.data.repository.ppg_measure.datasource.PPGMeasureLocalDataSource
@@ -38,6 +40,13 @@ class LocalDataModule {
     fun provideActivityLocalDataSource(activityDao: ActivityDao) : ActivityLocalDataSource{
         return ActivityLocalDataSourceImpl(activityDao)
     }
+
+    @Singleton
+    @Provides
+    fun provideActivityAssignationLocalDataSource(activityAssignationDao: ActivityAssignationDao) : ActivityAssignationLocalDataSource {
+        return ActivityAssignationLocalDataSourceImpl(activityAssignationDao)
+    }
+
 
     /**
      * Provides the local data source for the user repository.

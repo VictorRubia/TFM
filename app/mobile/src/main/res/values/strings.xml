@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TFG</string>
+    <string name="app_name">Estrés en Actividades</string>
     <string name="home_text_input_login_email">Correo electrónico</string>
     <string name="home_text_input_login_password">Contraseña</string>
     <string name="home_button_recover_password">Recuperar contraseña</string>

@@ -16,6 +16,6 @@ class NewActivityUseCase(private val activityRepository : ActivityRepository) {
      * @param name Name of the activity
      * @param startTimestamp Start timestamp of the activity
      */
-    suspend fun execute(name: String, startTimestamp: String) : Activity = activityRepository.newActivity(name, startTimestamp)
+    suspend fun execute(activityId: Int, startTimestamp: String) : Activity = activityRepository.newActivity(activityId, startTimestamp)
 
 }

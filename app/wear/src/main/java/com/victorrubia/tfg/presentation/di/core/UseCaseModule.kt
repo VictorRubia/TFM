@@ -33,6 +33,16 @@ class UseCaseModule {
         return GetCurrentActivityUseCase(activityRepository)
     }
 
+    @Provides
+    fun provideGetActivitiesAssignedUseCase(activityAssignedRepository: ActivityAssignationRepository) : GetActivitiesAssignedUseCase {
+        return GetActivitiesAssignedUseCase(activityAssignedRepository)
+    }
+
+    @Provides
+    fun provideClearActivitiesAssignedUseCase(activityAssignedRepository: ActivityAssignationRepository) : ClearActivitiesAssignedUseCase {
+        return ClearActivitiesAssignedUseCase(activityAssignedRepository)
+    }
+
     /**
      * Provides the [EndActivityUseCase] use case.
      *

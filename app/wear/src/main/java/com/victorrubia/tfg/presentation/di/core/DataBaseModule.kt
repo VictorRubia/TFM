@@ -41,6 +41,12 @@ class DataBaseModule {
         return tfgDatabase.activityDao()
     }
 
+    @Singleton
+    @Provides
+    fun provideActivityAssignationDao(tfgDatabase: TFGDatabase) : ActivityAssignationDao{
+        return tfgDatabase.activityAssignationDao()
+    }
+
     /**
      * Provides the user dao.
      * Singleton annotation is necessary to make the dao available to the whole application.

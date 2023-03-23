@@ -22,8 +22,8 @@ class ActivityRepositoryImpl(
     private val activityCacheDataSource: ActivityCacheDataSource
 ) : ActivityRepository {
 
-    override suspend fun newActivity(name: String, startTimestamp: String): Activity {
-        return newActivityAPI(name, startTimestamp)
+    override suspend fun newActivity(activityId: Int, startTimestamp: String): Activity {
+        return newActivityAPI(activityId, startTimestamp)
     }
 
     override suspend fun getCurrentActivity(): Activity? {
@@ -41,11 +41,11 @@ class ActivityRepositoryImpl(
      * @param startTimestamp the start timestamp of the activity
      * @return the activity created
      */
-    suspend fun newActivityAPI(name: String, startTimestamp: String) : Activity {
+    suspend fun newActivityAPI(activityId: Int, startTimestamp: String) : Activity {
         lateinit var activity : Activity
 
         try{
-            val response = activityRemoteDataSource.newActivity(name, startTimestamp)
+            val response = activityRemoteDataSource.newActivity(activityId, startTimestamp)
             val body = response.body()
             if(body != null){
                 activity = body
