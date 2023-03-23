@@ -41,7 +41,7 @@ class TFGServiceTest {
     fun newActivity_sentRequest_receivedExpected(){
         runBlocking {
             enqueueMockResponse("newactivityresponse.json")
-            val responseBody = service.newActivity("2867a2b9ed8ce4672f661571d1957af7","Prueba", "2022-05-06 13:59:50").body()
+            val responseBody = service.newActivity("2867a2b9ed8ce4672f661571d1957af7",0, "2022-05-06 13:59:50").body()
             val request = server.takeRequest()
             Truth.assertThat(responseBody).isNotNull()
             Truth.assertThat(request.path).isEqualTo("/activities/?activity%5Bname%5D=Prueba&activity%5Bstart_d%5D=2022-05-06%2013%3A59%3A50")

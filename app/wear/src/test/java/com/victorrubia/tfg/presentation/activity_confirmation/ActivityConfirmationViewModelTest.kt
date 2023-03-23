@@ -28,9 +28,9 @@ class ActivityConfirmationViewModelTest {
 
     @Test
     fun newActivity_returnCurrentRecord(){
-        val activity = Activity(0, 0, "name1", "startD1", null)
+        val activity = Activity(0, 0, 0, "startD1", null)
 
-        val currentActivity = viewModel.newActivity("name1", "startD1").getOrAwaitValue()
+        val currentActivity = viewModel.newActivity(0, "startD1").getOrAwaitValue()
         Truth.assertThat(currentActivity).isEqualTo(activity)
     }
 
