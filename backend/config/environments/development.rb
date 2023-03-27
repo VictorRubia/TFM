@@ -37,8 +37,8 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  # config.active_storage.service = :amazon_dev
-  config.active_storage.service = :local
+  config.active_storage.service = :amazon_dev
+  # config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -69,6 +69,7 @@ Rails.application.configure do
   config.assets.debug = false
 
   config.hosts << "victorrubia.com"
+  config.hosts << "d92b-83-60-28-177.eu.ngrok.io"
   config.web_console.permissions = '172.23.0.1'
 
   # Raises error for missing translations.

@@ -3,11 +3,8 @@
 <%= stylesheet_link_tag 'create_user' %>
 
 <% require "i18n" %>
-<% @activity = activity_details %>
 <% @activity.viewed = 1 %>
 <% @activity.save %>
-<% @user = User.find(params[:id]) %>
-<% @tags = Tag.where(activity_id: @activity.id) %>
 <% @stress = mid_process(@activity) %>
 
 <main class="ms-sm-auto px-md-4">
@@ -19,7 +16,7 @@
         <% end %>
       </div>
 
-      <h2>Actividad de <%= @activity.name %></h2>
+      <h2>Actividad de <%= @activity_name %></h2>
       <% if @activity.end_d.nil? %>
         <div class="live-indicator">
           <figure class="live-indicator__circle"></figure>
@@ -75,7 +72,8 @@
                     <div class="row">
                         <div class="col-sm">
                           <figure>
-                            <%= image_tag(asset_path("tags/#{I18n.transliterate(@tag["status"].downcase.gsub(" ", "_"))}.png"), :alt => @tag["status"], style: 'height:50px;width:autopx;') %>
+                            <% tag_repository = TagsRepository.where(name_wearos: @tag["status"]).first %>
+                            <%= image_tag(tag_repository.icon, :alt => @tag["status"], style: 'height:50px;width:autopx;') %>
                             <figcaption><%= @tag["status"] %></figcaption>
                           </figure>
                         </div>
@@ -88,7 +86,8 @@
                       <% @tag["context"].each do |tag| %>
                       <div class="col-sm">
                         <figure>
-                          <%= image_tag(asset_path("tags/#{I18n.transliterate(tag.downcase.gsub(" ", "_"))}.png"), :alt => tag, style: 'height:50px;width:autopx;') %>
+                          <% tag_repository = TagsRepository.where(name_wearos: @tag["context"]).first %>
+                          <%= image_tag(tag_repository.icon, :alt => @tag["context"], style: 'height:50px;width:autopx;') %>
                           <figcaption><%= tag %></figcaption>
                         </figure>
                       </div>

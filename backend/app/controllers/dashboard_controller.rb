@@ -160,6 +160,9 @@ class DashboardController < ApplicationController
 
   def activity_details
     @activity = Activity.find(params[:id_activity])
+    @activity_name = ActivitiesRepository.find(@activity.activities_repository_id).name
+    @user = User.find(params[:id])
+    @tags = Tag.where(activity_id: @activity.id)
   end
 
   def tags
