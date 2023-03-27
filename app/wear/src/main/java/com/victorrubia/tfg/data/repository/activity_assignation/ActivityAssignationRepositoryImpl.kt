@@ -1,5 +1,6 @@
 package com.victorrubia.tfg.data.repository.activity_assignation
 
+import android.os.Environment
 import android.util.Log
 import com.victorrubia.tfg.data.model.activity_repository.ActivityAssignation
 import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationCacheDataSource
@@ -7,6 +8,7 @@ import com.victorrubia.tfg.data.repository.activity_assignation.datasource.Activ
 import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationRemoteDataSource
 import com.victorrubia.tfg.domain.repository.ActivityAssignationRepository
 import com.victorrubia.tfg.domain.repository.ActivityRepository
+import java.io.File
 
 /**
  * Implementation of the [ActivityRepository] interface that works with data sources.
@@ -28,6 +30,11 @@ class ActivityAssignationRepositoryImpl(
     override suspend fun clearActivitiesAssigned() {
         activityAssignationLocalDataSource.clearAll()
         activityAssignationCacheDataSource.clearAll()
+        activityAssignationRemoteDataSource.clearAllImages()
+    }
+
+    suspend fun downloadImages(activities : List<ActivityAssignation>) {
+        activityAssignationRemoteDataSource.downloadImage(activities)
     }
 
     /**
@@ -44,6 +51,8 @@ class ActivityAssignationRepositoryImpl(
             val body = response.body()
             if(body != null){
                 activity = body
+                downloadImages(activity)
+                Log.d("ACTIVITYASSIGNATION", "Response from API: $activity")
             }
         }
         catch (exception : Exception){

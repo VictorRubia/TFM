@@ -46,8 +46,8 @@ class RemoteDataModule {
 
     @Singleton
     @Provides
-    fun provideActivityAssignationRemoteDataSource(tfgService: TFGService, userDataSource: UserCacheDataSource) : ActivityAssignationRemoteDataSource {
-        return ActivityAssignationRemoteDataSourceImpl(tfgService, userDataSource)
+    fun provideActivityAssignationRemoteDataSource(tfgService: TFGService, userDataSource: UserCacheDataSource, context: Context) : ActivityAssignationRemoteDataSource {
+        return ActivityAssignationRemoteDataSourceImpl(tfgService, userDataSource, context)
     }
 
     /**

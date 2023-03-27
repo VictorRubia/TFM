@@ -6,6 +6,8 @@ import com.victorrubia.tfg.presentation.di.activity_type.ActivityTypeSubComponen
 import com.victorrubia.tfg.presentation.di.feelings_menu.FeelingsMenuSubComponent
 import com.victorrubia.tfg.presentation.di.home.HomeSubComponent
 import com.victorrubia.tfg.presentation.di.measuring_menu.MeasuringMenuSubComponent
+import com.victorrubia.tfg.presentation.di.status_menu.StatusMenuSubComponent
+import com.victorrubia.tfg.presentation.di.user_context_menu.UserContextMenuSubComponent
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,6 +21,8 @@ import javax.inject.Singleton
     MeasuringMenuSubComponent::class,
     FeelingsMenuSubComponent::class,
     ActivityTypeSubComponent::class,
+    StatusMenuSubComponent::class,
+    UserContextMenuSubComponent::class,
 ])
 class AppModule(private val context : Context) {
 

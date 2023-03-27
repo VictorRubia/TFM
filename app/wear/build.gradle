@@ -19,7 +19,8 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField "String", "BASE_URL", "\"http://192.168.0.86:3000/api/v1/\""
+        buildConfigField "String", "BASE_URL", "\"https://d92b-83-60-28-177.eu.ngrok.io/api/v1/\""
+//        buildConfigField "String", "BASE_URL", "\"http://192.168.0.86:3000/api/v1/\""
 //        buildConfigField "String", "BASE_URL", "\"http://172.20.10.2:3000/api/v1/\""
 //        buildConfigField "String", "BASE_URL", "\"http://tfm.victorrubia.com/api/v1/\""
     }
@@ -74,6 +75,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-nearby:18.5.0'
     implementation "androidx.compose.material:material-icons-extended:$material_icons_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.0"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"

@@ -1,7 +1,7 @@
 package com.victorrubia.tfg.presentation.activity_type
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Environment
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.wear.compose.material.*
 import coil.Coil
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.victorrubia.tfg.BuildConfig
 import com.victorrubia.tfg.data.model.activity_repository.ActivityAssignation
@@ -28,6 +29,7 @@ import com.victorrubia.tfg.presentation.activity_confirmation.ActivityConfirmati
 import com.victorrubia.tfg.presentation.di.Injector
 import com.victorrubia.tfg.ui.theme.WearAppTheme
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 /**
  * ActivityTypeActivity
@@ -52,11 +54,10 @@ class ActivityTypeActivity :  ComponentActivity() {
 
         activityTypeViewModel.getActivitiesAssigned().observe(this) {
             activitiesAssigned = it
-            Log.d("ACTIVITIES_ASSIGNED", activitiesAssigned.toString())
             isLoadingActivities.value = false
             setContent {
-                ActivityTypeList({
-                    startActivity(ActivityConfirmationActivity.intent(this,it))
+                ActivityTypeList({activityId ->
+                    startActivity(ActivityConfirmationActivity.intent(this, activityId))
                     finish()
                 },activitiesAssigned, isLoadingActivities)
             }
@@ -96,18 +97,6 @@ fun ActivityTypeList(createActivity: (Int) -> Unit, activitiesAssigned : List<Ac
                     CircularProgressIndicator()
                 }
             } else {
-                val context = LocalContext.current
-                LaunchedEffect(activitiesAssigned) {
-                    val imageLoader = Coil.imageLoader(context)
-
-                    activitiesAssigned.forEach { activity ->
-                        val request = ImageRequest.Builder(context)
-                            .data(BuildConfig.BASE_URL.split("/api")[0] + activity.activity.iconUrl)
-                            .build()
-
-                        imageLoader.enqueue(request)
-                    }
-                }
                 ScalingLazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     anchorType = ScalingLazyListAnchorType.ItemStart,
@@ -147,7 +136,7 @@ fun activityTypeChip(activity : ActivityRepository, isSelected : MutableState<Bo
         icon = {
             val painter = rememberAsyncImagePainter(
                 ImageRequest.Builder(LocalContext.current)
-                    .data(data = BuildConfig.BASE_URL.split("/api")[0] + activity.iconUrl)
+                    .data(data = LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + "/activities/" + activity.name + ".png"))
                     .crossfade(true)
                     .placeholder(CircularProgressDrawable(LocalContext.current))
                     .build()

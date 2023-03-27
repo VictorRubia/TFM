@@ -33,7 +33,6 @@ class ActivityRepositoryImpl(
     override suspend fun endActivity(): Activity? {
         return endActivityAPI()
     }
-
     /**
      * Starts a new activity in the API.
      *

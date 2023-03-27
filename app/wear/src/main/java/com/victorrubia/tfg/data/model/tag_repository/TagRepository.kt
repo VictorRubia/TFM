@@ -3,6 +3,7 @@ package com.victorrubia.tfg.data.model.tag_repository
 
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class TagRepository(
     @SerializedName("icon_url")
@@ -16,4 +17,4 @@ data class TagRepository(
     val nameWearos: String, // DEJAR CARRO
     @SerializedName("type")
     val type: Int // 1
-)
+) : Serializable

@@ -3,6 +3,7 @@ package com.victorrubia.tfg.presentation.user_context_menu
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,15 +13,13 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CheckBox
 import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
 import androidx.compose.material.icons.rounded.EmojiPeople
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,17 +29,22 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.wear.compose.material.*
-import com.victorrubia.tfg.R
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.victorrubia.tfg.presentation.di.Injector
 import com.victorrubia.tfg.presentation.emotions_menu.EmotionsMenuActivity
 import com.victorrubia.tfg.ui.theme.WearAppTheme
+import javax.inject.Inject
 
 /**
  * Activity that shows the user context menu
  */
 class UserContextMenuActivity :  ComponentActivity() {
 
-    // The view model
+    @Inject
+    lateinit var factory: UserContextMenuViewModelFactory
     private lateinit var userContextMenuViewModel: UserContextMenuViewModel
 
     // companion object to create the Intent to start this activity
@@ -71,14 +75,21 @@ class UserContextMenuActivity :  ComponentActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        userContextMenuViewModel = ViewModelProvider(this)
+        (application as Injector).createUserContextMenuSubComponent()
+            .inject(this)
+        userContextMenuViewModel = ViewModelProvider(this, factory)
             .get(UserContextMenuViewModel::class.java)
+
 
         setContent{
             val navController = rememberNavController()
             NavHost(navController, startDestination = "announcement") {
                 composable("announcement") { contextAnnouncement() }
-                composable("contextList") { ContextList{ startEmotions(it) } }
+                composable("contextList") {
+                    ContextList({ selected ->
+                    startEmotions(selected)
+                    }, userContextMenuViewModel)
+                }
             }
             userContextMenuViewModel.delayAnnouncement().observe(this){
                 if(it != null && it){
@@ -131,9 +142,14 @@ fun contextAnnouncement(){
  * @param selectedItem function that navigates to emotions list and saves previously selected tags.
  */
 @Composable
-fun ContextList(selectedItem: (ArrayList<String>) -> Unit){
-    val selectedTiles = remember { List(12){ mutableStateOf(false) } }
+fun ContextList(selectedItem: (ArrayList<String>) -> Unit, viewModel: UserContextMenuViewModel){
     val selectedTilesNames = remember { ArrayList<String>() }
+    val currentActivity by viewModel.getCurrentActivity().observeAsState(initial = null)
+    val activitiesAssigned by viewModel.getActivitiesAssigned().observeAsState(initial = listOf())
+    val tags = remember(currentActivity, activitiesAssigned) {
+        activitiesAssigned.find { it.activity.id == (currentActivity?.activitiesRepositoryId) }
+    }?.tags
+    val selectedTiles = remember { tags?.let { List(it.size){ mutableStateOf(false) } } }
     WearAppTheme {
         val listState = rememberScalingLazyListState()
         Scaffold(
@@ -151,6 +167,7 @@ fun ContextList(selectedItem: (ArrayList<String>) -> Unit){
                 )
             }
         ) {
+
             ScalingLazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 anchorType = ScalingLazyListAnchorType.ItemStart,
@@ -163,18 +180,13 @@ fun ContextList(selectedItem: (ArrayList<String>) -> Unit){
                         Text(text = "Registre contexto")
                     }
                 }
-                item { contextCards("Larga espera", R.drawable.status_larga_espera, selectedTiles[0], selectedTilesNames) }
-                item { contextCards("Llego tarde", R.drawable.status_llego_tarde, selectedTiles[1], selectedTilesNames) }
-                item { contextCards("Sin información", R.drawable.status_sin_informacion, selectedTiles[2], selectedTilesNames) }
-                item { contextCards("Abarrotado", R.drawable.status_abarrotado, selectedTiles[3], selectedTilesNames) }
-                item { contextCards("Sentado", R.drawable.status_sentado, selectedTiles[4], selectedTilesNames) }
-                item { contextCards("Ruido", R.drawable.status_ruido, selectedTiles[5], selectedTilesNames) }
-                item { contextCards("Calor", R.drawable.status_calor, selectedTiles[6], selectedTilesNames) }
-                item { contextCards("Frio", R.drawable.status_frio, selectedTiles[7], selectedTilesNames) }
-                item { contextCards("Atasco", R.drawable.status_atasco, selectedTiles[8], selectedTilesNames) }
-                item { contextCards("Acompañado", R.drawable.status_acompaniado, selectedTiles[9], selectedTilesNames) }
-                item { contextCards("Solo", R.drawable.status_solo, selectedTiles[10], selectedTilesNames) }
-                item { contextCards("Peligro", R.drawable.status_peligro, selectedTiles[11], selectedTilesNames) }
+                if (tags != null) {
+                    for (tag in tags) {
+                        if(tag.type == 2)
+                            item { contextCards(tag.nameWearos, tag.name,
+                                selectedTiles?.get(tags.indexOf(tag)) ?: mutableStateOf(false), selectedTilesNames) }
+                    }
+                }
                 item { Spacer(Modifier.height(13.dp)) }
                 item { finishedRegisteringContextChip(selectedItem, selectedTilesNames) }
             }
@@ -191,7 +203,7 @@ fun ContextList(selectedItem: (ArrayList<String>) -> Unit){
  * @param selectedTileNames list of selected tiles.
  */
 @Composable
-fun contextCards(text : String, icon : Int, isSelected : MutableState<Boolean>, selectedTileNames : ArrayList<String>){
+fun contextCards(text : String, icon : String, isSelected : MutableState<Boolean>, selectedTileNames : ArrayList<String>){
     AppCard(
         appImage = {
             if(isSelected.value)
@@ -226,7 +238,13 @@ fun contextCards(text : String, icon : Int, isSelected : MutableState<Boolean>, 
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
-                    painter = painterResource(id = icon),
+                    painter = rememberAsyncImagePainter(
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(data = LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + "/tags/" + icon + ".png"))
+                            .crossfade(true)
+                            .placeholder(CircularProgressDrawable(LocalContext.current))
+                            .build()
+                    ),
                     contentDescription = text,
                     modifier = Modifier.size(width = 100.dp, height = 100.dp)
                 )

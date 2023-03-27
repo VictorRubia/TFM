@@ -1,6 +1,7 @@
 package com.victorrubia.tfg.presentation.status_menu
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,36 +10,48 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CheckBox
 import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.wear.compose.material.*
-import com.victorrubia.tfg.R
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.victorrubia.tfg.presentation.di.Injector
 import com.victorrubia.tfg.presentation.user_context_menu.UserContextMenuActivity
 import com.victorrubia.tfg.ui.theme.WearAppTheme
+import javax.inject.Inject
 
 /**
  * Activity that shows the status list menu
  */
 class StatusMenuActivity :  ComponentActivity() {
 
+    @Inject
+    lateinit var factory: StatusMenuViewModelFactory
+    private lateinit var statusMenuViewModel: StatusMenuViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        (application as Injector).createStatusMenuSubComponent()
+            .inject(this)
+        statusMenuViewModel = ViewModelProvider(this, factory)
+            .get(StatusMenuViewModel::class.java)
+
         setContent{
-            StatusList{
-                startActivity(UserContextMenuActivity.intent(this,it)).apply { finish() }
-            }
+            StatusList({selected ->
+                startActivity(UserContextMenuActivity.intent(this,selected)).apply { finish() }
+            }, statusMenuViewModel)
         }
     }
 }
@@ -49,8 +62,14 @@ class StatusMenuActivity :  ComponentActivity() {
  * @param selectedItem function that navigates to contexts menu activity [UserContextMenuActivity] and saves the elected status
  */
 @Composable
-fun StatusList(selectedItem: (String) -> Unit){
+fun StatusList(selectedItem: (String) -> Unit, viewModel : StatusMenuViewModel){
     val selectedTilesNames = remember { mutableStateOf("")  }
+    val currentActivity by viewModel.getCurrentActivity().observeAsState(initial = null)
+    val activitiesAssigned by viewModel.getActivitiesAssigned().observeAsState(initial = listOf())
+    val tags = remember(currentActivity, activitiesAssigned) {
+        activitiesAssigned.find { it.activity.id == (currentActivity?.activitiesRepositoryId) }
+    }?.tags
+
     WearAppTheme {
         val listState = rememberScalingLazyListState()
         Scaffold(
@@ -68,24 +87,36 @@ fun StatusList(selectedItem: (String) -> Unit){
                 )
             }
         ) {
-            ScalingLazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                anchorType = ScalingLazyListAnchorType.ItemStart,
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = listState
-            ) {
-                item {
-                    ListHeader {
-                        Text(text = "Registre estado")
+            // You can display a loading indicator while waiting for the data
+            if (currentActivity == null || activitiesAssigned.isEmpty()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                )
+            }
+            else {
+                ScalingLazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    anchorType = ScalingLazyListAnchorType.ItemStart,
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    state = listState
+                ) {
+                    item {
+                        ListHeader {
+                            Text(text = "Registre estado")
+                        }
                     }
+                    if (tags != null) {
+                        for (tag in tags) {
+                            if(tag.type == 1)
+                                item { statusCards(tag.nameWearos, tag.name, selectedTilesNames) }
+                        }
+                    }
+                    item { Spacer(Modifier.height(13.dp)) }
+                    item { finishedRegisteringStatusChip(selectedItem, selectedTilesNames) }
                 }
-                item { statusCards("Esperando", R.drawable.status_esperando, selectedTilesNames) }
-                item { statusCards("En viaje", R.drawable.en_viaje, selectedTilesNames) }
-                item { statusCards("Trasbordo", R.drawable.status_trasbordo, selectedTilesNames) }
-                item { statusCards("En destino", R.drawable.status_en_destino, selectedTilesNames) }
-                item { Spacer(Modifier.height(13.dp)) }
-                item { finishedRegisteringStatusChip(selectedItem, selectedTilesNames) }
             }
         }
     }
@@ -99,7 +130,7 @@ fun StatusList(selectedItem: (String) -> Unit){
  * @param selectedTileName function that saves the elected status
  */
 @Composable
-fun statusCards(text : String, icon : Int, selectedTileName : MutableState<String>){
+fun statusCards(text : String, icon : String, selectedTileName : MutableState<String>){
     AppCard(
         appImage = {
             if(selectedTileName.value.contains(text))
@@ -133,7 +164,13 @@ fun statusCards(text : String, icon : Int, selectedTileName : MutableState<Strin
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
-                    painter = painterResource(id = icon),
+                    painter = rememberAsyncImagePainter(
+                        ImageRequest.Builder(LocalContext.current)
+                            .data(data = LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + "/tags/" + icon + ".png"))
+                            .crossfade(true)
+                            .placeholder(CircularProgressDrawable(LocalContext.current))
+                            .build()
+                    ),
                     contentDescription = text,
                     modifier = Modifier.size(width = 100.dp, height = 100.dp)
                 )

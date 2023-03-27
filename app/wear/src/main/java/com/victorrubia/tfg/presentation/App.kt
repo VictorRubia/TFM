@@ -9,6 +9,8 @@ import com.victorrubia.tfg.presentation.di.core.*
 import com.victorrubia.tfg.presentation.di.feelings_menu.FeelingsMenuSubComponent
 import com.victorrubia.tfg.presentation.di.home.HomeSubComponent
 import com.victorrubia.tfg.presentation.di.measuring_menu.MeasuringMenuSubComponent
+import com.victorrubia.tfg.presentation.di.status_menu.StatusMenuSubComponent
+import com.victorrubia.tfg.presentation.di.user_context_menu.UserContextMenuSubComponent
 
 /**
  * Application class
@@ -67,5 +69,13 @@ class App : Application(), Injector {
 
     override fun createActivityTypeSubComponent(): ActivityTypeSubComponent {
         return appComponent.activityTypeSubComponent().create()
+    }
+
+    override fun createStatusMenuSubComponent(): StatusMenuSubComponent {
+        return appComponent.statusMenuSubComponent().create()
+    }
+
+    override fun createUserContextMenuSubComponent(): UserContextMenuSubComponent {
+        return appComponent.userContextMenuSubComponent().create()
     }
 }

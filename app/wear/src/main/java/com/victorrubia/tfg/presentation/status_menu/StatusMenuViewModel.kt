@@ -1,27 +1,22 @@
-package com.victorrubia.tfg.presentation.user_context_menu
+package com.victorrubia.tfg.presentation.status_menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.victorrubia.tfg.domain.usecase.GetActivitiesAssignedUseCase
 import com.victorrubia.tfg.domain.usecase.GetCurrentActivityUseCase
+import com.victorrubia.tfg.domain.usecase.RequestUserUseCase
+import com.victorrubia.tfg.domain.usecase.SaveUserUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 
 /**
- * ViewModel for the [UserContextMenuFragment].
+ * [ViewModel] for [HomeActivity]
+ * @property requestUserUseCase [RequestUserUseCase]
+ * @property saveUserUseCase [SaveUserUseCase]
  */
-class UserContextMenuViewModel(
+class StatusMenuViewModel(
     private val getActivitiesAssignedUseCase: GetActivitiesAssignedUseCase,
     private val getCurrentActivityUseCase: GetCurrentActivityUseCase
-) : ViewModel()  {
-
-    /**
-     * Delay for showing the announcement of register context menu.
-     */
-    fun delayAnnouncement() = liveData<Boolean> {
-        delay(2500)
-        emit(true)
-    }
+) : ViewModel() {
 
     fun getActivitiesAssigned() = liveData(Dispatchers.IO) {
         val result = getActivitiesAssignedUseCase.execute()

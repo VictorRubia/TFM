@@ -1,11 +1,16 @@
 package com.victorrubia.tfg.presentation.di.core
 
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import androidx.core.content.ContextCompat.getSystemService
 import com.victorrubia.tfg.data.api.TFGService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 /**
  * Dagger module that provides the TFG API service.
