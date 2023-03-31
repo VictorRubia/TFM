@@ -18,6 +18,8 @@
     "esbuild": "^0.14.14",
     "feather-icons": "^4.28.0",
     "jquery": "^3.6.0",
+    "leaflet": "^1.9.3",
+    "leaflet-polylinedecorator": "^1.6.0",
     "sass": "^1.49.0"
   },
   "scripts": {

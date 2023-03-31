@@ -7,6 +7,8 @@ import ImageEditor from '@uppy/image-editor'
 import Spanish from '@uppy/locales/lib/es_ES'
 import Webcam from '@uppy/webcam'
 import * as Sortable from './jquery-sortable'
+import * as L from "leaflet";
+import "leaflet-polylinedecorator";
 
 const application = Application.start()
 ActiveStorage.start()

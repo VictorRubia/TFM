@@ -2,7 +2,7 @@
 <%= render "layouts/navbar" %>
 <%= stylesheet_link_tag 'create_user' %>
 <% @activities = get_activities.includes(:activities_repository) %>
-<% @activities_by_name = @activities.group_by { |a| a.activities_repository.name } %>
+<% @activities_by_name = @activities.group_by { |a| a.activities_repository } %>
 
 <main class="ms-sm-auto px-md-4">
   <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -17,59 +17,44 @@
   </div>
 
   <%- if @activities.size > 0 %>
-    <div class="row align-items-start">
-      <% @activities_by_name.each do |activity_name, activities| %>
-        <div class="col-md">
-          <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h2><%= activity_name %></h2>
-          </div>
-          <div class="row row-cols-xxl-2 row-cols-1 g-2">
-            <% activities.each do |activity| %>
-              <div class="col">
-                <div class="card h-100">
-                  <% unless activity.viewed %>
-                  <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                  </span>
-                  <% end %>
-                  <div class="card-body">
-                    <h5 class="card-title"><%= activity.activities_repository.name %></h5>
-                    <p class="card-text"></p>
-                    <div class="container">
-                      <div class="row row-cols-auto g-2">
-                        <div class="col">
-                          <%= link_to dashboard_activity_details_url(id_activity: activity.id), :class => 'btn btn-primary g-2' do%>
-                            Ver detalles
-                          <% end %>
-                        </div>
-                        <%unless activity.end_d.nil? %>
-                          <div class="col">
-                            <%= button_to "Eliminar", activity, method: :delete, :class => 'btn btn-danger', form: {data: { turbo_confirm: "¿Estás seguro?" }} %>
-                          </div>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-footer">
-                    <% unless activity.end_d.nil? %>
-                      <small class="text-muted">Finalizó el
-                        <b><%=  l activity.end_d, format: "%e de %B de %Y a las %k:%M:%S", locale: :'es-ES'  %></b>
-                      </small>
-                    <% else %>
-                      <small class="text-muted">
-                        <div class="live-indicator">
-                          <figure class="live-indicator__circle"></figure>
-                          <span class="live-indicator__text">DIRECTO</span>
-                        </div>
-                      </small>
-                    <%  end %>
-                  </div>
+    <h3>Seleccione un tipo de actividad</h3>
+    <%= form_tag(dashboard_search_user_activity_path, method: :get) do %>
 
-                </div>
-              </div>
+      <div class="input-group">
+        <%= text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar un tipo de actividad') %>
+        <%= submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+      </div>
+    <% end %>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+          <th>
+          </th>
+          <th scope="col">Icono</th>
+          <th scope="col">Tipo de actividad</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @activities_by_name.each do |activity_repository, activities| %>
+          <tr>
+            <td>
+            </td>
+            <td>
+              <%= image_tag(activity_repository.icon, alt: "", width: 48, height: 48) if activity_repository.icon.attached? %>
+            </td>
+            <td><%= activity_repository.name %></td>
+            <td>
+
+            <%= link_to dashboard_view_activity_type_url(activity_type: activity_repository.id), :class => 'btn btn-outline-primary' do%>
+                <i data-feather="eye" class="icon icon-show"></i>
             <% end %>
-          </div>
-        </div>
-      <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
     </div>
 
   <%- else %>

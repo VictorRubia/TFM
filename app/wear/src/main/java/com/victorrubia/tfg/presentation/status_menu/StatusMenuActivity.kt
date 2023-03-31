@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.wear.compose.material.*
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.victorrubia.tfg.data.model.tag_repository.TagRepository
 import com.victorrubia.tfg.presentation.di.Injector
 import com.victorrubia.tfg.presentation.user_context_menu.UserContextMenuActivity
 import com.victorrubia.tfg.ui.theme.WearAppTheme
@@ -111,7 +112,7 @@ fun StatusList(selectedItem: (String) -> Unit, viewModel : StatusMenuViewModel){
                     if (tags != null) {
                         for (tag in tags) {
                             if(tag.type == 1)
-                                item { statusCards(tag.nameWearos, tag.name, selectedTilesNames) }
+                                item { statusCards(tag, selectedTilesNames) }
                         }
                     }
                     item { Spacer(Modifier.height(13.dp)) }
@@ -130,10 +131,10 @@ fun StatusList(selectedItem: (String) -> Unit, viewModel : StatusMenuViewModel){
  * @param selectedTileName function that saves the elected status
  */
 @Composable
-fun statusCards(text : String, icon : String, selectedTileName : MutableState<String>){
+fun statusCards(tag : TagRepository, selectedTileName : MutableState<String>){
     AppCard(
         appImage = {
-            if(selectedTileName.value.contains(text))
+            if(selectedTileName.value.contains(tag.nameWearos))
                 Icon(
                     imageVector = Icons.Rounded.CheckBox,
                     tint = Color.Green,
@@ -149,14 +150,14 @@ fun statusCards(text : String, icon : String, selectedTileName : MutableState<St
         time = { },
         title = { },
         onClick = {
-            if(selectedTileName.value != text){
-                selectedTileName.value = text
+            if(selectedTileName.value != tag.nameWearos){
+                selectedTileName.value = tag.nameWearos
             }
             else{
                 selectedTileName.value = ""
             }
                   },
-        backgroundPainter = if (selectedTileName.value == text) ColorPainter(Color.DarkGray) else CardDefaults.cardBackgroundPainter(),
+        backgroundPainter = if (selectedTileName.value == tag.nameWearos) ColorPainter(Color.DarkGray) else CardDefaults.cardBackgroundPainter(),
         content = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -166,18 +167,18 @@ fun statusCards(text : String, icon : String, selectedTileName : MutableState<St
                 Icon(
                     painter = rememberAsyncImagePainter(
                         ImageRequest.Builder(LocalContext.current)
-                            .data(data = LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + "/tags/" + icon + ".png"))
+                            .data(data = LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + "/tags/" + tag.name + ".png"))
                             .crossfade(true)
                             .placeholder(CircularProgressDrawable(LocalContext.current))
                             .build()
                     ),
-                    contentDescription = text,
+                    contentDescription = tag.nameWearos,
                     modifier = Modifier.size(width = 100.dp, height = 100.dp)
                 )
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = text.uppercase()
+                    text = tag.nameWearos.uppercase()
                 )
             }
         },

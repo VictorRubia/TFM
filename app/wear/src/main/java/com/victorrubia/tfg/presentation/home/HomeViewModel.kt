@@ -35,7 +35,7 @@ class HomeViewModel(
     var sensorStatus = mutableStateOf(false)
 
     fun loadingDelay() = liveData {
-        kotlinx.coroutines.delay(15000)
+        kotlinx.coroutines.delay(40000)
         emit(true)
     }
 
@@ -58,10 +58,14 @@ class HomeViewModel(
         emit(prueba.value)
     }
 
-    fun getActivitiesAssigned(){
-        CoroutineScope(Dispatchers.IO).launch {
-            getActivitiesAssignedUseCase.execute()
-        }
+//    fun getActivitiesAssigned(){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            getActivitiesAssignedUseCase.execute()
+//        }
+//    }
+
+    fun getActivitiesAssigned() = liveData {
+        emit(getActivitiesAssignedUseCase.execute())
     }
 
     fun clearActivitiesAssigned(){

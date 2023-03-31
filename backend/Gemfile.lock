@@ -143,6 +143,8 @@ GEM
     jmespath (1.6.2)
     jsbundling-rails (1.1.1)
       railties (>= 6.0.0)
+    leaflet-rails (1.9.3)
+      rails (>= 4.2.0)
     lockbox (0.6.8)
     lograge (0.12.0)
       actionpack (>= 4)
@@ -315,6 +317,7 @@ DEPENDENCIES
   image_processing (~> 1.12, >= 1.12.2)
   jbuilder
   jsbundling-rails
+  leaflet-rails
   lockbox (~> 0.6.8)
   lograge
   logstash-event

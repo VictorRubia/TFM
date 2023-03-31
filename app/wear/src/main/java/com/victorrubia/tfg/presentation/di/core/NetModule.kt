@@ -1,9 +1,5 @@
 package com.victorrubia.tfg.presentation.di.core
 
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import androidx.core.content.ContextCompat.getSystemService
 import com.victorrubia.tfg.data.api.TFGService
 import dagger.Module
 import dagger.Provides

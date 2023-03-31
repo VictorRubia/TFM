@@ -18,18 +18,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.wear.compose.material.*
-import coil.Coil
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-import com.victorrubia.tfg.BuildConfig
 import com.victorrubia.tfg.data.model.activity_repository.ActivityAssignation
 import com.victorrubia.tfg.data.model.activity_repository.ActivityRepository
 import com.victorrubia.tfg.presentation.activity_confirmation.ActivityConfirmationActivity
 import com.victorrubia.tfg.presentation.di.Injector
 import com.victorrubia.tfg.ui.theme.WearAppTheme
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 /**
  * ActivityTypeActivity

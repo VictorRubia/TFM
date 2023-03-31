@@ -26,8 +26,9 @@ Rails.application.routes.draw do
     get '/activity_user' => 'dashboard#activity_user', as: :dashboard_activity_user
     get '/activity_user/search' => 'dashboard#search_user_activities', as: :dashboard_search_user_activity
     get '/activity_user/:id' => 'dashboard#view_activities', as: :dashboard_view_activity
-    get '/activity_user/:id/:id_activity' => 'dashboard#activity_details', as: :dashboard_activity_details
-    get '/activity_user/:id/:id_activity/reprocess' => 'activities#reprocess', as: :activity_reprocess
+    get '/activity_user/:id/:activity_type' => 'dashboard#view_activities_type', as: :dashboard_view_activity_type
+    get '/activity_user/:id/:activity_type/:id_activity' => 'dashboard#activity_details', as: :dashboard_activity_details
+    get '/activity_user/:id/:activity_type/:id_activity/reprocess' => 'activities#reprocess', as: :activity_reprocess
     resources :ppg_measures
     resources :accelerometer_measures
     resources :gps_measures

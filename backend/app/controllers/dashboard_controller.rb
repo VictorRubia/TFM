@@ -144,6 +144,11 @@ class DashboardController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def view_activities_type
+    @user = User.find(params[:id])
+    @activity = ActivitiesRepository.find(params[:activity_type])
+  end
+
   def get_activities
     @activities = Activity.where(user_id: params[:id]).order('start_d DESC')
   end
@@ -163,6 +168,14 @@ class DashboardController < ApplicationController
     @activity_name = ActivitiesRepository.find(@activity.activities_repository_id).name
     @user = User.find(params[:id])
     @tags = Tag.where(activity_id: @activity.id)
+    @gps = GpsMeasure.where(activity_id: @activity.id)
+    @json = []
+    @gps.each do |medidas|
+      obj = JSON.parse(medidas['measurement'])
+      obj.each do |m|
+        @json.append({latitude: m['latitude'], longitude: m['longitude']})
+      end
+    end
   end
 
   def tags

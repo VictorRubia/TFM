@@ -117,9 +117,13 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
         else if(p0.path.equals("api_key") && !iniciado){
             iniciado = true
             homeViewModel.saveUser(User(String(p0.data)))
-            homeViewModel.getActivitiesAssigned()
-            startActivity(Intent(this, StartMenuActivity::class.java))
-            finish()
+            homeViewModel.getActivitiesAssigned().observe(this){
+                if(it != null){
+                    connectionStablised = true
+                    startActivity(Intent(this, StartMenuActivity::class.java))
+                    finish()
+                }
+            }
         }
 
     }
