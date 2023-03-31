@@ -18,9 +18,9 @@ class ActivityRemoteDataSourceImpl(
 ) : ActivityRemoteDataSource {
 
 
-    override suspend fun newActivity(name: String,
+    override suspend fun newActivity(activityId: Int,
                                      startTimestamp: String) : Response<Activity> =
-        tfgService.newActivity("Bearer ${user.getUserFromCache()!!.apiKey}", name, startTimestamp)
+        tfgService.newActivity("Bearer ${user.getUserFromCache()!!.apiKey}", activityId, startTimestamp)
 
 
     override suspend fun endActivity(activityId: Int, endTimestamp: String): Response<Activity> =

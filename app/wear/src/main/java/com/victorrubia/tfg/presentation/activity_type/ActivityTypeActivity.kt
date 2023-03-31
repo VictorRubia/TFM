@@ -1,31 +1,31 @@
 package com.victorrubia.tfg.presentation.activity_type
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DirectionsBus
-import androidx.compose.material.icons.rounded.DirectionsRailway
-import androidx.compose.material.icons.rounded.Subway
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.wear.compose.material.*
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.victorrubia.tfg.data.model.activity_repository.ActivityAssignation
+import com.victorrubia.tfg.data.model.activity_repository.ActivityRepository
 import com.victorrubia.tfg.presentation.activity_confirmation.ActivityConfirmationActivity
+import com.victorrubia.tfg.presentation.di.Injector
 import com.victorrubia.tfg.ui.theme.WearAppTheme
+import javax.inject.Inject
 
 /**
  * ActivityTypeActivity
@@ -33,17 +33,32 @@ import com.victorrubia.tfg.ui.theme.WearAppTheme
  * Activity that shows the different types of activities that can be created
  */
 class ActivityTypeActivity :  ComponentActivity() {
+    @Inject
+    lateinit var factory: ActivityTypeViewModelFactory
+    private lateinit var activityTypeViewModel: ActivityTypeViewModel
+    private var activitiesAssigned : List<ActivityAssignation> = listOf()
+    private var isLoadingActivities = mutableStateOf(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        setContent {
-            ActivityTypeList{
-                startActivity(ActivityConfirmationActivity.intent(this,it))
-                finish()
+        (application as Injector).createActivityTypeSubComponent()
+            .inject(this)
+        activityTypeViewModel = ViewModelProvider(this, factory)
+            .get(ActivityTypeViewModel::class.java)
+
+        activityTypeViewModel.getActivitiesAssigned().observe(this) {
+            activitiesAssigned = it
+            isLoadingActivities.value = false
+            setContent {
+                ActivityTypeList({activityId ->
+                    startActivity(ActivityConfirmationActivity.intent(this, activityId))
+                    finish()
+                },activitiesAssigned, isLoadingActivities)
             }
         }
+
     }
 }
 
@@ -54,7 +69,7 @@ class ActivityTypeActivity :  ComponentActivity() {
  * @param createActivity Function that starts the confirmation Activity
  */
 @Composable
-fun ActivityTypeList(createActivity: (String) -> Unit){
+fun ActivityTypeList(createActivity: (Int) -> Unit, activitiesAssigned : List<ActivityAssignation>, isLoadingActivities: MutableState<Boolean>){
     var loading = remember { mutableStateOf(true) }
     WearAppTheme {
         val listState = rememberScalingLazyListState()
@@ -69,17 +84,27 @@ fun ActivityTypeList(createActivity: (String) -> Unit){
                 )
             }
         ) {
-            ScalingLazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                anchorType = ScalingLazyListAnchorType.ItemStart,
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                flingBehavior = ScalingLazyColumnDefaults.snapFlingBehavior(state = listState),
-                state = listState
-            ) {
-                item{ activityTypeChip("Viajar en bus", Icons.Rounded.DirectionsBus, loading, createActivity)}
-                item{ activityTypeChip("Viajar en metro", Icons.Rounded.Subway, loading, createActivity)}
-                item{ activityTypeChip("Viajar en tren", Icons.Rounded.DirectionsRailway, loading, createActivity)}
+            if (isLoadingActivities.value) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    CircularProgressIndicator()
+                }
+            } else {
+                ScalingLazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    anchorType = ScalingLazyListAnchorType.ItemStart,
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    flingBehavior = ScalingLazyColumnDefaults.snapFlingBehavior(state = listState),
+                    state = listState
+                ) {
+                    for (activity in activitiesAssigned) {
+                        item { activityTypeChip(activity.activity, loading, createActivity) }
+                    }
+                }
             }
         }
     }
@@ -94,25 +119,31 @@ fun ActivityTypeList(createActivity: (String) -> Unit){
  * @param createActivity Function that starts the confirmation Activity
  */
 @Composable
-fun activityTypeChip(text : String, icon : ImageVector, isSelected : MutableState<Boolean>, createActivity: (String) -> Unit){
+fun activityTypeChip(activity : ActivityRepository, isSelected : MutableState<Boolean>, createActivity: (Int) -> Unit){
     Chip(
-        onClick = { createActivity(text)
+        onClick = { createActivity(activity.id)
                 isSelected.value = false},
         enabled = isSelected.value,
         label = {
             Text(
-                text = text,
-                maxLines = 1,
-                overflow = TextOverflow.Clip
+                text = activity.nameWearos,
             )
         },
         icon = {
-            Icon(
-                imageVector = icon,
+            val painter = rememberAsyncImagePainter(
+                ImageRequest.Builder(LocalContext.current)
+                    .data(data = LocalContext.current.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS + "/activities/" + activity.name + ".png"))
+                    .crossfade(true)
+                    .placeholder(CircularProgressDrawable(LocalContext.current))
+                    .build()
+            )
+            Image(
+                painter = painter,
                 contentDescription = "Icono de la actividad",
                 modifier = Modifier
                     .size(24.dp)
                     .wrapContentSize(align = Alignment.Center),
+                contentScale = ContentScale.Fit
             )
         },
     )

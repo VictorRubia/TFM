@@ -19,8 +19,10 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField "String", "BASE_URL", "\"http://192.168.0.55:3000/api/v1/\""
+        buildConfigField "String", "BASE_URL", "\"https://d1d4-83-60-28-177.eu.ngrok.io/api/v1/\""
+//        buildConfigField "String", "BASE_URL", "\"http://192.168.0.86:3000/api/v1/\""
 //        buildConfigField "String", "BASE_URL", "\"http://172.20.10.2:3000/api/v1/\""
+//        buildConfigField "String", "BASE_URL", "\"http://tfm.victorrubia.com/api/v1/\""
     }
 
     buildTypes {
@@ -53,7 +55,7 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     def compose_version = "1.4.0"
-    def wear_compose_version = "1.1.1"
+    def wear_compose_version = "1.1.2"
     def androix_activity_version = "1.6.1"
     def lifecycle_version = "2.5.0"
     def room_version = "2.5.0"
@@ -70,9 +72,10 @@ dependencies {
     implementation "androidx.wear.compose:compose-material:$wear_compose_version"
     implementation "androidx.wear.compose:compose-foundation:$wear_compose_version"
     implementation "androidx.compose.material:material-icons-core:$material_icons_version"
-    implementation 'com.google.android.gms:play-services-nearby:18.3.0'
+    implementation 'com.google.android.gms:play-services-nearby:18.5.0'
     implementation "androidx.compose.material:material-icons-extended:$material_icons_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.0"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
@@ -107,6 +110,10 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.wear:wear:1.2.0'
+
+    // NetworkImages
+    implementation("io.coil-kt:coil:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     // Tests
 

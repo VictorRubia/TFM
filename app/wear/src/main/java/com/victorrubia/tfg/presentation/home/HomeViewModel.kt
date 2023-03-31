@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.victorrubia.tfg.data.model.user.User
+import com.victorrubia.tfg.domain.usecase.ClearActivitiesAssignedUseCase
+import com.victorrubia.tfg.domain.usecase.GetActivitiesAssignedUseCase
 import com.victorrubia.tfg.domain.usecase.RequestUserUseCase
 import com.victorrubia.tfg.domain.usecase.SaveUserUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +26,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val requestUserUseCase: RequestUserUseCase,
     private val saveUserUseCase: SaveUserUseCase,
+    private val getActivitiesAssignedUseCase: GetActivitiesAssignedUseCase,
+    private val clearActivitiesAssignedUseCase: ClearActivitiesAssignedUseCase
 ) : ViewModel() {
 
     // Sensor variables
@@ -31,7 +35,7 @@ class HomeViewModel(
     var sensorStatus = mutableStateOf(false)
 
     fun loadingDelay() = liveData {
-        kotlinx.coroutines.delay(15000)
+        kotlinx.coroutines.delay(40000)
         emit(true)
     }
 
@@ -45,13 +49,29 @@ class HomeViewModel(
         sensorManager = context.getSystemService(ComponentActivity.SENSOR_SERVICE) as SensorManager
         val sensorList: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_ALL)
         for (currentSensor in sensorList) {
-            Log.d("SENSORES", "${currentSensor.stringType} - ${currentSensor.type}")
+//            Log.d("SENSORES", "${currentSensor.stringType} - ${currentSensor.type}")
             if(currentSensor.stringType.contains("ppg") && !sensorStatus.value){
                 sensorStatus.value = true
                 prueba.value = false
             }
         }
         emit(prueba.value)
+    }
+
+//    fun getActivitiesAssigned(){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            getActivitiesAssignedUseCase.execute()
+//        }
+//    }
+
+    fun getActivitiesAssigned() = liveData {
+        emit(getActivitiesAssignedUseCase.execute())
+    }
+
+    fun clearActivitiesAssigned(){
+        CoroutineScope(Dispatchers.IO).launch {
+            clearActivitiesAssignedUseCase.execute()
+        }
     }
 
     /**

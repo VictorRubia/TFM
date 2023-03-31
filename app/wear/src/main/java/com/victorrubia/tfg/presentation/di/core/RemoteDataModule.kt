@@ -6,6 +6,8 @@ import com.victorrubia.tfg.data.repository.accelerometer_measure.datasource.Acce
 import com.victorrubia.tfg.data.repository.accelerometer_measure.datasourceImpl.AccelerometerMeasureRemoteDataSourceImpl
 import com.victorrubia.tfg.data.repository.activity.datasource.ActivityRemoteDataSource
 import com.victorrubia.tfg.data.repository.activity.datasourceImpl.ActivityRemoteDataSourceImpl
+import com.victorrubia.tfg.data.repository.activity_assignation.datasource.ActivityAssignationRemoteDataSource
+import com.victorrubia.tfg.data.repository.activity_assignation.datasourceImpl.ActivityAssignationRemoteDataSourceImpl
 import com.victorrubia.tfg.data.repository.gps_measure.datasource.GPSMeasureRemoteDataSource
 import com.victorrubia.tfg.data.repository.gps_measure.datasourceImpl.GPSMeasureRemoteDataSourceImpl
 import com.victorrubia.tfg.data.repository.ppg_measure.datasource.PPGMeasureRemoteDataSource
@@ -40,6 +42,12 @@ class RemoteDataModule {
     @Provides
     fun provideActivityRemoteDataSource(tfgService: TFGService, userDataSource: UserCacheDataSource) : ActivityRemoteDataSource{
         return ActivityRemoteDataSourceImpl(tfgService, userDataSource)
+    }
+
+    @Singleton
+    @Provides
+    fun provideActivityAssignationRemoteDataSource(tfgService: TFGService, userDataSource: UserCacheDataSource, context: Context) : ActivityAssignationRemoteDataSource {
+        return ActivityAssignationRemoteDataSourceImpl(tfgService, userDataSource, context)
     }
 
     /**

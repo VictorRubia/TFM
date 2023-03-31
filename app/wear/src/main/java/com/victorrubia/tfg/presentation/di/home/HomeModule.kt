@@ -1,9 +1,6 @@
 package com.victorrubia.tfg.presentation.di.home
 
-import com.victorrubia.tfg.domain.usecase.GetUserUseCase
-import com.victorrubia.tfg.domain.usecase.NewActivityUseCase
-import com.victorrubia.tfg.domain.usecase.RequestUserUseCase
-import com.victorrubia.tfg.domain.usecase.SaveUserUseCase
+import com.victorrubia.tfg.domain.usecase.*
 import com.victorrubia.tfg.presentation.home.HomeViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -26,7 +23,9 @@ class HomeModule {
     @HomeScope
     @Provides
     fun provideHomeViewModelFactory(requestUserUseCase: RequestUserUseCase,
-                                    saveUserUseCase: SaveUserUseCase) : HomeViewModelFactory{
-        return HomeViewModelFactory(requestUserUseCase, saveUserUseCase)
+                                    saveUserUseCase: SaveUserUseCase,
+                                    getActivitiesAssignedUseCase: GetActivitiesAssignedUseCase,
+                                    clearActivitiesAssignedUseCase: ClearActivitiesAssignedUseCase) : HomeViewModelFactory{
+        return HomeViewModelFactory(requestUserUseCase, saveUserUseCase, getActivitiesAssignedUseCase, clearActivitiesAssignedUseCase)
     }
 }

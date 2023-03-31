@@ -21,8 +21,8 @@ data class Activity(
     val id: Int,
     @SerializedName("user_id")
     val userId: Int,
-    @SerializedName("name")
-    val name: String,
+    @SerializedName("activities_repository_id")
+    val activitiesRepositoryId: Int,
     @SerializedName("start_d")
     val startD: String,
     @SerializedName("end_d")

@@ -14,7 +14,7 @@ interface ActivityRepository {
      * @param startTimestamp Start timestamp of the activity
      * @return The created activity
      */
-    suspend fun newActivity(name : String, startTimestamp : String) : Activity
+    suspend fun newActivity(activityId : Int, startTimestamp : String) : Activity
 
     /**
      * Gets the current activity which is taking place at the moment

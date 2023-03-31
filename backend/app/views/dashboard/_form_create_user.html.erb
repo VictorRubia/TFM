@@ -16,8 +16,9 @@
 
   <div class="mb-3">
     <%= form.label 'Contraseña', style: "col-form-label" %>
-    <%= form.password_field :password_digest, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
+    <%= form.password_field :password, :class => 'form-control', :required => true, :autocomplete => "disabled" %>
   </div>
+
   <%= hidden_field_tag "user[account_id]", "#{current_account.id}" %>
 </div>
 <div class="modal-footer">

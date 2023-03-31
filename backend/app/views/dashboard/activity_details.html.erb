@@ -1,15 +1,13 @@
-<%= render "layouts/dashboard" %>
+<%#= render "layouts/dashboard" %>
+<%= render "layouts/navbar" %>
 <%= stylesheet_link_tag 'create_user' %>
 
 <% require "i18n" %>
-<% @activity = activity_details %>
 <% @activity.viewed = 1 %>
 <% @activity.save %>
-<% @user = User.find(params[:id]) %>
-<% @tags = Tag.where(activity_id: @activity.id) %>
 <% @stress = mid_process(@activity) %>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<main class="ms-sm-auto px-md-4">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <div class="d-flex align-items-start ">
       <div class="btn-group me-2 btn-toolbar mb-2 mb-md-0">
@@ -18,7 +16,7 @@
         <% end %>
       </div>
 
-      <h2>Actividad de <%= @activity.name %></h2>
+      <h2>Actividad de <%= @activity_name %></h2>
       <% if @activity.end_d.nil? %>
         <div class="live-indicator">
           <figure class="live-indicator__circle"></figure>
@@ -38,6 +36,15 @@
 
 
   <div class="container-fluid">
+    <!--    <div class="card text-center mb-3">-->
+    <!--      <div class="card-header">-->
+    <!--        Mapa-->
+    <!--      </div>-->
+    <!--      <div class="card-body">-->
+    <!--        <h5 class="card-title">Ubicación</h5>-->
+    <!--        <div id="map" style="height: 400px;"></div>-->
+    <!--      </div>-->
+    <!--    </div>-->
     <div class="card text-center mb-3">
       <div class="card-header">
         Gráfico estrés
@@ -47,86 +54,103 @@
         <canvas id="myChart" width="80vw" height="20vw"></canvas>
       </div>
     </div>
-    <div class="card text-center mb-3">
-      <div class="card-header">
-        Etiquetado
-      </div>
-      <div class="card-body">
-        <h5 class="card-title"></h5>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped align-middle table-sm">
-            <thead>
-            <tr>
-              <th scope="col">Instante</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Contexto</th>
-              <th scope="col">Emoción</th>
-              <th scope="col">Sentimiento</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @tags.each do |tag| %>
-              <% @tag = JSON.parse(tag.tag) %>
-              <tr>
-                <td><%= tag.datetime.strftime("%H:%M") %></td>
-                <td>
-                  <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                          <figure>
-                            <%= image_tag(asset_path("tags/#{I18n.transliterate(@tag["status"].downcase.gsub(" ", "_"))}.png"), :alt => @tag["status"], style: 'height:50px;width:autopx;') %>
-                            <figcaption><%= @tag["status"] %></figcaption>
-                          </figure>
-                        </div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="container">
-                    <div class="row">
-                      <% @tag["context"].each do |tag| %>
-                      <div class="col-sm">
-                        <figure>
-                          <%= image_tag(asset_path("tags/#{I18n.transliterate(tag.downcase.gsub(" ", "_"))}.png"), :alt => tag, style: 'height:50px;width:autopx;') %>
-                          <figcaption><%= tag %></figcaption>
-                        </figure>
-                      </div>
-                      <% end %>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                          <figure>
-                            <%= image_tag(asset_path("tags/#{I18n.transliterate(@tag["emotions"].downcase.gsub(" ", "_"))}.png"), :alt => @tag["emotions"], style: 'height:35px;width:autopx;') %>
-                            <figcaption><%= @tag["emotions"] %></figcaption>
-                          </figure>
-                        </div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                          <figure>
-                            <%= image_tag(asset_path("tags/#{I18n.transliterate(@tag["feelings"].downcase.gsub(" ", "_"))}.png"), :alt => @tag["feelings"], style: 'height:35px;width:autopx;') %>
-                            <figcaption><%= @tag["feelings"] %></figcaption>
-                          </figure>
-                        </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card text-center mb-3">
+          <div class="card-header">
+            Mapa
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Ubicación</h5>
+            <div id="map" style="height: 400px;"></div>
+          </div>
         </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card text-center mb-3">
+          <div class="card-header">
+            Etiquetado
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped align-middle table-sm">
+                <thead>
+                <tr>
+                  <th scope="col">Instante</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Contexto</th>
+                  <th scope="col">Emoción</th>
+                  <th scope="col">Sentimiento</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @tags.each do |tag| %>
+                  <% @tag = JSON.parse(tag.tag) %>
+                  <tr>
+                    <td><%= tag.datetime.strftime("%H:%M") %></td>
+                    <td>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-sm">
+                            <figure>
+                              <% tag_repository = TagsRepository.where(name_wearos: @tag["status"]).first %>
+                              <%= image_tag(tag_repository.icon, :alt => @tag["status"], style: 'height:50px;width:autopx;') %>
+                              <figcaption><%= @tag["status"] %></figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container">
+                        <div class="row">
+                          <% @tag["context"].each do |tag| %>
+                            <div class="col-sm">
+                              <figure>
+                                <% tag_repository = TagsRepository.where(name_wearos: tag).first %>
+                                <%= image_tag(tag_repository.icon, :alt => @tag["context"], style: 'height:50px;width:autopx;') %>
+                                <figcaption><%= tag %></figcaption>
+                              </figure>
+                            </div>
+                          <% end %>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-sm">
+                            <figure>
+                              <%= image_tag(asset_path("tags/#{I18n.transliterate(@tag["emotions"].downcase.gsub(" ", "_"))}.png"), :alt => @tag["emotions"], style: 'height:35px;width:autopx;') %>
+                              <figcaption><%= @tag["emotions"] %></figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-sm">
+                            <figure>
+                              <%= image_tag(asset_path("tags/#{I18n.transliterate(@tag["feelings"].downcase.gsub(" ", "_"))}.png"), :alt => @tag["feelings"], style: 'height:35px;width:autopx;') %>
+                              <figcaption><%= @tag["feelings"] %></figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
 
-        <p class="card-text">
-        </p>
+            <p class="card-text">
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -135,18 +159,76 @@
 
 <script>
 
+
+    function initMap() {
+        L.Icon.Default.prototype.options.iconUrl = '<%= asset_path 'marker-icon.png'%>';
+        L.Icon.Default.prototype.options.iconRetinaUrl = '<%= asset_path 'marker-icon-2x.png'%>';
+        L.Icon.Default.prototype.options.shadowUrl = '<%= asset_path 'marker-shadow.png'%>';
+
+        L.Icon.Default.imagePath = (function () {
+            return '';
+        }());
+
+        // Initialize the map
+        const myMap = L.map("map").setView([<%= @json.first[:latitude] %>, <%= @json.first[:longitude] %>], 17);
+
+        // Add a tile layer to the map
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(myMap);
+
+        const coordinates = [
+            <% @json.each do |gps| %>
+            [<%= gps[:latitude] %>, <%= gps[:longitude] %>],
+            <% end %>
+            // Add more coordinates as needed
+        ];
+        const line = L.polyline(coordinates, {
+            color: "red",
+            weight: 3,
+        }).addTo(myMap);
+
+        const decorator = L.polylineDecorator(line, {
+            patterns: [
+                {
+                    offset: "5%",
+                    repeat: "10%",
+                    symbol: L.Symbol.arrowHead({
+                        pixelSize: 12,
+                        polygon: false,
+                        pathOptions: {stroke: true, color: "red", weight: 3},
+                    }),
+                },
+            ],
+        }).addTo(myMap);
+    }
+
+    document.addEventListener("turbo:load", () => {
+        if (document.getElementById("map")) {
+            initMap();
+        }
+    });
+
+    document.addEventListener("turbo:before-cache", () => {
+        if (document.getElementById("map")) {
+            document.getElementById("map").outerHTML = "";
+        }
+    });
+
+
     (function () {
         'use strict'
 
         // Graphs
         var ctx = document.getElementById('myChart').getContext("2d");
         // eslint-disable-next-line no-unused-vars
-        var tranquilo = new Image(25,25);
+        var tranquilo = new Image(25, 25);
         tranquilo.src = '<%= asset_url("tags/tranquilo") %>';
-        var nervioso = new Image(25,25);
+        var nervioso = new Image(25, 25);
         nervioso.src = '<%= asset_url("tags/nervioso") %>';
         var yLabels = {
-            '-2': 'No estresado', '0' : 'Estrés leve', '2' : 'Estresado'
+            '-2': 'No estresado', '0': 'Estrés leve', '2': 'Estresado'
         };
         const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
         const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
@@ -175,7 +257,7 @@
                 scales: {
                     yAxes: [{
                         ticks: {
-                            callback: function(value, index, values) {
+                            callback: function (value, index, values) {
                                 return yLabels[value];
                             }
                         }

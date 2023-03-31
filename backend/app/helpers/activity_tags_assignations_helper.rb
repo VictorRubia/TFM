@@ -1,0 +1,2 @@
+module ActivityTagsAssignationsHelper
+end

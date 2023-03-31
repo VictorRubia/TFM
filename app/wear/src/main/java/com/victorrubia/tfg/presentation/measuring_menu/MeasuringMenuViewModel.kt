@@ -159,6 +159,7 @@ class MeasuringMenuViewModel(
         sensorManager.unregisterListener(this, heartRateSensor)
         sensorManager.unregisterListener(this, accelerometerSensor)
         sensorManager.unregisterListener(this, significantMovementSensor)
+        sensorManager.unregisterListener(this, stepCounterSensor)
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 

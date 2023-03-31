@@ -9,7 +9,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def get_api_key
-    @users = User.find_by( email: params[:email])
+    @users = User.find_by(email: params[:email])
     render json: {
       user_details: @users, api_key: @users.private_api_key
     }
@@ -64,6 +64,7 @@ class Api::V1::UsersController < ApplicationController
     end
     @user.requests.create(method: :delete, requestable_type: "User")
   end
+
   private
   def user_params
     params.require(:user).permit(:name, :email, :password_digest)
@@ -75,7 +76,8 @@ class Api::V1::UsersController < ApplicationController
     end
     @users = User.find_by(email: params[:email])
     if !@users.nil?
-      render json: { message: "No autorizado" }, status: :unauthorized unless @users.password_digest == params[:password_digest]
+      # render json: { message: "No autorizado" }, status: :unauthorized unless @users.password_digest == params[:password_digest]
+      render json: { message: "No autorizado" }, status: :unauthorized unless @users.authenticate(params[:password_digest])
     elsif !@user.nil?
       render json: @user, status: 200
     else

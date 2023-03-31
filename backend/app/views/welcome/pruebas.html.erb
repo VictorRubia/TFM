@@ -1,0 +1,62 @@
+<%#= render "layouts/navbar" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My First Web Page</title>
+</head>
+<body>
+
+<h1>My First Web Page</h1>
+<p>This is my first web page.</p>
+
+<style>
+    .nested-list {
+        padding-left: 1.5rem;
+    }
+</style>
+
+<div class="container mt-5">
+  <div class="list-group">
+    <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#item1">Item 1</a>
+    <div id="item1" class="collapse nested-list">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">Subitem 1.1</a>
+        <a href="#" class="list-group-item list-group-item-action">Subitem 1.2</a>
+      </div>
+    </div>
+    <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#item2">Item 2</a>
+    <div id="item2" class="collapse nested-list">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">Subitem 2.1</a>
+        <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#item2_2">Subitem 2.2</a>
+        <div id="item2_2" class="collapse nested-list">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">Subitem 2.2.1</a>
+            <a href="#" class="list-group-item list-group-item-action">Subitem 2.2.2</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="list-group-item list-group-item-action">Item 3</a>
+  </div>
+
+</div>
+
+
+
+
+
+<script>
+    $(function() {
+
+        $('.list-group-item').on('click', function() {
+            $('.glyphicon', this)
+              .toggleClass('glyphicon-chevron-right')
+              .toggleClass('glyphicon-chevron-down');
+        });
+
+    });
+</script>
+</body>
+</html>

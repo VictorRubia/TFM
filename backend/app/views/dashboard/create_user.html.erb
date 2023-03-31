@@ -4,7 +4,7 @@
 <script>
     function copy(inputname) {
         /* Get the text field */
-        var copyText = document.getElementById(inputname);
+        let copyText = document.getElementById(inputname);
         copyText.select();
         copyText.setSelectionRange(0, 99999); /* For mobile devices */
         /* Copy the text inside the text field */
@@ -15,7 +15,7 @@
     }
 
     function togglePassword(inputname){
-        var x = document.getElementById(inputname);
+        let x = document.getElementById(inputname);
         if (x.type === "password") {
             x.type = "text";
         } else {
@@ -50,7 +50,7 @@
       <%=  text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar usuario') %>
       <%=  submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
     </div>
-      <%  end  %>
+  <%  end  %>
 
       <div class="table-responsive">
         <table class="table table-striped">
@@ -68,6 +68,11 @@
             <td><%=  user.name  %></td>
             <td>
               <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="Third group">
+                  <%=  link_to dashboard_activity_assignation_url(user.id), :class => 'btn btn-outline-primary' do %>
+                    <i data-feather="sliders" class="icon icon-show"></i>
+                  <%  end  %>
+                </div>
                 <div class="btn-group me-2" role="group" aria-label="First group">
                   <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editUserModal<%=  user.id  %>">
                     <i data-feather="edit" class="icon icon-show"></i>

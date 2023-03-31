@@ -1,12 +1,13 @@
 package com.victorrubia.tfg.presentation.home
 
 import android.Manifest
-import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -37,6 +38,7 @@ import com.victorrubia.tfg.ui.theme.WearAppTheme
 import java.util.*
 import javax.inject.Inject
 
+
 private const val PERMISSION_REQUEST_BODY_SENSORS = 1
 
 /**
@@ -64,9 +66,9 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
     /**
      * Method to check if the watch is compatible with the app.
      */
-    private fun navigationManagerCompatibility(navController: NavController){
-        homeViewModel.compatibility(this).observe(this){
-            if(it != null && it){
+    private fun navigationManagerCompatibility(navController: NavController) {
+        homeViewModel.compatibility(this).observe(this) {
+            if (it != null && it) {
                 navController.navigate("compatibilityScreen")
             }
         }
@@ -84,12 +86,13 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.BODY_SENSORS, Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSION_REQUEST_BODY_SENSORS)
-//            requestPermissions( Array(1){Manifest.permission.BODY_SENSORS}, 1);
         } else {
             Log.d("PERMISSION", "ALREADY GRANTED");
         }
 
         Wearable.getMessageClient(this).addListener(this)
+
+        homeViewModel.clearActivitiesAssigned()
 
         setContent {
             navController = rememberNavController()
@@ -114,8 +117,13 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
         else if(p0.path.equals("api_key") && !iniciado){
             iniciado = true
             homeViewModel.saveUser(User(String(p0.data)))
-            startActivity(Intent(this, StartMenuActivity::class.java))
-            finish()
+            homeViewModel.getActivitiesAssigned().observe(this){
+                if(it != null){
+                    connectionStablised = true
+                    startActivity(Intent(this, StartMenuActivity::class.java))
+                    finish()
+                }
+            }
         }
 
     }

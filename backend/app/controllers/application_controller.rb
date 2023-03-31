@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
     end
     @stress
   end
+
   helper_method :mid_process
 
   private
@@ -37,4 +38,5 @@ class ApplicationController < ActionController::Base
     super
     payload["params"] = request.params
   end
+
 end

@@ -38,7 +38,7 @@ class ActivityDaoTest {
 
     @Test
     fun saveActivityTest() = runBlocking {
-        val activity = Activity(0, 0, "name1", "startD1", null)
+        val activity = Activity(0, 0, 0, "startD1", null)
         dao.saveActivity(activity)
         val currentActivity = dao.getActivity()
         Truth.assertThat(currentActivity).isEqualTo(activity)
@@ -46,7 +46,7 @@ class ActivityDaoTest {
 
     @Test
     fun deleteActivityTest() = runBlocking {
-        val activity = Activity(0, 0, "name1", "startD1", null)
+        val activity = Activity(0, 0, 0, "startD1", null)
         dao.saveActivity(activity)
         dao.deleteActivity()
         val currentActivity = dao.getActivity()

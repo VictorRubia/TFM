@@ -1,6 +1,11 @@
 <%= render "layouts/dashboard" %>
 <%= stylesheet_link_tag 'create_user' %>
 
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap"
+  />
+
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2>Etiquetas</h2>
@@ -11,22 +16,108 @@
     </div>
   </div>
 
-<!--  <nav aria-label="Page navigation example">-->
-<!--    <ul class="pagination justify-content-center">-->
-<!--      <li class="page-item disabled">-->
-<!--        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>-->
-<!--      </li>-->
-<!--      <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--      <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--      <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--      <li class="page-item">-->
-<!--        <a class="page-link" href="#">Siguiente</a>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--  </nav>-->
+  <% if @tags.nil? %>
+    <div class="card">
+      <h5 class="card-header text-danger">Primeros pasos...</h5>
+      <div class="card-body">
+        <h5 class="card-title">Aún no hay ninguna etiqueta registrada por usted</h5>
+        <p class="card-text">Puede comenzar registrando una etiqueta clicando sobre el botón azul de 'Añadir'.</p>
+      </div>
+    </div>
+  <% else %>
 
-  <div id="addTagModal" class="modal fade">
-    <div class="modal-dialog">
+    <%=  form_tag(dashboard_search_tags_path, method: :get) do  %>
+
+      <div class="input-group">
+        <%=  text_field_tag(:search, params[:search], :class => 'form-control rounded', :placeholder => 'Buscar etiqueta') %>
+        <%=  submit_tag ("BUSCAR"), :class => 'btn btn-outline-primary' %>
+      </div>
+    <%  end  %>
+
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+          <th></th>
+          <th class="col">Previsualización del reloj</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Opciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @tags.each do |tag| %>
+          <tr>
+            <td></td>
+            <td>
+              <div class="figma-smartwatch">
+                <div class="figma-smartwatch-watchface" id="watchface">
+                  <%= image_tag("misc/time.svg", alt: "", class: "figma-smartwatch-watchface-img") %>
+                  <div class="figma-smartwatch-div1">
+                    <div class="figma-smartwatch-div2">
+                      <% case tag.tags_type %>
+                      <% when 1 %>
+                        <b class="figma-smartwatch-categoria">Registre estado</b>
+                      <% when 2 %>
+                        <b class="figma-smartwatch-categoria">Registre su contexto</b>
+                      <% when 3 %>
+                        <b class="figma-smartwatch-categoria">Registre su emoción</b>
+                      <% end %>
+                    </div>
+                    <div class="figma-smartwatch-div3">
+                      <div class="figma-smartwatch-card"></div>
+                      <div class="figma-smartwatch-nombre">
+                        <%= tag.name_wearos %>
+                      </div>
+                      <%= image_tag(tag.icon, alt: "", class: "figma-smartwatch-ico") if tag.icon.attached? %>
+                      <%= image_tag("misc/vector.svg", alt: "", class: "figma-smartwatch-text") %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><%= tag.name %></td>
+            <td>
+              <% case tag.tags_type %>
+              <% when 1 %>
+                Estado
+              <% when 2 %>
+                Contexto
+              <% when 3 %>
+                Emoción
+              <% end %>
+            </td>
+            <td>
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First group">
+                  <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editTagModal<%=  tag.id  %>">
+                    <i data-feather="edit" class="icon icon-show"></i>
+                  </button>
+                  <div id="editTagModal<%=  tag.id  %>" class="modal fade" id="staticBackdropModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <%=  render "form_edit_tag", edit_tag: tag  %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group me-2" role="group" aria-label="Second group">
+                  <%=  button_to tag, method: :delete, :class => 'btn btn-outline-danger', form: { data: { turbo_confirm: "¿Estás seguro de querer eliminar la etiqueta #{tag.name}?" } } do %>
+                    <i data-feather="trash-2" class="icon icon-show"></i>
+                  <%  end  %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  <% end %>
+
+  <div id="addTagModal" class="modal fade" id="staticBackdropModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <%= render "form_create_tag", tags: @tags %>
       </div>
