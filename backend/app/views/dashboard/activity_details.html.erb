@@ -36,21 +36,11 @@
 
 
   <div class="container-fluid">
-    <!--    <div class="card text-center mb-3">-->
-    <!--      <div class="card-header">-->
-    <!--        Mapa-->
-    <!--      </div>-->
-    <!--      <div class="card-body">-->
-    <!--        <h5 class="card-title">Ubicación</h5>-->
-    <!--        <div id="map" style="height: 400px;"></div>-->
-    <!--      </div>-->
-    <!--    </div>-->
     <div class="card text-center mb-3">
       <div class="card-header">
         Gráfico estrés
       </div>
       <div class="card-body">
-        <h5 class="card-title">Gráfico nivel de estrés</h5>
         <canvas id="myChart" width="80vw" height="20vw"></canvas>
       </div>
     </div>
@@ -95,7 +85,11 @@
                           <div class="col-sm">
                             <figure>
                               <% tag_repository = TagsRepository.where(name_wearos: @tag["status"]).first %>
-                              <%= image_tag(tag_repository.icon, :alt => @tag["status"], style: 'height:50px;width:autopx;') %>
+                              <% if tag_repository %>
+                                <%= image_tag(tag_repository.icon, :alt => @tag["status"], style: 'height:50px;width:autopx;') %>
+                              <% else %>
+                                <%= @tag["status"] %>
+                              <% end %>
                               <figcaption><%= @tag["status"] %></figcaption>
                             </figure>
                           </div>
@@ -158,8 +152,6 @@
 
 
 <script>
-
-
     function initMap() {
         L.Icon.Default.prototype.options.iconUrl = '<%= asset_path 'marker-icon.png'%>';
         L.Icon.Default.prototype.options.iconRetinaUrl = '<%= asset_path 'marker-icon-2x.png'%>';
@@ -169,7 +161,8 @@
             return '';
         }());
 
-        // Initialize the map
+        <% if @json.present? && @json.first %>
+        // If there are coordinates, use them to set the map view
         const myMap = L.map("map").setView([<%= @json.first[:latitude] %>, <%= @json.first[:longitude] %>], 17);
 
         // Add a tile layer to the map
@@ -178,11 +171,11 @@
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(myMap);
 
+        // Add polyline and decorator for the coordinates
         const coordinates = [
             <% @json.each do |gps| %>
             [<%= gps[:latitude] %>, <%= gps[:longitude] %>],
             <% end %>
-            // Add more coordinates as needed
         ];
         const line = L.polyline(coordinates, {
             color: "red",
@@ -202,6 +195,10 @@
                 },
             ],
         }).addTo(myMap);
+        <% else %>
+        // If no coordinates are available, show a placeholder or message
+        document.getElementById("map").innerHTML = "Sin datos de localización.";
+        <% end %>
     }
 
     document.addEventListener("turbo:load", () => {
@@ -216,33 +213,201 @@
         }
     });
 
-
     (function () {
         'use strict'
 
-        // Graphs
         var ctx = document.getElementById('myChart').getContext("2d");
-        // eslint-disable-next-line no-unused-vars
-        var tranquilo = new Image(25, 25);
-        tranquilo.src = '<%= asset_url("tags/tranquilo") %>';
-        var nervioso = new Image(25, 25);
-        nervioso.src = '<%= asset_url("tags/nervioso") %>';
         var yLabels = {
-            '-2': 'No estresado', '0': 'Estrés leve', '2': 'Estresado'
+            '-2': 'Bajo Estrés', '0': 'Medio Estrés', '2': 'Alto Estrés'
         };
         const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
         const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
+
+        var tagsData = <%= raw(@tags.to_json) %>;
+        var labels = <%= raw @stress.map { |stress| (stress.datetime).strftime("%H:%M") } %>;
+        var data = <%= raw @stress.map { |stress| if stress.level == -1 then Float::NAN else stress.level end } %>;
+
+        var pointStyles = labels.map(function(hora) {
+            var [horaHours, horaMinutes] = hora.split(':').map(Number);
+
+            var tag = tagsData.find(function(item) {
+                var date = new Date(item.datetime);
+                var tagHours = date.getHours();
+                var tagMinutes = date.getMinutes();
+
+                return horaHours === tagHours && horaMinutes === tagMinutes;
+            });
+
+            if (tag) {
+                return 'star'; // Puedes cambiarlo por el ícono que prefieras
+            } else {
+                return 'false';
+            }
+        });
+
+        var pointRadius = labels.map(function(hora) {
+            var [horaHours, horaMinutes] = hora.split(':').map(Number);
+
+            var tag = tagsData.find(function(item) {
+                var date = new Date(item.datetime);
+                var tagHours = date.getHours();
+                var tagMinutes = date.getMinutes();
+
+                return horaHours === tagHours && horaMinutes === tagMinutes;
+            });
+
+            if (tag) {
+                // Hay información adicional, aumentar el tamaño del punto
+                return 8; // Tamaño mayor para destacar
+            } else {
+                // Sin información adicional, tamaño de punto por defecto
+                return 5;
+            }
+        });
+
+        function obtenerImagenPorNombre(nombre) {
+            // Transliterar el nombre (eliminar acentos y caracteres especiales)
+            var transliteratedName = nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            // Convertir a minúsculas y reemplazar espacios por guiones bajos
+            transliteratedName = transliteratedName.toLowerCase().replace(/ /g, "_");
+            // Construir la ruta de la imagen
+            var imagePath = '/assets/tags/' + transliteratedName + '.png';
+            return imagePath;
+        }
+
+        function obtenerImagenParaEstadoContextoEmocionesSentimientos(hora) {
+            // 'hora' es una cadena como '20:54'
+            var [horaHours, horaMinutes] = hora.split(':').map(Number);
+
+            // Search for the corresponding tag in tagsData
+            var tag = tagsData.find(function(item) {
+                var date = new Date(item.datetime);
+
+                // Get hours and minutes in local time
+                var tagHours = date.getHours();
+                var tagMinutes = date.getMinutes();
+
+                return horaHours === tagHours && horaMinutes === tagMinutes;
+            });
+
+            if (!tag) {
+                return '<div style="color: black;">No hay datos disponibles para esta hora.</div>';
+            }
+
+            var tagData = JSON.parse(tag.tag);
+
+            // Contenedor principal con flex horizontal y texto en negro
+            var htmlContent = '<div style="display: flex; flex-direction: row; align-items: flex-start; color: black;">';
+
+            // Estado
+            if (tagData.status) {
+                htmlContent += '<div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">';
+                htmlContent += '<strong>Estado:</strong>';
+                var statusImage = obtenerImagenPorNombre(tagData.status);
+                htmlContent += '<img src="' + statusImage + '" alt="' + tagData.status + '" style="height:50px;width:auto;">';
+                htmlContent += '<div>' + tagData.status + '</div>';
+                htmlContent += '</div>';
+            }
+
+            // Contexto
+            if (tagData.context && tagData.context.length > 0) {
+                htmlContent += '<div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">';
+                htmlContent += '<strong>Contexto:</strong>';
+                htmlContent += '<div style="display: flex; flex-direction: row; align-items: center;">';
+                tagData.context.forEach(function(contextItem) {
+                    var contextImage = obtenerImagenPorNombre(contextItem);
+                    htmlContent += '<div style="display: flex; flex-direction: column; align-items: center; margin: 0 5px;">';
+                    htmlContent += '<img src="' + contextImage + '" alt="' + contextItem + '" style="height:50px;width:auto;">';
+                    htmlContent += '<div>' + contextItem + '</div>';
+                    htmlContent += '</div>';
+                });
+                htmlContent += '</div>';
+                htmlContent += '</div>';
+            }
+
+            // Emociones
+            if (tagData.emotions) {
+                htmlContent += '<div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">';
+                htmlContent += '<strong>Emociones:</strong>';
+                var emotionImage = obtenerImagenPorNombre(tagData.emotions);
+                htmlContent += '<img src="' + emotionImage + '" alt="' + tagData.emotions + '" style="height:35px;width:auto;">';
+                htmlContent += '<div>' + tagData.emotions + '</div>';
+                htmlContent += '</div>';
+            }
+
+            // Sentimientos
+            if (tagData.feelings) {
+                htmlContent += '<div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">';
+                htmlContent += '<strong>Sentimientos:</strong>';
+                var feelingImage = obtenerImagenPorNombre(tagData.feelings);
+                htmlContent += '<img src="' + feelingImage + '" alt="' + tagData.feelings + '" style="height:35px;width:auto;">';
+                htmlContent += '<div>' + tagData.feelings + '</div>';
+                htmlContent += '</div>';
+            }
+
+            htmlContent += '</div>';
+
+            return htmlContent;
+        }
+
+        const externalTooltipHandler = (context) => {
+            const {chart, tooltip} = context;
+            let tooltipEl = chart.canvas.parentNode.querySelector('div.custom-tooltip');
+
+            if (!tooltipEl) {
+                tooltipEl = document.createElement('div');
+                tooltipEl.classList.add('custom-tooltip');
+                tooltipEl.style.background = '#ffebe6';
+                tooltipEl.style.borderRadius = '3px';
+                tooltipEl.style.color = 'black';
+                tooltipEl.style.opacity = 1;
+                tooltipEl.style.pointerEvents = 'none';
+                tooltipEl.style.position = 'absolute';
+                tooltipEl.style.transform = 'translate(-50%, 0)';
+                tooltipEl.style.transition = 'all .1s ease';
+                chart.canvas.parentNode.appendChild(tooltipEl);
+            }
+
+            // Oculta el tooltip si no hay información para mostrar
+            if (tooltip.opacity === 0) {
+                tooltipEl.style.opacity = 0;
+                return;
+            }
+
+            // Establece el contenido del tooltip
+            if (tooltip.body) {
+                const titleLines = tooltip.title || [];
+                const hora = titleLines[0];
+
+                // Obtén el HTML con las imágenes y textos
+                const htmlContent = obtenerImagenParaEstadoContextoEmocionesSentimientos(hora);
+
+                // Establece el contenido del tooltip
+                tooltipEl.innerHTML = htmlContent;
+            }
+
+            const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+
+            // Muestra, posiciona y establece estilos para la fuente
+            tooltipEl.style.opacity = 1;
+            tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+            tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+            tooltipEl.style.font = tooltip.options.bodyFont.string;
+            tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+        };
+
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: <%= raw @stress.map { |stress| stress.datetime.strftime("%H:%M") } %>,
+                labels: labels,
                 datasets: [{
                     label: 'Nivel de estrés',
-                    data: <%= raw @stress.map { |stress| if stress.level == -1 then Float::NAN else stress.level end } %>,
+                    data: data,
                     backgroundColor: 'transparent',
                     borderColor: '#f05f3a',
                     borderWidth: 2,
-                    pointBackgroundColor: '#f05f3a',
+                    pointStyle: pointStyles,
+                    pointRadius: pointRadius,
                     segment: {
                         borderColor: ctx => skipped(ctx, 'rgb(0,0,0,0.2)') || down(ctx, 'rgb(192,75,75)'),
                         borderDash: ctx => skipped(ctx, [6, 6]),
@@ -252,7 +417,16 @@
             },
             options: {
                 plugins: {
-                    legend: false
+                    legend: false,
+                    tooltip: {
+                        enabled: false,
+                        external: externalTooltipHandler
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0.3
+                    }
                 },
                 scales: {
                     yAxes: [{
@@ -263,10 +437,28 @@
                         }
                     }],
                     y: {
-                        beginAtZero: false
+                        min: -2.25,
+                        max: 2.25,
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return yLabels[value] || '';
+                            }
+                        },
+                        grid: {
+                            drawBorder: false,
+                            drawTicks: false,
+                            color: function(context) {
+                                if (yLabels[context.tick.value]) {
+                                    return '#e0e0e0';
+                                }
+                                return 'rgba(0, 0, 0, 0)';
+                            }
+                        }
                     }
                 }
             }
         });
+
     })()
 </script>

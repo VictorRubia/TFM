@@ -1,0 +1,10 @@
+pandas
+numpy
+flask
+joblib
+setuptools
+matplotlib
+scikit-learn
+sklearn-pandas
+lightgbm
+pytz

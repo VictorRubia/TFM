@@ -1,8 +1,8 @@
 <%#= render "layouts/dashboard" %>
 <%= render "layouts/navbar" %>
 <%= stylesheet_link_tag 'create_user' %>
-<% @activities = get_activities.includes(:activities_repository) %>
-<% @activities = @activities.where(activities_repositories: @activity.id) %>
+<% @activities = get_activities.joins(:activities_repository).includes(:activities_repository) %>
+<% @activities = @activities.where(activities_repositories: { id: @activity.id }) %>
 <% @activities_by_name = @activities.group_by { |a| a.activities_repository.name } %>
 
 <main class="ms-sm-auto px-md-4">

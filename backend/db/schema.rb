@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_15_03_120001) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_21_181149) do
   create_table "accelerometer_measures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "measurement"
     t.bigint "activity_id", null: false
@@ -87,8 +87,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_15_03_120001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "viewed", default: false
-    t.bigint "activities_repositories_id", null: false
-    t.index ["activities_repositories_id"], name: "index_activities_on_activities_repositories_id"
+    t.bigint "activities_repository_id", null: false
+    t.index ["activities_repository_id"], name: "index_activities_on_activities_repositories_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -192,6 +192,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_15_03_120001) do
     t.index ["account_id"], name: "index_tags_repositories_on_account_id"
   end
 
+  create_table "user_stresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.float "level", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_stresses_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -214,7 +222,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_15_03_120001) do
   add_foreign_key "account_verification_keys", "accounts", column: "id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "activities", "activities_repositories", column: "activities_repositories_id"
+  add_foreign_key "activities", "activities_repositories"
   add_foreign_key "activities", "users"
   add_foreign_key "activities_repositories", "accounts"
   add_foreign_key "activity_assignations", "accounts"
@@ -231,5 +239,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_15_03_120001) do
   add_foreign_key "stresses", "activities"
   add_foreign_key "tags", "activities"
   add_foreign_key "tags_repositories", "accounts"
+  add_foreign_key "user_stresses", "users"
   add_foreign_key "users", "accounts"
 end

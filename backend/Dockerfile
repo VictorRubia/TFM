@@ -1,10 +1,9 @@
 # syntax=docker/dockerfile:1
-FROM ruby:3.1.3
+FROM ruby:3.3
 RUN apt-get update -qq && apt-get install -y build-essential default-mysql-client default-libmysqlclient-dev pip
 RUN apt remove cmdtest -y
-RUN python3 -m pip install pandas matplotlib
-RUN python3 -m pip install -U scikit-learn
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
+RUN pip install --break-system-packages lightgbm matplotlib scikit-learn==1.4.2 sklearn-pandas
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get install nodejs
 RUN npm install -g npm@latest
 RUN npm install -g yarn
@@ -17,7 +16,9 @@ RUN bundle install
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
+EXPOSE 80
 
 # Configure the main process to run when running the image
-CMD ["rails","s","-b","0.0.0.0","-p","3000"]
+#CMD ["rails","s","-b","0.0.0.0","-p","3000"]
+CMD [ "bundle","exec", "puma", "config.ru"]
+# CMD ["rails","server"] # you can also write like this.

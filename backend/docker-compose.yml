@@ -1,7 +1,6 @@
-version: "3.9"
 services:
   db:
-    image: mysql
+    image: mysql:8.0.32
     command: --max_connections=10000
     container_name: db
     environment:
@@ -32,7 +31,8 @@ services:
 
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec puma config.ru"
+#    command: bash -c "rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec rails s -p 3000 -b '0.0.0.0'"
     container_name: tfg_webapp
     environment:
       - GMAIL_PASS=${GMAIL_PASS}
@@ -52,49 +52,49 @@ services:
     networks:
       - elknetwork
 
-#  elasticsearch:
-#    image: elasticsearch:7.17.8
-#    container_name: elasticsearch
-#    hostname: elasticsearch
-#    environment:
-#      - "discovery.type=single-node"
-#    ports:
-#      - 9200:9200
-#      - 9300:9300
-#    networks:
-#      - elknetwork
-#
-#  logstash:
-#    image: logstash:7.17.8
-#    container_name: logstash
-#    hostname: logstash
-#    ports:
-#      - 9600:9600
-#      - 8089:8089
-#      - 3001:3001
-#    volumes:
-#      - ./logstash:/usr/share/logstash/pipeline/
-#    links:
-#      - elasticsearch:elasticsearch
-#    depends_on:
-#      - elasticsearch
-#    networks:
-#      - elknetwork
-#
-#  kibana:
-#    image: kibana:7.17.8
-#    container_name: kibana
-#    hostname: kibana
-#    ports:
-#      - 5601:5601
-#    links:
-#      - elasticsearch:elasticsearch
-#    depends_on:
-#      - elasticsearch
-#    networks:
-#      - elknetwork
-#    volumes:
-#      - ./kibana:/usr/share/elasticsearch/data
+  elasticsearch:
+    image: elasticsearch:7.17.8
+    container_name: elasticsearch
+    hostname: elasticsearch
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - elknetwork
+
+  logstash:
+    image: logstash:7.17.8
+    container_name: logstash
+    hostname: logstash
+    ports:
+      - 9600:9600
+      - 8089:8089
+      - 3001:3001
+    volumes:
+      - ./logstash:/usr/share/logstash/pipeline/
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknetwork
+
+  kibana:
+    image: kibana:7.17.8
+    container_name: kibana
+    hostname: kibana
+    ports:
+      - 5601:5601
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    networks:
+      - elknetwork
+    volumes:
+      - ./kibana:/usr/share/elasticsearch/data
 
 networks:
   elknetwork:

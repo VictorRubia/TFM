@@ -89,3 +89,5 @@ TFGWear/captures
 local.properties
 
 TFG.zip
+/backend/lib/python/datasets/combined-swell-classification-hrv-train-dataset.csv
+/backend/lib/python/datasets/wesad-classification-hrv-train-dataset.csv

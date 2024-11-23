@@ -26,29 +26,10 @@ class MeasuringMenuModule {
     @Provides
     fun provideMeasuringMenuViewModelFactory(endActivityUseCase: EndActivityUseCase,
                                              getCurrentActivityUseCase: GetCurrentActivityUseCase,
-                                             savePPGMeasureUseCase: SavePPGMeasureUseCase,
-                                             saveAccelerometerMeasureUseCase: SaveAccelerometerMeasureUseCase,
-                                             saveGPSMeasureUseCase: SaveGPSMeasureUseCase,
-                                             saveStepMeasureUseCase: SaveStepMeasureUseCase,
-                                             saveSignificantMovMeasureUseCase: SaveSignificantMovMeasureUseCase,
-                                             endPPGMeasureUseCase: EndPPGMeasureUseCase,
-                                             endAccelerometerUseCase: EndAccelerometerMeasureUseCase,
-                                             endGPSMeasureUseCase: EndGPSMeasureUseCase,
-                                             endStepMeasureUseCase: EndStepMeasureUseCase,
-                                             endSignificantMovMeasureUseCase: EndSignificantMovMeasureUseCase) : MeasuringMenuViewModelFactory{
+                                             ) : MeasuringMenuViewModelFactory{
         return MeasuringMenuViewModelFactory(
             endActivityUseCase,
             getCurrentActivityUseCase,
-            savePPGMeasureUseCase,
-            saveAccelerometerMeasureUseCase,
-            saveGPSMeasureUseCase,
-            saveStepMeasureUseCase,
-            saveSignificantMovMeasureUseCase,
-            endPPGMeasureUseCase,
-            endAccelerometerUseCase,
-            endGPSMeasureUseCase,
-            endStepMeasureUseCase,
-            endSignificantMovMeasureUseCase
         )
     }
 

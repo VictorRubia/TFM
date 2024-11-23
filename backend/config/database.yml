@@ -12,14 +12,29 @@
 default: &default
   adapter: mysql2
   encoding: utf8mb4
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
   password: admin
   host: db
 
 development:
-  <<: *default
-  database: tfg_development
+  primary:
+    database: tfg_development
+    username: root
+    password: admin
+    host: db
+    adapter: mysql2
+    encoding: utf8mb4
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  users:
+    database: my_users_database
+    username: root
+    password: admin
+    host: db
+    adapter: mysql2
+    encoding: utf8mb4
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    migrations_paths: db/users_migrate
+
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

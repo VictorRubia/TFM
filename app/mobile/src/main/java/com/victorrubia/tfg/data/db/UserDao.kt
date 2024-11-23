@@ -24,7 +24,7 @@ interface UserDao {
      * Delete current user from the [User] table.
      */
     @Query("DELETE FROM current_user")
-    suspend fun deleteUser()
+    suspend fun deleteUser(): Int
 
     /**
      * Select current user from the [User] table.

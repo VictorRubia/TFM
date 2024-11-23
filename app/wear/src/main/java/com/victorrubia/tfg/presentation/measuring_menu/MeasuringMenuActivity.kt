@@ -1,5 +1,6 @@
 package com.victorrubia.tfg.presentation.measuring_menu
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,7 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.*
+import com.victorrubia.tfg.data.model.activity.Activity
+import com.victorrubia.tfg.data.utils.Actions
 import com.victorrubia.tfg.presentation.di.Injector
+import com.victorrubia.tfg.presentation.home.HomeViewModel
 import com.victorrubia.tfg.presentation.start_menu.StartMenuActivity
 import com.victorrubia.tfg.presentation.status_menu.StatusMenuActivity
 import com.victorrubia.tfg.ui.theme.WearAppTheme
@@ -32,6 +36,7 @@ import javax.inject.Inject
  * Activity that shows the menu to register tags or to stop measuring.
  */
 class MeasuringMenuActivity: ComponentActivity() {
+
     // Injector to inject the ViewModelFactory
     @Inject
     lateinit var factory: MeasuringMenuViewModelFactory
@@ -42,19 +47,35 @@ class MeasuringMenuActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        val serviceIntent = Intent(this, MeasuringService::class.java).apply {
+            this.setAction(Actions.START.name)
+        }
+        startForegroundService(serviceIntent)
+
+        val sharedPref = getSharedPreferences("EstresEnActividades", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("service_state", "START")
+            apply()
+        }
+
         (application as Injector).createMeasuringMenuSubComponent()
             .inject(this)
         measuringMenuViewModel = ViewModelProvider(this, factory)
             .get(MeasuringMenuViewModel::class.java)
-
-        measuringMenuViewModel.startMeasure(applicationContext)
 
         setContent {
             MainMenu( remember { measuringMenuViewModel.internetStatus },{
                 measuringMenuViewModel.endActivity().observe(this){
                     if(it!=null){
                         Log.d("MyTag", "Activity Ended: $it")
-                        startActivity(Intent(this, StartMenuActivity::class.java))
+
+                        // Enviar Intent para detener el servicio (renombrado a stopServiceIntent)
+                        val stopServiceIntent = Intent(this@MeasuringMenuActivity, MeasuringService::class.java).apply {
+                            this.setAction(Actions.STOP.name)
+                        }
+                        startForegroundService(stopServiceIntent)
+
+                        startActivity(Intent(this@MeasuringMenuActivity, StartMenuActivity::class.java))
                         finish()
                     }
                 }

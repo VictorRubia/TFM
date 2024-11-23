@@ -2,7 +2,7 @@
 <%= stylesheet_link_tag 'application', 'login.css' %>
 <main class="form-signin">
 <%= form_with url: rodauth.login_path, method: :post ,data: { turbo: false } do |form|%>
-  <h1 class="h3 mb-3 fw-normal">Autentificación</h1>
+  <h1 class="h3 mb-3 fw-normal">Autenticación</h1>
   <% if rodauth.skip_login_field_on_login? %>
     <div class="form-floating mb-3">
       <%= form.email_field rodauth.login_param, value: params[rodauth.login_param], id: "floatingInput", placeholder: "name@example.com", readonly: true, class: "form-control" %>

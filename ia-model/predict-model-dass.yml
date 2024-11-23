@@ -1,0 +1,9 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  predict-model-dass:
+    lang: python3-flask
+    handler: ./predict-model-dass
+    image: victorrubia/tfm-predict-model-dass:latest

@@ -37,6 +37,7 @@
           </th>
           <th scope="col">Nombre</th>
           <th scope="col">Actividades</th>
+          <th scope="col">% Probabilidad Estrés</th>
         </tr>
         </thead>
         <tbody>
@@ -48,6 +49,13 @@
             <td>
               <%= link_to dashboard_view_activity_url(user), :class => 'btn btn-outline-primary' do%>
                 <i data-feather="eye" class="icon icon-show"></i>
+              <% end %>
+            </td>
+            <td>
+              <% if user.user_stress&.level %>
+                <%= (user.user_stress.level * 100).round(0).to_s + "% de estar estresado" %>
+              <% else %>
+                Medidas aún insuficientes
               <% end %>
             </td>
           </tr>

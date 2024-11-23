@@ -20,11 +20,11 @@ object DateSerializer : KSerializer<Date> {
     override val descriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): Date {
-        return SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS", Locale("es", "ES")).parse(decoder.decodeString())!!
+        return SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS", Locale("es", "ES")).parse(decoder.decodeString())!!
     }
 
     override fun serialize(encoder: Encoder, value: Date) {
-        val df = SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS", Locale("es", "ES"))
+        val df = SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS", Locale("es", "ES"))
         encoder.encodeString(df.format(value))
     }
 }
@@ -42,7 +42,5 @@ data class PPGMeasure(
     @PrimaryKey(autoGenerate = true)
     val id : Int = 0,
     val measure: Int,
-    @TypeConverters(Converters::class)
-    @Serializable(with = DateSerializer::class)
-    val date: Date,
+    val timestamp: Long,
 )

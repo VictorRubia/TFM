@@ -8,6 +8,8 @@ import com.victorrubia.tfg.data.repository.ppg_measure.datasource.PPGMeasureCach
 import com.victorrubia.tfg.data.repository.ppg_measure.datasource.PPGMeasureLocalDataSource
 import com.victorrubia.tfg.data.repository.ppg_measure.datasource.PPGMeasureRemoteDataSource
 import com.victorrubia.tfg.domain.repository.PPGMeasureRepository
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -34,20 +36,23 @@ class PPGMeasureRepositoryImpl(
     private val internetStatus = mutableStateOf(true)
 
 
+    private val mutex = Mutex()
+
     override suspend fun savePPGMeasure(ppgMeasure: PPGMeasure, activityId: Int): MutableState<Boolean> {
-
-        try {
-            ppgMeasureCacheDataSource.addPPGMeasureToCache(ppgMeasure)
-            count++
-            if(count == 1000){
-                count = 0
-                sendPPGMeasureToAPI(ppgMeasureCacheDataSource.getPPGMeasureFromCache(), activityId)
+        mutex.withLock {
+            try {
+                ppgMeasureCacheDataSource.addPPGMeasureToCache(ppgMeasure)
+                count++
+                if (count >= 1000) {
+                    val cachedMeasures = ppgMeasureCacheDataSource.getPPGMeasureFromCache()
+                    sendPPGMeasureToAPI(cachedMeasures, activityId)
+                    count = 0
+                }
+            } catch (exception: Exception) {
+                Log.e("MyTag", exception.message.toString())
             }
+            Unit // Agregar esta línea
         }
-        catch (exception : Exception){
-            Log.e("MyTag", exception.message.toString())
-        }
-
         return internetStatus
     }
 
@@ -67,23 +72,23 @@ class PPGMeasureRepositoryImpl(
      * @param ppgMeasure the list of [PPGMeasure] to be sent.
      * @param activityId the id of the activity that the [PPGMeasure] belongs to.
      */
-    suspend fun sendPPGMeasureToAPI(ppgMeasure : List<PPGMeasure>, activityId : Int){
-        try{
+    suspend fun sendPPGMeasureToAPI(ppgMeasure: List<PPGMeasure>, activityId: Int) {
+        try {
             checkExistingMeasurements(activityId)
-            val response = ppgMeasureRemoteDataSource.sendPPGMeasures(Json.encodeToString(ppgMeasure), activityId)
-            val body = response.body()
-            if(body != null){
+            val jsonData = Json.encodeToString(ppgMeasure)
+            val response = ppgMeasureRemoteDataSource.sendPPGMeasures(jsonData, activityId)
+            if (response.isSuccessful) {
                 ppgMeasureLocalDataSource.clearAll()
                 ppgMeasureCacheDataSource.clearAll()
                 internetStatus.value = true
-            }
-            else{
+            } else {
                 savePPGMeasuresToDB(ppgMeasure)
+                Log.e("PPGData", "Failed to send data. Response code: ${response.code()}")
             }
-        }
-        catch (exception : Exception){
+        } catch (exception: Exception) {
             internetStatus.value = false
-            Log.e("MyTag", "SendPPGMeasureToAPI - " + exception.message.toString())
+            Log.e("PPGData", "Exception while sending data: ${exception.message}")
+            savePPGMeasuresToDB(ppgMeasure)
         }
     }
 
@@ -107,16 +112,21 @@ class PPGMeasureRepositoryImpl(
      *
      * @param activityId the id of the activity that the [PPGMeasure] belongs to.
      */
-    suspend fun checkExistingMeasurements(activityId: Int){
+    suspend fun checkExistingMeasurements(activityId: Int) {
         try {
             val list = ppgMeasureLocalDataSource.getPPGMeasureFromDB()
-            if(list.isNotEmpty()){
-                sendPPGMeasureToAPI(list, activityId)
+            if (list.isNotEmpty()) {
+                val response = ppgMeasureRemoteDataSource.sendPPGMeasures(Json.encodeToString(list), activityId)
+                if (response.isSuccessful) {
+                    ppgMeasureLocalDataSource.clearAll()
+                } else {
+                    Log.e("MyTag", "Failed to send cached measures, response code: ${response.code()}")
+                }
             }
-        }
-        catch (exception : Exception){
+        } catch (exception: Exception) {
             Log.e("MyTag", exception.message.toString())
         }
     }
+
 
 }

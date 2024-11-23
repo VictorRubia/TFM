@@ -16,16 +16,6 @@ import com.victorrubia.tfg.domain.usecase.*
 class MeasuringMenuViewModelFactory(
     private val endActivityUseCase: EndActivityUseCase,
     private val getCurrentActivityUseCase: GetCurrentActivityUseCase,
-    private val savePPGMeasureUseCase: SavePPGMeasureUseCase,
-    private val saveAccelerometerMeasureUseCase: SaveAccelerometerMeasureUseCase,
-    private val saveGPSMeasureUseCase: SaveGPSMeasureUseCase,
-    private val saveStepMeasureUseCase: SaveStepMeasureUseCase,
-    private val saveSignificantMovMeasureUseCase: SaveSignificantMovMeasureUseCase,
-    private val endPPGMeasureUseCase: EndPPGMeasureUseCase,
-    private val endAccelerometerMeasureUseCase: EndAccelerometerMeasureUseCase,
-    private val endGPSMeasureUseCase: EndGPSMeasureUseCase,
-    private val endStepMeasureUseCase: EndStepMeasureUseCase,
-    private val endSignificantMovMeasureUseCase: EndSignificantMovMeasureUseCase
 ) : ViewModelProvider.Factory {
 
     /**
@@ -39,16 +29,6 @@ class MeasuringMenuViewModelFactory(
         return MeasuringMenuViewModel(
             endActivityUseCase,
             getCurrentActivityUseCase,
-            savePPGMeasureUseCase,
-            saveAccelerometerMeasureUseCase,
-            saveGPSMeasureUseCase,
-            saveStepMeasureUseCase,
-            saveSignificantMovMeasureUseCase,
-            endPPGMeasureUseCase,
-            endAccelerometerMeasureUseCase,
-            endGPSMeasureUseCase,
-            endStepMeasureUseCase,
-            endSignificantMovMeasureUseCase,
         ) as T
     }
 }

@@ -84,7 +84,7 @@ class HomeActivity : ComponentActivity(), MessageClient.OnMessageReceivedListene
 
         if (checkSelfPermission(Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.BODY_SENSORS, Manifest.permission.ACCESS_FINE_LOCATION),
+                arrayOf(Manifest.permission.BODY_SENSORS, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.FOREGROUND_SERVICE),
                 PERMISSION_REQUEST_BODY_SENSORS)
         } else {
             Log.d("PERMISSION", "ALREADY GRANTED");

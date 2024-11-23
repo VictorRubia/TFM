@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include ActiveModel::SecurePassword
   has_secure_password
-  lockbox_encrypts :private_api_key
+  encrypts :private_api_key
   blind_index :private_api_key
 
   before_create :set_private_api_key
@@ -11,10 +11,10 @@ class User < ApplicationRecord
   belongs_to :account
   has_many :activities, dependent: :destroy
   has_many :requests, dependent: :destroy
+  has_one :user_stress, dependent: :destroy
 
   validates :name, :email, presence: true
   validates :email, uniqueness: true
-
 
   def self.search(search)
     if search

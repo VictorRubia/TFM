@@ -18,7 +18,7 @@ import com.victorrubia.tfg.data.model.user.User
  * Room database for TFG application.
  */
 @Database(entities = [Activity::class, PPGMeasure::class, AccelerometerMeasure::class, GPSMeasure::class, StepMeasure::class, SignificantMovMeasure::class , User::class, Tag::class, ActivityAssignation::class],
-version = 10,
+version = 14,
 exportSchema = false
 )
 @TypeConverters(Converters::class)

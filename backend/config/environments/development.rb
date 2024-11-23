@@ -69,7 +69,7 @@ Rails.application.configure do
   config.assets.debug = false
 
   config.hosts << "victorrubia.com"
-  config.hosts << "d1d4-83-60-28-177.eu.ngrok.io"
+  config.hosts << "26b5-83-60-28-177.ngrok-free.app"
   config.web_console.permissions = '172.23.0.1'
 
   # Raises error for missing translations.

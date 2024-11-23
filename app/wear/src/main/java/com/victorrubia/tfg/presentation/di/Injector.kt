@@ -5,6 +5,7 @@ import com.victorrubia.tfg.presentation.di.activity_type.ActivityTypeSubComponen
 import com.victorrubia.tfg.presentation.di.feelings_menu.FeelingsMenuSubComponent
 import com.victorrubia.tfg.presentation.di.home.HomeSubComponent
 import com.victorrubia.tfg.presentation.di.measuring_menu.MeasuringMenuSubComponent
+import com.victorrubia.tfg.presentation.di.measuring_service.MeasuringServiceSubComponent
 import com.victorrubia.tfg.presentation.di.status_menu.StatusMenuSubComponent
 import com.victorrubia.tfg.presentation.di.user_context_menu.UserContextMenuSubComponent
 
@@ -33,6 +34,8 @@ interface Injector {
      * @return the [MeasuringMenuSubComponent].
      */
     fun createMeasuringMenuSubComponent() : MeasuringMenuSubComponent
+
+    fun createMeasuringServiceSubComponent() : MeasuringServiceSubComponent
 
     /**
      * Creates the [FeelingsMenuSubComponent].

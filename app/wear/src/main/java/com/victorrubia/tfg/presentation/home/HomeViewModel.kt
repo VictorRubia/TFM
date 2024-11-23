@@ -46,10 +46,9 @@ class HomeViewModel(
      */
     fun compatibility(context : Context) = liveData {
         var prueba : MutableLiveData<Boolean> = MutableLiveData(true)
-        sensorManager = context.getSystemService(ComponentActivity.SENSOR_SERVICE) as SensorManager
+        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val sensorList: List<Sensor> = sensorManager.getSensorList(Sensor.TYPE_ALL)
         for (currentSensor in sensorList) {
-//            Log.d("SENSORES", "${currentSensor.stringType} - ${currentSensor.type}")
             if(currentSensor.stringType.contains("ppg") && !sensorStatus.value){
                 sensorStatus.value = true
                 prueba.value = false

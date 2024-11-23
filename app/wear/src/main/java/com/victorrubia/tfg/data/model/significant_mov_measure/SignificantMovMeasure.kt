@@ -2,9 +2,6 @@ package com.victorrubia.tfg.data.model.significant_mov_measure
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.victorrubia.tfg.data.converters.Converters
-import com.victorrubia.tfg.data.model.ppg_measure.DateSerializer
 import kotlinx.serialization.*
 import java.util.*
 
@@ -21,7 +18,5 @@ data class SignificantMovMeasure(
     @PrimaryKey(autoGenerate = true)
     val id : Int = 0,
     val trigger: Int,
-    @TypeConverters(Converters::class)
-    @Serializable(with = DateSerializer::class)
-    val date: Date,
+    val timestamp: Long,
 )

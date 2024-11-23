@@ -2,30 +2,22 @@
 <%= stylesheet_link_tag 'draggable' %>
 
 <style>
-    ol.simple_with_animation {
-        border: 1px solid #999999;
-        display: block;
-        height: 60vh;
-    }
-    ol.tags_of_activity {
-        border: 1px solid #999999;
-        display: block;
-        height: 60vh;
+    .order-number {
+        font-weight: bold;
+        margin-right: 5px;
     }
 </style>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 h-100">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <div class="d-flex align-items-start ">
+    <div class="d-flex align-items-start">
       <div class="btn-group me-2 btn-toolbar mb-2 mb-md-0">
-        <%= link_to :back, :class => 'btn btn-sm btn-outline-secondary' do %>
+        <%= link_to :back, class: 'btn btn-sm btn-outline-secondary' do %>
           <i data-feather="arrow-left-circle" class="icon icon-show"></i>
         <% end %>
       </div>
-
       <h2>Configurar actividad "<%= @activity.name %>"</h2>
     </div>
-
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <button id="save-tags" class="btn btn-sm btn-primary">Guardar</button>
@@ -33,70 +25,114 @@
     </div>
   </div>
 
-  <div class="row align-items-start">
-    <div class="col">
-      <div class="card w-45 h-100">
+  <div class="row align-items-stretch h-100">
+    <div class="col-6 d-flex flex-column">
+      <div class="card flex-grow-1">
         <div class="card-header text-center">
           Repositorio de etiquetas
         </div>
-        <div class="card-body">
-          <div class='span4'>
-            <ol class='simple_with_animation'>
-              <% @available_tags.each do |tag| %>
-<!--                <li class='highlight'>-->
-<!--                <div class="figma-smartwatch">-->
-<!--                  <div class="figma-smartwatch-watchface" id="watchface">-->
-                    <%#= image_tag("misc/time.svg", alt: "", class: "figma-smartwatch-watchface-img") %>
-<!--                    <div class="figma-smartwatch-div1">-->
-<!--                      <div class="figma-smartwatch-div2">-->
-                        <%# case tag.tags_type %>
-                        <%# when 1 %>
-<!--                          <b class="figma-smartwatch-categoria">Registre estado</b>-->
-                        <%# when 2 %>
-<!--                          <b class="figma-smartwatch-categoria">Registre su contexto</b>-->
-                        <%# when 3 %>
-<!--                          <b class="figma-smartwatch-categoria">Registre su emoción</b>-->
-                        <%# end %>
-<!--                      </div>-->
-<!--                      <div class="figma-smartwatch-div3">-->
-<!--                        <div class="figma-smartwatch-card"></div>-->
-<!--                        <div class="figma-smartwatch-nombre">-->
-                          <%#= tag.name_wearos %>
-<!--                        </div>-->
-                        <%#= image_tag(tag.icon, alt: "", class: "figma-smartwatch-ico") if tag.icon.attached? %>
-                        <%#= image_tag("misc/vector.svg", alt: "", class: "figma-smartwatch-text") %>
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                </li>-->
-                <li class='highlight' data-id="<%= tag.id %>"><%= tag.name %></li>
-              <% end %>
-            </ol>
-          </div>
+        <div class="card-body d-flex flex-column p-0">
+          <ol class="list-unstyled m-0 p-2 simple_with_animation d-flex flex-wrap">
+            <% @available_tags.each do |tag| %>
+              <li class="highlight p-2" data-id="<%= tag.id %>">
+                <div class="figma-smartwatch">
+                  <!-- Tag content -->
+                  <div class="figma-smartwatch-watchface" id="watchface">
+                    <%= image_tag("misc/time.svg", alt: "", class: "figma-smartwatch-watchface-img") %>
+                    <div class="figma-smartwatch-div1">
+                      <div class="figma-smartwatch-div2">
+                        <% case tag.tags_type %>
+                        <% when 1 %>
+                          <b class="figma-smartwatch-categoria">Registre estado</b>
+                        <% when 2 %>
+                          <b class="figma-smartwatch-categoria">Registre su contexto</b>
+                        <% when 3 %>
+                          <b class="figma-smartwatch-categoria">Registre su emoción</b>
+                        <% end %>
+                      </div>
+                      <div class="figma-smartwatch-div3">
+                        <div class="figma-smartwatch-card"></div>
+                        <div class="figma-smartwatch-nombre">
+                          <%= tag.name_wearos %>
+                        </div>
+                        <% if tag.icon.attached? %>
+                          <%= image_tag(tag.icon, alt: "", class: "figma-smartwatch-ico") %>
+                        <% end %>
+                        <%= image_tag("misc/vector.svg", alt: "", class: "figma-smartwatch-text") %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ol>
         </div>
       </div>
     </div>
-    <div class="col">
-      <div class="card w-45 h-100">
+    <div class="col-6 d-flex flex-column">
+      <div class="card flex-grow-1">
         <div class="card-header text-center">
           Etiquetas de la actividad
         </div>
-        <div class="card-body">
-          <div class='span4'>
-            <ol class='simple_with_animation tags_of_activity'>
-              <% @tags_of_current_activity.each do |tag| %>
-                <li data-id="<%= tag.id %>"><%= tag.name %></li>
-              <% end %>
-            </ol>
-          </div>
+        <div class="card-body d-flex flex-column p-0">
+          <ol class="list-unstyled m-0 p-2 simple_with_animation tags_of_activity d-flex flex-wrap">
+            <% @tags_of_current_activity.each_with_index do |tag, index| %>
+              <li class="highlight p-2" data-id="<%= tag.id %>">
+                <span class="order-number"><%= index + 1 %>. </span>
+                <div class="figma-smartwatch">
+                  <!-- Tag content -->
+                  <div class="figma-smartwatch-watchface" id="watchface">
+                    <%= image_tag("misc/time.svg", alt: "", class: "figma-smartwatch-watchface-img") %>
+                    <div class="figma-smartwatch-div1">
+                      <div class="figma-smartwatch-div2">
+                        <% case tag.tags_type %>
+                        <% when 1 %>
+                          <b class="figma-smartwatch-categoria">Registre estado</b>
+                        <% when 2 %>
+                          <b class="figma-smartwatch-categoria">Registre su contexto</b>
+                        <% when 3 %>
+                          <b class="figma-smartwatch-categoria">Registre su emoción</b>
+                        <% end %>
+                      </div>
+                      <div class="figma-smartwatch-div3">
+                        <div class="figma-smartwatch-card"></div>
+                        <div class="figma-smartwatch-nombre">
+                          <%= tag.name_wearos %>
+                        </div>
+                        <% if tag.icon.attached? %>
+                          <%= image_tag(tag.icon, alt: "", class: "figma-smartwatch-ico") %>
+                        <% end %>
+                        <%= image_tag("misc/vector.svg", alt: "", class: "figma-smartwatch-text") %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            <% end %>
+          </ol>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-      $(function  () {
+      $(function () {
+
+          function updateOrderNumbers() {
+              var $listItems = $("ol.tags_of_activity > li");
+
+              $listItems.each(function(index) {
+                  var $li = $(this);
+                  // Remove existing order-number spans inside the <li>
+                  $li.find('.order-number').remove();
+                  // Create a new order-number span
+                  var $orderNumberSpan = $('<span class="order-number"></span>');
+                  $orderNumberSpan.text((index + 1) + '. ');
+                  // Prepend the order-number span to the content inside the <li>
+                  $li.prepend($orderNumberSpan);
+              });
+          }
+
           var adjustment;
 
           $("#save-tags").click(function() {
@@ -122,29 +158,33 @@
           });
 
           $("ol.simple_with_animation").sortable({
-              group: 'simple_with_animation',
-              pullPlaceholder: false,
-              // animation on drop
-              onDrop: function  ($item, container, _super) {
-                  var $clonedItem = $('<li/>').css({height: 0});
-                  $item.before($clonedItem);
-                  $clonedItem.animate({'height': $item.height()});
-
-                  $item.animate($clonedItem.position(), function  () {
-                      $clonedItem.detach();
-                      _super($item, container);
-                  });
+              group: {
+                  name: 'simple_with_animation',
+                  pull: true,
+                  put: true,
+              },
+              dragClone: false, // Ensure items are moved, not cloned
+              pullPlaceholder: true,
+              onDrop: function ($item, container, _super) {
+                  _super($item, container);
+                  updateOrderNumbers();
               },
 
               // set $item relative to cursor position
               onDragStart: function ($item, container, _super) {
                   var offset = $item.offset(),
-                      pointer = container.rootGroup.pointer;
+                    pointer = container.rootGroup.pointer;
 
                   adjustment = {
                       left: pointer.left - offset.left,
                       top: pointer.top - offset.top
                   };
+
+                  // Scroll handling
+                  container.scrollParent = $item.closest('.overflow-auto');
+                  container.scrollParent.on('scroll', function () {
+                      _super.scroll();
+                  });
 
                   _super($item, container);
               },
@@ -155,7 +195,7 @@
                   });
               }
           });
+          updateOrderNumbers();
       });
   </script>
-
 </main>
