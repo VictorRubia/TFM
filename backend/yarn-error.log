@@ -14,7 +14,7 @@ Platform:
   darwin arm64
 
 Trace: 
-  SyntaxError: /Users/victorrubia/Desktop/TFG/backend/package.json: Expected ',' or '}' after property value in JSON at position 631 (line 19 column 14)
+  SyntaxError: /Users/victorrubia/Desktop/TFM/backend/package.json: Expected ',' or '}' after property value in JSON at position 631 (line 19 column 14)
       at JSON.parse (<anonymous>)
       at /opt/homebrew/Cellar/yarn/1.22.19/libexec/lib/cli.js:1629:59
       at Generator.next (<anonymous>)

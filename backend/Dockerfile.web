@@ -7,8 +7,8 @@ RUN python3 -m pip install pandas matplotlib
 RUN python3 -m pip install -U scikit-learn
 RUN npm install -g npm@latest
 RUN npm install -g yarn
-WORKDIR /tfg
-COPY . /tfg
+WORKDIR /tfm
+COPY . /tfm
 RUN bundle install
 
 ARG PROD_DATABASE_PWD

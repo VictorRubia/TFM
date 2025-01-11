@@ -16,7 +16,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-    container_name: pma_tfg
+    container_name: pma_tfm
     links:
       - db
     environment:
@@ -32,7 +32,7 @@ services:
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec puma config.ru"
-    container_name: tfg_webapp
+    container_name: tfm_webapp
     environment:
       - GMAIL_PASS=${GMAIL_PASS}
       - PROD_DATABASE_USR=${PROD_DATABASE_USR}
@@ -43,7 +43,7 @@ services:
       - MAIL_PWD=${MAIL_PWD}
       - LOGSTASH_HOST=logstash
     volumes:
-      - .:/tfg
+      - .:/tfm
     ports:
       - "3000:3000"
     depends_on:

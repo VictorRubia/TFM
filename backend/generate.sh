@@ -12,11 +12,11 @@ echo "default: &default
 
 development:
   <<: *default
-  database: tfg_development
+  database: tfm_development
 
 test:
   <<: *default
-  database: tfg_test" > config/database.yml
+  database: tfm_test" > config/database.yml
 
 docker-compose up
 docker-compose run web rake db:create
