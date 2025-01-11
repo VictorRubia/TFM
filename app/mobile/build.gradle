@@ -9,7 +9,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.victorrubia.tfg"
+        applicationId "com.victorrubia.tfm"
         minSdk 30
         targetSdk 34
         versionCode 1
@@ -41,7 +41,7 @@ android {
     dataBinding {
         enabled = true
     }
-    namespace 'com.victorrubia.tfg'
+    namespace 'com.victorrubia.tfm'
 }
 
 dependencies {
@@ -110,7 +110,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.6.21")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.9.10")
 
     wearApp project(":wear")
 }

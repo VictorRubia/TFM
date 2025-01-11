@@ -6,6 +6,6 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "TFG"
+rootProject.name = "TFM"
 include ':mobile'
 include ':wear'
