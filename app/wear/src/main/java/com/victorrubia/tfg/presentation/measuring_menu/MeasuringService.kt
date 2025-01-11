@@ -160,7 +160,6 @@ class MeasuringService : Service(), SensorEventListener {
                 heartRateSensor = sensorManager.getDefaultSensor(ppgSensorId)!!
                 val minDelay = heartRateSensor.minDelay // en microsegundos
                 val maxFrequency = 1_000_000 / minDelay // en Hz
-//                Log.d("SensorHeartRate", "Frecuencia máxima del sensor: $maxFrequency Hz")
                 heartRateSensor.let {
                     sensorManager.registerListener(this, it, 10000)
                     ppgSensorStatus = false

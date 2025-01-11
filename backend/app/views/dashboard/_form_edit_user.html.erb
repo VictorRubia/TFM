@@ -30,17 +30,3 @@
     <%= form.submit 'Editar', :class => 'btn btn-success' %>
   </div>
 <% end %>
-
-  <div class="modal-body" style="border-top: 1px solid #dee2e6">
-    <%= form_with model: @usuario, url: user_private_api_keys_path do |f| %>
-    <div class="mb-3">
-      <h class="col-form-label">API Key</h>
-      <%= f.text_field :private_api_key, disabled: true, :class => 'form-control' , id: 'user'+@usuario.id.to_s+'apiKEY'%>
-      <%= f.hidden_field :id, id: "hidden_user_id_#{ @usuario.id }" unless @usuario.id.nil? %>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-info" onclick="copy(<%= 'user'+@usuario.id.to_s+'apiKEY' %>)">Copiar</button>
-    <%= f.submit "Cambiar Clave API", :class => 'btn btn-warning' %>
-  </div>
-<% end %>
