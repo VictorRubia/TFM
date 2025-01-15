@@ -1,7 +1,7 @@
 FROM ruby:3.3
 
-# Actualización e instalación de dependencias necesarias
-RUN apt-get update -qq && apt-get install -y build-essential default-mysql-client default-libmysqlclient-dev git
+# Instalación de dependencias necesarias
+RUN apt-get update -qq && apt-get install -y build-essential default-mysql-client default-libmysqlclient-dev git netcat-openbsd
 RUN git config --global http.sslVerify false
 RUN apt remove cmdtest -y
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
@@ -9,13 +9,16 @@ RUN apt-get install nodejs
 RUN npm install -g npm@latest
 RUN npm install -g yarn
 
-# Configuración del entorno de trabajo
+# Configuración del directorio de trabajo
 WORKDIR /tfm
 
-# Copia de dependencias de Ruby y configuración
+# Copia de dependencias de Ruby
 COPY Gemfile /tfm/Gemfile
 COPY Gemfile.lock /tfm/Gemfile.lock
 RUN bundle install
+
+# Copia del resto de los archivos de la aplicación
+COPY . /tfm
 
 # Variables de entorno necesarias para la configuración
 ARG PROD_DATABASE_PWD
@@ -29,12 +32,10 @@ ENV PROD_DATABASE_USR=$PROD_DATABASE_USR
 ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 
-# Preparación de la base de datos y activos
-RUN bundle exec rails db:create RAILS_ENV=production
-RUN bundle exec rails db:migrate RAILS_ENV=production
-RUN bundle exec rake assets:precompile RAILS_ENV=production
+# Precompilación de activos
+RUN bundle exec rake assets:precompile RAILS_ENV=development
 
-# Configuración de scripts de entrada y permisos
+# Configuración de scripts de entrada
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
@@ -42,17 +43,8 @@ ENTRYPOINT ["entrypoint.sh"]
 # Exposición del puerto
 EXPOSE 3000
 
-# Asegura que tmp/pids exista
+# Creación de directorios necesarios
 RUN mkdir -p /tfm/tmp/pids
-
-# Elimina cualquier archivo pid antes de iniciar el servidor
-RUN echo '#!/bin/bash\nrm -f tmp/pids/server.pid\nexec "$@"' > /usr/bin/start.sh && chmod +x /usr/bin/start.sh
-
-# Precompila los activos en el build del contenedor
-RUN bundle exec rake assets:precompile RAILS_ENV=production
-
-# Configuración del entrypoint
-ENTRYPOINT ["/usr/bin/start.sh"]
 
 # Comando final para iniciar el servidor
 CMD ["bundle", "exec", "puma", "config.ru"]

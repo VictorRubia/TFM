@@ -33,6 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
+    command: ["bundle", "exec", "puma", "-C", "config/puma.rb"]
     container_name: tfm_webapp
     environment:
       - GMAIL_PASS=${GMAIL_PASS}
@@ -46,11 +47,12 @@ services:
     volumes:
       - .:/tfm
     ports:
-      - "3000:3000"
+      - "80:3000"
     depends_on:
       - db
     networks:
       - elknetwork
+    entrypoint: [ "/usr/bin/entrypoint.sh" ]
 
   elasticsearch:
     image: elasticsearch:7.17.8
