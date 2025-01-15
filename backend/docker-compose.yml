@@ -31,7 +31,7 @@ services:
 
   web:
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec puma config.ru"
+    command: bash -c "mkdir -p tmp/pids && rm -f tmp/pids/server.pid && rake assets:precompile && bundle exec puma config.ru"
     container_name: tfm_webapp
     environment:
       - GMAIL_PASS=${GMAIL_PASS}

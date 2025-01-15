@@ -1,5 +1,6 @@
 FROM ruby:3.3
-RUN apt-get update -qq && apt-get install -y build-essential default-mysql-client default-libmysqlclient-dev
+RUN apt-get update -qq && apt-get install -y build-essential default-mysql-client default-libmysqlclient-dev git
+RUN git config --global http.sslVerify false
 RUN apt remove cmdtest -y
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
 RUN apt-get install nodejs
@@ -13,6 +14,8 @@ RUN bundle install
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 80
+EXPOSE 3000
+
+RUN mkdir -p /tfm/tmp/pids
 
 CMD [ "bundle","exec", "puma", "config.ru"]

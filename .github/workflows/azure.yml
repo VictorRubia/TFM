@@ -1,0 +1,38 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Azure VM
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Paso 2: Configurar SSH
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Paso 3: Conectar a la máquina virtual y ejecutar los comandos
+      - name: Deploy to Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << EOF
+          # Cambiar al directorio del proyecto
+          cd ~/TFM
+          # Hacer pull de los cambios
+          git pull origin main
+          # Cambiar al directorio del backend
+          cd ~/TFM/backend
+          # Detener los contenedores existentes
+          docker compose down
+          # Reconstruir y reiniciar los contenedores
+          docker compose up -d --build
+          EOF
